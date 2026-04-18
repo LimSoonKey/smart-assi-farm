@@ -1,0 +1,15 @@
+{
+  "name": "스마트어시팜",
+  "short_name": "어시팜",
+  "start_url": "control.html",
+  "display": "standalone",
+  "background_color": "#f1f8e9",
+  "theme_color": "#2e7d32",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2362/2362306.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

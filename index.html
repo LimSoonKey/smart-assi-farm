@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+    <!--홈페이지 핵심 구성 (기획안)
+    1. 히어로 섹션 (첫 화면): 제품의 핵심 가치를 한 문장으로 보여준다. 
+       (예: 세계 어디서나 내 과수원을 한 손으로 제어하세요.")
+    2. 제품 소개 & 장점: 왜 이 컨트롤러가 좋은지 설명한다. 
+       (1인 다농장 원클릭 관리, 민감한 현장감지 관리, 전기 소모 최소화, 설치 간편성, 안정적 증설 등)
+    3. 앱 다운로드 섹션: 스마트폰 제어 앱(APK 파일 링크나 스토어 링크)을 큰 버튼으로 배치한다.
+    4. 설치 사례 & 신뢰도: 실제 농장에 설치된 사진이나 간단한 작동 원리 다이어그램을 배치한다.
+    5. 설치 신청 폼: 성함, 연락처, 지역을 입력받아 상담을 예약하는 섹션을 배치한다.-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="마중물 없는 급수, 스마트폰 원격 제어, 우박 서리 방지 시스템. 농민의 일손을 덜어주는 스마트어시팜입니다.">
+    <meta name="keywords" content="스마트팜, 관수제어, 보호막관리기, 무인예초기, 농약살포기, 농업자동화">
+    <meta property="og:title" content="스마트어시팜">
+    <meta property="og:description" content="전국 어디서나 스마트폰으로 내 농장을 관리하세요.">
+    <meta property="og:image" content="로고사진주소.jpg">
+    <title>스마트어시팜</title>
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        /* 기본 설정 */
+        body, html {
+            margin: 0;
+            padding: 0px; 
+            height: 100%;
+            font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+            max-width: 100%;
+            overflow-x: hidden; /* 가로 스크롤 발생을 원천 차단 */
+            position: relative;
+        }
+
+        .header { 
+            color: white; 
+            background: #fbfcfb; 
+            padding: 0rem;
+        }
+
+        /* 지금은 아무 영향없어 보여도 나중에 이미지 추가할 때 반응형으로 잘 나오도록 미리 설정해두는 코드 */
+        img { max-width: 100%; height: auto; }     /* 결코 지우지 말 것 */
+
+
+/* ============================================================================ */
+
+        /* [여기에 새로 드린 나가기 버튼 CSS를 붙여넣으세요] */
+        .exit-button-wrapper {
+            position: fixed;
+            top: 10px;
+            right: 30px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .exit-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: #4f4c4b;
+            color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .exit-button:active {
+            transform: scale(0.9);
+        }
+
+/* ================================================================================= */
+
+        /* 배경 이미지: 농업 풍경 */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920'); /* 실제 농장 이미지로 교체 가능 */
+            background-size: cover;
+            background-position: center;
+            height: 92vh;                          /* 화면 높이의 92% */
+            display: flex;
+            flex-direction: column;                /* 세로로 쌓기 */
+            justify-content: center;               /* 세로 방향 중앙 */
+            align-items: center;                   /* 가로 방향 중앙 */
+            color: white;
+            text-align: center;
+        }
+
+/* ================================================================================= */
+
+        /* SMART ASSI-FARM 글자 크기 및 위치 */
+        .pc-top-center-title {
+            font-size: 3.2rem !important;                     /* px 대신 rem을 써서 적정 크기 유지 */
+            font-weight: 900;
+            margin-top: 0 !important;      /* 위쪽 마진을 아예 없앰 */
+            margin-bottom: 30px;
+            position: relative;
+            top: -80px !important;                            /* 숫자가 커질 수록 SMART ASSI-FARM 글자 위 여백이 커짐 */
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
+        }
+
+/* ================================================================================= */
+
+        /* 강조 문구 - 수확은 극대! 인력은 극소!의 글자 크기와 색 */
+        .pc-highlight {
+            color: #a7e768;                      /* 수익 강조를 위한 노란색 계열 */
+            font-size: 1.8rem !important;            
+            font-weight: 900;                      /* 아주 두껍게 */
+            display: inline-block;                 /* 배경색이 예쁘게 입혀지도록 설정 */
+            margin-top: -70px !important;      /* 위쪽 마진을 아예 없앰 */
+            line-height: 1;
+            word-break: keep-all;                  /* 단어가 중간에 잘리지 않게 보호 */
+        }
+
+        /* [스타일 블럭] "극대", "극소"만 특별 강조 */
+        .pc-point {
+            color: hsl(60, 98%, 48%) !important; 
+            font-size: 2.1rem; 
+            font-weight: 900;                      /* 아주 두껍게 */
+            word-break: keep-all;                  /* 단어가 중간에 잘리지 않게 보호 */
+        }
+
+/* ================================================================================= */
+
+        /* 우박, 서리, --- 의 글자 크기와 색 */
+        .pc-promo-text {
+            font-size: 1.5rem;
+            line-height: 1.5;
+            margin-top: 10px !important;      /* 위쪽 마진을 아예 없앰 */
+            margin-bottom: 40px;
+            font-weight: 500;                      
+        } 
+        
+        .pc-promo-text b {
+            color: #ffeb3b;                      /* 강조색: 노란색 */
+            font-size: 1.4rem;
+        }
+
+
+/* ================================================================================= */
+
+        /* 어시팜 스위치 버튼 */
+        .btn-control {
+            display: inline-block;                 /* 내용만큼만 차지하게 설정 */
+            width: auto;                           /* 내용만큼만 너비 차지 */
+            min-width: 160px;                      /* 최소 너비는 확보 */
+            max-width: 170px;                      /* [중요] 아무리 길어져도 이 선은 넘지 않게 제한 */
+            padding: 10px 10px;                    /* 위아래 두께와 좌우 여백 */
+            margin: 30px !important;               /* 버튼 사이의 간격 */
+            background-color: #9ad19c;
+            color: rgb(231, 18, 18);
+            border: 2px solid #4caf50;
+            border-radius: 50px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        /* 어시팜 스위치 바로가기 호버 */
+        .btn-control:hover {
+            background-color: #4caf50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+
+ /* ================================================================================= */
+
+        /* 왼쪽 하단: 컨트롤러와 농약살포기 이미지 위치 */
+        .pc-bottom-left-product {
+            position: absolute;
+            bottom: 40px;                          /* 아래에서 40px 띄움 */
+            left: 40px;                            /* 왼쪽에서 40px 띄움 */
+            width: 280px;                          /* 이미지 크기 조절 */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 0px;
+            border-radius: 10px;
+            text-align: center;
+        } 
+
+        /* 왼쪽 하단: 컨트롤러와 농약살포기 이미지 크기 */
+        .pc-bottom-left-product img { 
+            max-width: 100%;                       /* 부모 박스보다 커지지 않게 설정 */
+            height: auto;                          /* 가로세로 비율 유지 */
+        } 
+
+        .pc-bottom-left-product p { 
+            margin: 0; 
+            font-size: 0.9rem; 
+            color: #eee; 
+        }
+
+
+/* ================================================================================= */
+
+        /* 무료 상담신청 버튼을 감싸는 박스: 위치 조절 */
+        .pc-bottom-center-consult {
+            position: absolute;
+            bottom: 5vh;                              /* 고정된 px 대신 vh를 써서 화면 높이에 따라 유동적으로 배치 */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;                               /* 모바일에서 부모 너비를 넘지 않도록 설정 */
+            text-align: center;
+            z-index: 100;
+        } 
+
+        /* 무료 상담신청 버튼: 크기 및 디자인 */
+        .pc-btn-consult {
+            display: inline-block;                    /* 크기 조절이 가능하도록 설정 */
+            padding: 10px 25px;                         /* 좌우 여백을 %로 주어 화면 크기에 따라 버튼 폭이 변함 */
+            background-color: #ff9800;
+            color: white;
+            border: 2px solid #896704;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1rem;                          /* 모바일에 적당한 크기로 살짝 조정 */
+            font-weight: bold;
+            white-space: nowrap;                      /* 글자가 두 줄로 꺾이지 않게 방지 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* 입체감 추가 */
+            transition: all 0.2s;                     /* 부드러운 변화 */
+        } 
+
+        /* 무료 상담신청 버튼 호버 효과: 흔들림 방지 */
+        .pc-btn-consult:hover {
+            transform: scale(1.05); 
+            background-color: #f57c00;
+        }
+
+
+/* ================================================================================= */
+
+        .phone-link {
+            /* 글자와 아이콘을 수직/수평 정중앙으로 보냄 */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;         
+            background-color: #2e7d32;
+            border: 2px solid #166519 !important;
+            padding: 10px 20px;  /* 넓이 */
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+
+            position: fixed; 
+            bottom: 20px; /* 위치를 아래에서 20px 띄움 */
+            right: 5rem; /* 위치를 오른쪽에서 5rem 띄움 */
+            margin: 15px; /* 신청하기 버튼과의 간격 */
+            z-index: 1000;
+
+            font-weight: bold;
+            font-size: 1rem; /* 글자 크기 최적화 */
+            color: white; 
+            white-space: nowrap; /* 글자가 두 줄로 겹치지 않게 방지 */
+            display: inline-block;
+        }
+
+/* ================================================================================= */
+
+        .feature-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+
+        .feature-card { 
+            background: white; 
+            border: 1px solid #ddd; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+        }
+
+        .feature-card h4 { 
+            color: #2e7d32; 
+            margin-top: 0; 
+            font-size: 1.5rem; 
+        }
+
+        /* 신청 폼 스타일 */
+        form { 
+            background: #f9f9f9; 
+            padding: 30px; 
+            border-radius: 15px; 
+            border: 1px solid #eee; 
+        }
+
+        input, select, textarea { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 15px; 
+            border: 1px solid #fbf8f8; 
+            border-radius: 5px; 
+            box-sizing: border-box; 
+        }
+
+
+/* ========================================================================================= */        
+
+        /* 프리미엄 비교 섹션 스타일 */
+        .premium-compare-section {
+            background-color: #fcfdfc;             /* 아주 연한 녹색 배경 */
+            padding: 6rem 1rem;
+        }
+
+        /* 프리미엄 비교 섹션 전체를 감싸는 컨테이너 */
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+        }
+
+        /* 비교 섹션 제목 */
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        /* 비교 섹션 "스마트 어시팜" 글자에 브랜드 테마 색상 적용 */
+        .section-title span {
+            color: #2e7d32;                      /* 어시팜 브랜드 테마 색상 */
+        }
+
+        /* 비교 섹션 부제목 */
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        /* 비교 섹션 그리드 */
+        .compare-grid {
+            display: grid;
+            gap: 30px;
+            padding: 1rem 10px !important;         /* 좌우에 20px 정도의 고정 여백을 준다 */
+            box-sizing: border-box;                /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
+        }
+
+        /* 비교 섹션 아이템 */
+        .compare-item {
+            text-align: center !important;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* 부드러운 그림자 */
+            border: 1px solid #eee;
+            transition: transform 0.3s ease;
+            box-sizing: border-box;                /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
+        }
+
+        /* 비교 섹션 아이템 호버 효과 */
+        .compare-item:hover {
+            transform: translateY(-5px);           /* 호버 효과 */
+        }
+
+        /* 비교 항목 라벨 */
+        .compare-label {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center !important;
+            color: #2e7d32;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f5e9;
+            display: inline-block;
+        }
+
+        /* 비교 로우 */
+        .compare-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        /* 비교 상자 제목 */
+        .compare-table {
+            font-size: 1.3rem !important;          /* 모바일에서는 글자 크기 줄임 */
+            font-weight: 700;
+            color: #555;
+            flex: 1;
+            text-align: center;                    /* 모바일에서는 중앙 정렬 */
+        }
+
+        /* 비교 상품 특징 내용 */
+        .compare-content {
+            font-size: 1.4rem;
+            font-weight: 400;                      /* 아주 두껍게 */
+            text-align: center; 
+        }
+
+        /* 상품의 특징 내용 */
+        .compare-text {
+            font-size: 1.6rem;
+            color: #555;
+            flex: 1;
+            text-align: center; 
+        }
+
+        /* 비교 VS원 스타일 */
+        .vs-circle {
+            background: #777;                      /* 차분한 그레이 */
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            z-index: 2;
+            margin: 10px 0; 
+        }
+
+        /* 수동 vs 스마트 방식 카드 */
+        .method {
+            flex: 1;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .method h4 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .method p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* 수동 방식 스타일 (차분하게) */
+        .manual {
+            background-color: #f5f5f5;
+            color: #777;
+            border: 1px solid #eee;
+        }
+
+        .manual h4 {
+            color: #555;
+        }
+
+        /* 스마트 어시팜 스타일 (생동감 있게 강조) */
+        .smart {
+            background-color: #e8f5e9;           /* 연한 녹색 배경 */
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .smart h4 {
+            color: #1b5e20;
+        }
+
+        .smart p b {
+            color: #1b5e20;                      /* 강조된 텍스트 색상 */
+        }
+
+
+/* ============================================================================ */        
+
+        /* 상품 전시관 전용 스타일 */
+        .product-gallery-section {
+            background-color: #ffffff;
+            padding: 60px 0;
+        }
+
+        /* 상품 전시관 & 설치 사례 포트폴리오 전체를 감싸는 영역 */
+        .section { 
+            padding: 4rem 20px;                    /* 좌우에 20px 정도의 고정 여백을 준다 */
+            max-width: 1300px !important; 
+            margin: auto;
+            box-sizing: border-box;                /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 상품관 폭 */
+            gap: 20px;                             /* 카드와 카드 사이의 간격 */
+            padding: 10px;                         /* 그리드 안쪽에도 살짝 여백 */
+        }
+
+        /* 모든 상품 카드를 메인 상품과 동일하게 통일 */
+        .product-card {
+            background-color: #fffffe;           /* 연한 녹색 바탕으로 통일 */
+            border: 2px solid #2e7d32;           /* 짙은 녹색 테두리로 통일 */
+            border-radius: 20px;                   /* 모서리를 더 부드럽게 */
+            padding: 30px 20px;                    /* 위아래와 양옆 */
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.1); /* 은은한 녹색 그림자 */
+
+            /* 카드가 화면 밖으로 나가지 않게 방지 */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 상품 카드 호버 */
+        .product-card:hover {
+            transform: translateY(-10px);
+            background-color: #fefefd;             /* 마우스 올리면 하얗게 반전되어 눈에 띔 */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        /* 상품명 스타일 */
+        .product-card h4 {
+            font-size: 1.5rem;
+            color: #1b5e20;                        /* 더 깊은 녹색 */
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        /* 상품 특징 내용 */
+        .product-text {
+            font-size: 1.4rem;
+            font-weight: 400;     
+            text-align: left;
+        }
+
+        /* 가격표시창과 가격 글자 스타일 */
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #d32f2f;                      /* 가격은 명확하게 붉은색 유지 */
+            margin: 10px 0;
+            background: white;                   /* 가격 배경을 흰색으로 살짝 감싸 가독성 확보 */
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 5px;
+        }
+
+        /* 상품 포트폴리오 이미지 전용 스타일 */
+        .product-portfolio-img {
+            width: 100% !important;                /* 카드 폭에 꽉 차게 */
+            height: 200px !important;
+            max-width: 200px !important;           /* 너무 커지지 않게 제한 */
+            margin: 0 auto 15px auto !important;   /* 중앙 정렬 및 아래 간격 */
+            display: block !important;
+            border-radius: 10px;                   /* 모서리를 살짝 둥글게 */
+        }
+
+        .price-unit {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: normal;
+        }
+
+        /* 설치 현장 사례 섹션 스타일 */
+        .portfolio-section {
+            background-color: #f9fbf9;           /* 아주 연한 바탕색 */
+            padding: 80px 0;
+        }
+
+        /* 설치 현장 사례 */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        /* 설치 현장 사례 사진틀 모서리 둥글게 */
+        .portfolio-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: transform 0.3s ease;
+
+            /* 카드가 화면 밖으로 나가지 않게 방지 */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 설치 현장 사례 호버 */
+        .portfolio-card:hover {
+            transform: translateY(-8px);
+        }
+
+        /* 설치 현장 사례 사진 공간 생성 */
+        .photo-placeholder {
+            width: 100%;
+            height: 220px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* 설치 현장 사례 내용물 보기 좋기 위치 지정 */
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;                     /* 이미지가 비율에 맞게 꽉 차도록 설정 */
+        }
+
+        .portfolio-info { padding: 25px; }
+
+        p {
+            font-size: 1rem !important;
+            line-height: 1.6 !important;
+        }
+
+/* ============================== 알림 팝업 디자인 ===================================== */    
+        /* 보호막이나 농약 살포기처럼 주의가 필요한 장비가 켜지면 
+           더 강한 경고음(warning_alert.mp3)을 울려 관리자의 주의를 끈다.
+           폰을 보고 있지 않더라도 "딩동" 소리를 듣고 화면을 켜면, 
+           상단에 "알림: [급수]가 센서에 의해 가동되었습니다"라는 메시지가 떠 있어 상황을 즉시 파악할 수 있다.
+           3초마다 장비와 대화하며 스위치 위치를 스스로 조정하므로, 폰 화면이 항상 농장의 실제 상황과 100% 일치한다. */
+
+        /* 화면 상단에 세련되게 나타나는 알림창 */   
+        .floating-notify {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            z-index: 1000;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: opacity 0.5s ease;
+            white-space: nowrap;
+        }
+
+        /* 3. 견적문의 및 설치요청 글자 크기 */
+        .estimate-text {
+            font-size: 1.6rem !important; 
+            font-weight: 900;
+            text-align: center !important;
+            color: #1d1c1c;
+            margin-top: 5px !important;
+        }
+
+        /* [1] 울타리 밖: PC와 모바일 공통 디자인 (색상, 글자 굵기 등) */
+        .btn-phone-link, .btn-consult-link {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            background-color: #2e7d32;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+        }
+
+
+
+
+
+/* ============================================================================ */        
+/* ===================== 모바일 블럭 =========================================== */        
+
+        /* 모바일 대응: 화면이 작아지면 제품 사진 숨기기 혹은 크기 조절 */
+        @media screen and (max-width: 768px) {
+
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                overflow-x: hidden !important;                     /* 가로 스크롤 방지 */
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+/* ============================================================================= */
+
+            /* 헤더 배경 이미지 크기 조절: 모바일 화면에서는 배경 이미지가 너무 커지지 않도록 조절 */
+            .header { 
+                color: white; 
+                padding: 0px; 
+                text-align: center; 
+            }
+
+            /* 전체 섹션을 중앙으로 정렬 */
+            .section, .feature-grid {
+                display: block !important;
+                height: auto !important;
+                min-height: auto !important;
+                position: relative !important;
+                overflow: visible !important;
+                flex-direction: column;
+                align-items: center;                               /* 자식 요소를 중앙으로 정렬 */
+                justify-content: center;
+                width: 100%;
+            }
+
+
+/* ============================================================================ */
+            /* [여기에 새로 드린 나가기 버튼 CSS를 붙여넣으세요] */
+            .exit-button-wrapper {
+                position: fixed;
+                top: 8px;
+                right: 15px;
+                z-index: 1000;
+                cursor: pointer;
+            }
+
+            .exit-button {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 50px;
+                height: 50px;
+                background-color: #f44336;
+                color: white;
+                border-radius: 50%;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                transition: transform 0.2s;
+            }
+
+            .exit-button:active {
+                transform: scale(0.9);
+            }
+
+
+/* ============================================================================ */        
+
+            /* 배경이미지 농촌 풍경 */
+            .hero-section { 
+                background-size: cover !important;                 /* 모바일 화면에서는 배경 이미지가 너무 커지지 않도록 조절 */
+                background-position: center !important;  
+                background-repeat: no-repeat !important;                 
+                background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                    url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920'); /* 실제 농장 이미지로 교체 가능 */
+                display: flex !important;
+                flex-direction: column !important;                 /* 위에서 아래로 순서대로 배치 */
+                align-items: center;                               /* 가로 방향 중앙 */
+                min-height: 94% !important;                        /* 배경 화면 위아래를 꽉채우기 */
+                line-height: 100% !important;
+                justify-content: center !important;                /* 위에서부터 차곡차곡 */
+                gap: 2.5px !important;
+                position: relative !important;                     /* 이 상자가 기준점(울타리)이 됩니다 */
+                min-height: 300px;                                 /* 제목이 움직일 수 있는 충분한 높이를 확보하세요 */                
+            }
+
+            /* 홍보문구 작은 것을 쓰기 위한 설정, 아래 body 블럭에 적용 할 것. */
+            .hero h1 { 
+                font-size: 2.5rem; 
+                margin-bottom: 1rem; 
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.7); 
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            .hero p {
+                font-size: 1.1rem !important;                      /* 설명 문구 크기 줄임 */
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+                margin-bottom: 30px !important;
+            }
+
+
+/* ============================================================================ */
+/* ============================================================================ */
+
+            /* SMART ASSI-FARM 글자 크기 및 위치 */
+            .media-top-center-title {
+                font-size: 2.2rem !important;                      /* px 대신 rem을 써서 적정 크기 유지 */
+                font-weight: 900;
+                word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
+                letter-spacing: 1px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
+
+                position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
+                display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+
+                top: 5.5rem !important;                              /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
+                margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
+                padding:  0px !important;                          /* 불필요한 패딩 제거 */
+
+                left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+                transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
+
+                width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
+                line-height: 1.2 !important;
+                text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
+                z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+            }
+
+
+/* ============================================================================ */
+
+            /* 수확은 극대! 인력은 극소! */
+            .media-highlight {
+                font-size: 1.4rem !important;                      /* 화면 폭에 따라 1.1rem에서 1.5rem 사이로 능동적 변화 */
+                font-weight: 900;                                  /* 아주 두껍게 */
+                word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
+                letter-spacing: 2px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
+                color: #a7e768;                                  /* 수익 강조를 위한 노란색 계열 */
+
+                position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
+                display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+
+                top: 16rem !important;                             /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
+                margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
+                padding:  0px !important;                          /* 불필요한 패딩 제거 */
+
+                left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+                transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
+
+                width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
+                line-height: 1.2 !important;
+                text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
+                z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+            }
+
+            /* [스타일 블럭] "극대", "극소"만 특별 강조 */
+            .media-point {
+                color: hsl(60, 90%, 47%) !important; 
+                font-size: 1.6rem !important;                      /* 화면 폭에 따라 1.1rem에서 1.5rem 사이로 능동적 변화 */
+                font-weight: 900;                                  /* 아주 두껍게 */
+                word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
+            }
+
+
+/* ============================================================================ */
+
+            /* 우박, 서리 .... */
+            .media-promo-text {
+                font-size: 1.1rem !important; 
+                font-weight: 500;                                  /* 아주 두껍게 */
+                word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
+                letter-spacing: 0px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
+                color: #f9f9f6;
+
+                position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
+                display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+
+                top: 16rem !important;                             /* 숫자가 커질 수록 글자가 내려감 */
+                margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
+                padding: 0px !important;                           /* 불필요한 패딩 제거 */
+
+                left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+                transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
+
+                width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
+                line-height: 1.5 !important;
+                text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
+                z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+            } 
+        
+            /* "스마트어시팜" 강조체 */
+            .media-promo-text b {
+                color: #ffeb3b;                                  /* 강조색: 노란색 */
+                font-size: 1.2rem !important; 
+                font-weight: 900;                                  /* 아주 두껍게 */
+                line-height: 1.5 !important;
+            }
+
+
+/* ============================================================================ */
+
+            /* 어시팜 스위치 버튼 */
+            .highlight-control {
+                display: inline-block;                             /* 배경색이 예쁘게 입혀지도록 설정 */
+                word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
+                color: #a7e768;                                  /* 수익 강조를 위한 노란색 계열 */
+
+                position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
+                display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+
+                top: 22rem !important;                             /* 숫자가 커질 수록 글자가 내려감 */
+                margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
+                padding: clamp(0px, 0.1vw, 3px) !important;        /* 불필요한 패딩 제거 */
+
+                left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+                transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
+
+                width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
+                line-height: 1.2 !important;
+                text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
+                z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+            }
+
+            /* 어시팜 스위치 바로가기 버튼: 크기 및 디자인 조절 */
+            .btn-control {
+                display: inline-block;                             /* 내용만큼만 길어짐 */
+                width: 15rem !important;                           /* 화면의 80%만 차지 (수정 안 될 때 !important 사용) */
+                height: 1.6rem !important;                         /* 버튼 높이 */
+                padding: 16px 20px !important;                     /* 위아래 두께(높이) 유지 */
+                max-width: 9rem;                                   /* 모바일 제한 해제 */
+                min-width: unset;                                  /* PC용 최소 너비 해제 */
+                margin: 1px auto !important;                       /* 중앙 정렬 */
+                align-items: center;
+                justify-content: center;
+                font-size: 1.3rem;
+                font-weight: 900;                                  /* 아주 두껍게 */
+                text-decoration: none; 
+                color: #f70606;
+            }
+ 
+/* ============================================================================ */
+
+            /* 컨트롤러와 농약살포기 이미지 */
+            .media-bottom-left-product {
+                position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
+                display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+
+                top: 29rem !important;                             /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
+                margin: 1.2rem auto !important;                    /* 중앙정렬 */
+                margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
+                padding: 0px !important;                           /* 불필요한 패딩 제거 */
+
+                left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+                transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
+
+                width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
+                text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
+                z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+
+                width: 17rem !important;                           /* 사진 크기 */
+                background: none !important;                       /* 배경을 살짝 더 선명하게 */
+                backdrop-filter: none !important;
+                border: none !important;                           /* 위쪽에 투명한 여백 추가 */
+                box-shadow: none !important;
+                border-radius: 7px;
+            }
+
+            /* 컨트롤러와 농약살포기 이미지 설정 */
+            .media-bottom-left-product img {
+                width: 100% !important;                            /* 컨트롤러 이미지 너비 */
+                height: auto !important;
+                display: block !important;
+            }
+
+
+/* ============================================================================ */
+
+            /* 무료 상담신청 버튼 겹쳐있는 이미지와 버튼들: 공중 부양 해제 */
+            .media-bottom-center-consult {
+                position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
+                display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+
+                top: 42rem !important;  
+                margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
+                padding:  0px !important;                          /* 불필요한 패딩 제거 */
+                padding-top: -50px !important;
+
+                left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+                transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
+
+                width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                text-align: center / 100% 100% !important;         /* 모바일에서는 중앙 정렬 */
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+                text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
+                z-index: 1000;                                     /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+
+                word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
+            } 
+        
+            /* 무료 상담신청 버튼 */
+            .media-btn-consult {
+                display: inline-block;                             /* 내용만큼만 길어짐 */
+                width: 8rem !important;                            /* 화면의 80%만 차지 (수정 안 될 때 !important 사용) */
+                height: 1.9rem;
+                padding: 12px 20px !important;                     /* 위아래 두께(높이) 유지 */
+                align-items: center;                               /* 글자가 버튼 세로 중앙에 있도록 */
+                justify-content: center;                           /* 글자가 버튼 가로 중앙에 있도록 */
+                border-radius: 10px;
+
+                font-size: 1.2rem;
+                font-weight: 900;                                  /* 아주 두껍게 */
+                text-decoration: none; 
+                white-space: nowrap;                               /* 글자가 두 줄로 꺾이지 않게 방지 */
+                background-color: #ff9800;
+                color: #fbf9f9;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);          /* 입체감 추가 */
+                transition: all 0.2s;                              /* 부드러운 변화 */
+            }
+
+            /* 무료 상담신청 버튼 호버 효과: 흔들림 방지 */
+            .media-btn-consult:hover {
+                transform: scale(1.05); 
+                background-color: #f57c00;
+            }
+
+
+/* ============================================================================= */
+
+            /* 상담 전화 버튼 */
+            a[href^="tel:"] {
+                display: flex !important;
+                position: fixed !important;
+
+                /* 위치 조정 */
+                top: 50.5rem !important;  
+                right: 1rem !important;                            /* 버튼을 오른쪽에 치우치게 */
+
+                /* 버튼 모양 및 크기 */
+                height: 2.8rem !important;                         /* 높이를 고정값으로 주어야 터치하기 편함 */
+                width: 7rem !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                min-width: 27px !important;
+                padding: 0px 0px !important;                       /* 불필요한 패딩 제거 */
+                border-radius: 50px !important;                    /* 둥근 버튼으로 강조 */
+
+                background-color: #2e7d32 !important;            /* 버튼 본연의 초록색만 남김 */
+                color: white !important;
+                border: 2px solid #156518 !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+                z-index: 11;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+                bottom:0px; 
+
+                font-size: 1rem !important;
+                font-weight: bold !important;
+                text-decoration: none !important;
+                text-align: center !important;
+                align-items: center;                               /* 글자가 버튼 세로 중앙에 있도록 */
+                justify-content: center;                           /* 글자가 버튼 가로 중앙에 있도록 */
+            }
+
+            /* 터치하거나 마우스를 올렸을 때 잔상 없이 색상만 변경 */
+            .btn-phone-link:hover, .btn-phone-link:active {
+                background-color: #1b5e20 !important;
+                text-decoration: none !important;
+            }
+
+            /* 아이폰 등 노치 디자인 대응, 화면을 축소하거나 모바일 기기를 가로로 돌릴 때 버튼이 가려지는 것을 막는다. */
+            .btn-phone-new {
+                bottom: calc(20px + env(safe-area-inset-bottom)) !important;
+                right: calc(20px + env(safe-area-inset-right)) !important;
+            }
+
+
+/* ============================================================================= */
+/* ===================== ( 영농 안심 시스템 ) =================================== */
+
+            /* 특징 상자 */
+            .feature-card {
+                margin: 10px auto !important;                      /* 위아래 10px, 좌우는 자동으로 중앙 */
+                display: block;
+                width: fit-content;                                /* 내용물 크기에 맞게 조절 */
+                width: 5rem 40vw 33rem  !important;                /* 화면 폭에 맞춤 */
+                top: 0px !important;                               /* 고정좌표 무효화 */
+                line-height: 1.2 !important;
+            }
+
+            /* 특징 제목 */
+            .feature-card-title {
+                font-size: 1.2rem !important;
+                font-weight: 900;                                  /* 아주 두껍게 */
+            }
+
+            /* 특징 내용 */
+            .feature-card-content {
+                font-size: 1rem !important;
+                font-weight: 400;                                  /* 아주 두껍게 */
+            }
+
+
+/* ============================================================================ */
+
+            /* 비교 상자 제목 */
+            .compare-table {
+                font-size: 1.2rem !important;                      /* 모바일에서는 글자 크기 줄임 */
+                font-weight: 700;
+                color: #555;
+                flex: 1;
+                text-align: center;                                /* 모바일에서는 중앙 정렬 */
+            }
+
+            .compare-table th, .compare-table td { padding: 10px 5px; }
+            .compare-item { padding: 20px; }
+
+            /* VS원 크기 조절 */
+            .vs-circle {
+                background: #777;                                /* 차분한 그레이 */
+                color: white;
+                width: 40px !important;                            /* 모바일에서는 원 크기 줄임 */
+                height: 40px !important;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 1.1rem !important;                      /* 모바일에서는 글자 크기 줄임 */
+                flex-shrink: 0;
+                z-index: 2;
+                margin: 10px 0; 
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 비교 섹션의 타이틀 글자 크기 */
+            .section-title {
+                text-align: center !important;                     /* 모바일에서도 강제로 중앙 정렬 */
+                margin-top: 30px !important;                       /* 모바일에서는 위아래 여백을 조금 줄여서 깔끔하게 배치 */
+                margin-bottom: 20px !important;
+                color: #333;
+                letter-spacing: -1px;
+                font-size: clamp(0.25rem, 5.1vw, 1.6rem) !important;
+                padding: 0 10px;                                   /* 양옆에 아주 살짝 여백을 주어 글자가 화면 끝에 붙지 않게 함 */
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            .section-title span { color: #2e7d32; }              /* 각 섹션의 타이틀 스타일의 테마 색상 */            
+
+            /* 각각의 비교 제목 크기 */
+            .compare-label {
+                font-size: clamp(0.25rem, 5vw, 1.5rem) !important; /* 모바일에서는 조금 더 작고 촘촘하게 보이도록 설정 */
+                margin-bottom: 0.8rem !important;
+                display: block;                    /* 모바일에서는 한 줄을 꽉 차지하게 해서 가독성을 높임 */
+                width: 100%;
+                text-align: center;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 비교 카드 */
+            .compare-row { 
+                flex-direction: column; 
+                gap: 15px; 
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 상품 특징 내용 */
+            .compare-text {
+                font-size: 1rem !important;
+                font-weight: 400;                      /* 아주 두껍게 */
+                text-align: center; 
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 권면 강조문 글자 크기 */
+            .compare-content {
+                font-size: 1rem !important;
+                font-weight: 400;                      /* 아주 두껍게 */
+                text-align: center; 
+            }
+
+            /* 아래 섹션 및 카드들 겹침 방지 */
+            .compare-section, .feature-card {
+                margin-top: 30px !important;
+                position: relative !important;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+
+/* ============================================================================ */
+
+            /* 상품 그리드 상자를 한 줄에 하나씩만 나오게 강제 설정 */
+            .product-grid {
+                display: flex !important;
+                flex-direction: column !important;     /* 위에서 아래로 쌓기 */
+                align-items: center !important;        /* 자식(카드)들을 가로 중앙으로! */
+                gap: 30px !important;                  /* 카드 사이의 수직 간격 */
+                padding: 0 !important;                 /* 불필요한 내부 여백 제거 */
+                width: 100% !important;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 상품 카드 자체를 화면 중앙에 딱 붙이기 */
+            .product-card {
+                width: 90% !important;                 /* 화면 너비의 90%만 사용 (여유공간 확보) */
+                max-width: 350px !important;           /* 너무 커지지 않게 제한 */
+                margin: 0 auto !important;             /* 좌우 자동 여백으로 중앙 정렬 */
+                display: block !important;
+                float: none !important;                /* 혹시 모를 쏠림 방지 */
+                box-sizing: border-box !important;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 상품명 스타일 */
+            .product-card h4 {
+                font-size: 1.2rem !important; /* 화면 크기에 따라 글자 크기 조절 */
+                color: #1b5e20; /* 더 깊은 녹색 */
+                margin-bottom: 8px;
+                font-weight: 800;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 상품 특징 내용 */
+            .product-text {
+                font-size: 1rem !important; /* 화면 크기에 따라 글자 크기 조절 */
+                font-weight: 400;     
+                text-align: left;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            } 
+
+            /* 상품 가격표시 창과 가격 글자 스타일 */
+            .product-price {
+                font-size: 1.1rem !important;
+                font-weight: 800;
+                color: #d32f2f;                      /* 가격은 명확하게 붉은색 유지 */
+                margin: 10px 0;
+                background: white;                   /* 가격 배경을 흰색으로 살짝 감싸 가독성 확보 */
+                display: inline-block;
+                padding: 2px 10px;
+                border-radius: 5px;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            .price-unit {
+                font-size: 0.9rem !important;
+                color: #888;
+                font-weight: normal;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 상품 갤러리 섹션 전체 여백 조정 */
+            .product-gallery-section {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                text-align: center !important;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 상품 포트폴리오 이미지 전용 스타일 */
+            .product-portfolio-img {
+                width: 100% !important;        /* 카드 폭에 꽉 차게 */
+                height: clamp(50px, 20vh, 200px) !important;
+                max-width: clamp(50px, 20vh, 200px) !important;    /* 너무 커지지 않게 제한 */
+                margin: 0 auto 15px auto !important; /* 중앙 정렬 및 아래 간격 */
+                display: block !important;
+                border-radius: 10px;            /* 모서리를 살짝 둥글게 */
+            }
+
+
+/* ============================================================================ */
+
+            /* 컨테이너의 보이지 않는 여백까지 제거 */
+            .container {
+                padding-left: 0px !important;
+                padding-right: 10px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 auto !important; 
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+
+/* ============================================================================= */
+
+            /* 설치 사례 지역 장소 글자 크기 */
+            .location-tag {
+                font-size: 0.9rem !important; /* 모바일에서는 글자 크기 줄임 */
+                color: #888;
+                font-weight: normal;
+                margin-top: 5px !important;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+            /* 설치 사례 제품 내용 글자 크기 */
+            .portfolio-info h4 {
+                font-size: 1.1rem !important; /* 모바일에서는 글자 크기 줄임 */
+                line-height: 1.6 !important;
+                margin-bottom: 0 !important;
+            }
+
+            .portfolio-grid { 
+                grid-template-columns: 1fr; 
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }                                                      /* 모바일에서는 한 줄씩 */
+
+
+/* ============================================================================= */
+
+            /* 견적문의 및 설치요청 글자 크기 */
+            .estimate-text {
+                font-size: 1.1rem !important; /* 모바일에서는 글자 크기 줄임 */
+                font-weight: 900;
+                text-align: center !important;
+                color: #1d1c1c;
+                margin-top: 5px !important;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;
+            }
+
+/* ============================================================================= */
+
+            /* 푸터 글자 크기 */
+            .footer {
+                font-size: clamp(0.2rem, 3vw, 1rem) !important; /* 모바일에서는 글자 크기 줄임 */
+                color: #888;
+                text-align: center !important;
+                padding: 20px 0 !important;
+                line-height: clamp(1.1, 1.2vw, 1.4) !important;            
+            }
+
+/* ===================== 울타리 안 ============================================= */
+
+            /* 울타리 안: 무료 상담신청 버튼과 상담전화 버튼을 콤마(,)를 사용해서 한꺼번에 가둔다 */
+            .btn-phone-link, .btn-consult-link {
+                height: 35px !important;       /* 세로폭 강제 다이어트 */
+                min-height: 35px !important;
+                padding: 0 15px !important;    /* 옆으로만 여백을 줍니다 */
+                margin-top: 5px !important;    /* 버튼끼리 붙지 않게 여백 */
+            }
+
+            /* 글자 크기도 한꺼번에 조절 */
+            .btn-phone-text, .btn-consult-text {
+                font-size: 0.9rem !important;
+                line-height: 1 !important;
+            }
+
+            
+/* ============================================================================= */
+
+            /* 미디어 쿼리: 화면이 768px 이하일 때 적용되는 스타일 */
+            /* 모바일 화면에서 글자 크기, 이미지 크기, 레이아웃 등을 조절하여 가독성과 사용성을 높이는 속성 설정 */
+            /* 단지 모바일 속성 설정이므로 어디에 적용하지 않더라도 결코 지워서는 않된다. */
+            .hero h2 { font-size: 1.8rem; } /* 스마트폰에선 제목 글자를 적당히 줄임 */
+            .floating-product { 
+                position: static;           /* 왼쪽 하단에 고정하지 않고 글 아래로 배치 */
+                width: 100%; 
+                margin-top: 20px;
+            }            
+        }
+
+
+/* ===================== 화면을 왼쪽으로 밀면 스위치 패널로 이동 ====================== */
+
+        /* 오른쪽 끝에 '밀어서 이동' 힌트 (선택 사항) */
+        body::after {
+            content: '〉';
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0,0,0,0.2);
+            font-size: 24px;
+            pointer-events: none; /* 클릭 방해 금지 */
+        }
+
+    </style>
+</head>
+
+
+
+
+
+<!-- ======================================================================================= -->
+<!-- =================== body ============================================================== -->
+
+<body>
+    
+    <header class="header">
+        <img src="스마트어시팜 로고.png" style="width: 180px;">
+    </header>
+
+<!-- ======================================================================================= -->
+
+    <section class="hero-section">
+        <p class="pc-top-center-title media-top-center-title">
+            SMART ASSI-FARM
+        </p>
+
+        <p class="pc-highlight media-highlight">
+            수확은 <span class="pc-point media-point">극대!</span> &nbsp; 인력은 <span class="pc-point media-point">극소!</span><br>
+        </p>
+
+        <p class="pc-promo-text media-promo-text">
+            <span class="sub-text">우박, 서리, 과도햇빛 대비부터 스마트 관수까지!<br>
+            농사는 지능형 <b>스마트어시팜</b>과 함께!</span>
+        </p>
+
+        <p class="highlight-control">
+            <a href="control2.html" class="btn-control"> <b>어시팜 스위치</b></a>
+        </p>
+
+        <p class="pc-bottom-left-product media-bottom-left-product">
+            <img src="스마트어시팜 컨트롤러.png" alt="컨트롤 박스와 액비 살포기">
+        </p>
+
+        <p class="pc-bottom-center-consult media-bottom-center-consult">
+            <a href="#request" class="pc-btn-consult media-btn-consult">무료 상담신청</a>
+        </p>
+
+        <a href="tel:010-8107-9697" class="phone-link">
+            📞<b>상담 전화</b>
+        </a>
+
+    <div class="exit-button-wrapper" onclick="handleExit()">
+        <div class="exit-button">
+            <span style="font-size: 1.2rem;">✕</span>
+            <span style="font-size: 0.7rem; font-weight: bold;">나가기</span>
+        </div>
+    </div>
+
+    </section>
+
+
+<!-- ========================== (body content section) ===================================== -->
+
+<!-- ========================== ( 영농 안심 시스템 ) ======================================== -->
+
+    <section class="section" style="background-color: #e7f9e7; max-width: 100%;">
+        <h3 class="section-title">🛡️ 영농 안심 시스템</h3>
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">☀️ 보호막 지능 제어</h4>
+                <p class="feature-card-content">과도햇빛, 우박, 서리 시 지능적으로 보호막을 펼치며 작물 피해를 차단합니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">❄️ 겨울철 동파 방지</h4>
+                <p class="feature-card-content">겨울철 빙점 온도 접근 시 자동 퇴수 작동으로 장비 동파를 원천 방지합니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">🚫 자연관수 차단</h4>
+                <p class="feature-card-content">의도치 않게 관로에 흐르는 물 차단하여 작물의 과도관수 피해를 막아줍니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">⚠️ 실시간 모니터링</h4>
+                <p class="feature-card-content">정전, 과부하, 침입자 발생 등 비상 상황 시 즉시 스마트폰에 알림음이 뜹니다.</p>
+            </div>
+    
+        </div>
+    </section>
+
+
+<!-- ========================== ( 핵심 스마트 기능 ) ============================================== -->
+
+    <section class="section">
+        <h3 class="section-title">💡 핵심 스마트 기능</h3>
+        <div class="feature-grid">
+    
+            <div class="feature-card">
+                <h4 class="feature-card-title">📱 실시간 원격 제어</h4>
+                <p class="feature-card-content">외출 중에도 전국 어디서나 휴대폰으로 여러 농장밸브를 여닫을 수 있습니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">⏰ 스마트 스케줄러</h4>
+                <p class="feature-card-content">매일 정해진 시간에 관수나 환풍기를 구동, 인건비를 획기적으로 줄여줍니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">🧪 약/액비 원격 살포</h4>
+                <p class="feature-card-content">반나절 걸리던 살포작업을 앱 터치 한 번으로 10분 만에 살포작업 완료합니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">🚰 안정적인 급수</h4>
+                <p class="feature-card-content">농장에 매이게 하는 마중물 필요없이 안정되게 물탱크를 충만히 관리합니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">⚡ 안정적인 통신</h4>
+                <p class="feature-card-content">인터넷선이 없는 오지 농장에도 끊김 없는 스마트폰 지능 제어를 제공합니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">🌡️ 민감센서 연동</h4>
+                <p class="feature-card-content">온도, 일광, 소리, 진동 센서가 지능적으로 제어하여 안전한 환경을 지킵니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">💰 전기요금 절감</h4>
+                <p class="feature-card-content">대기 전력을 최소화하고 저전력 부품을 사용하여 관리 부담이 거의 없습니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4 class="feature-card-title">🛠️ 설치/증설 간편</h4>
+                <p class="feature-card-content">기존 수동 벨브에도 1시간이면 설치할 수 있으며, 필요시 연동증설 가능합니다.</p>
+            </div>
+
+        </div>
+    </section>
+
+
+<!-- ========================== ( 차이를 넘어 혁신! ) ============================================= -->
+
+    <section class="section" style="background-color: #e7f9e7; max-width: 100%;">
+        <div class="container">
+            <h3 class="section-title">🌱 차이를 넘어 <span>혁신!</span></h3>
+            <p class="compare-content">기존의 번거로움을 벗은, 스마트한 농업 기준</p>
+
+            <div class="compare-grid">
+                <div class="compare-item">
+                    <div class="compare-label">🛡️ 재해 대응</div>
+                    <div class="compare-row">
+
+                        <div class="method manual">
+                            <p class="compare-table">기존 방식</p>
+                            <p class="compare-text">우박/서리 예보 시, 불안한 마음으로 농장으로 급히 이동</p>
+                        </div>
+
+                        <div class="vs-circle">VS</div>
+
+                        <div class="method smart" style="width: 17rem;">
+                            <p class="compare-table" title="text-align: center">스마트 어시팜</p>
+                            <p class="compare-text">지능형 감지 센서가 상황 판단, <b>능동적으로 방재막 전개</b></p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="compare-item">
+                    <div class="compare-label">🚿 관수</div>
+                    <div class="compare-row">
+                    
+                        <div class="method manual">
+                            <p class="compare-table">기존 방식</p>
+                            <p class="compare-text">수동으로 관수밸브 조작해야 하므로 농장마다 급히 이동</p>
+                        </div>
+
+                        <div class="vs-circle">VS</div>
+
+                        <div class="method smart" style="width: 17rem;">
+                            <p class="compare-table" title="text-align: center">스마트 어시팜</p>
+                            <p class="compare-text">원격 자동관수 시스템으로, <b>여러 농장 관수를 한 곳에서</b></p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="compare-item">
+                    <div class="compare-label">🧪 약/액비 살포</div>
+                    <div class="compare-row">
+
+                        <div class="method manual">
+                            <p class="compare-table">기존 방식</p>
+                            <p class="compare-text">SS기로 농약 살포시 전복사고, 중독사고, 많은 시간 소요</p>
+                        </div>
+
+                        <div class="vs-circle">VS</div>
+
+                        <div class="method smart" style="width: 17rem;">
+                            <p class="compare-table" title="text-align: center">스마트 어시팜</p>
+                            <p class="compare-text">원격 자동살포 시스템으로 <b>몇 천평도 3분이면 살포 완료</b></p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="compare-item">
+                    <div class="compare-label">🚰 급수 시스템</div>
+                    <div class="compare-row">
+                    
+                        <div class="method manual">
+                            <p class="compare-table">기존 방식</p>
+                            <p class="compare-text">매번 귀찮은 마중물 주입 및 겨울철 상시 동파 위험 노출</p>
+                        </div>
+
+                        <div class="vs-circle">VS</div>
+
+                        <div class="method smart" style="width: 17rem;">
+                            <p class="compare-table" title="text-align: center">스마트 어시팜</p>
+                            <p class="compare-text">마중물 없이 즉각 급수 및 <b>자동 퇴수 작동 동파 완벽 차단</b></p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="compare-item">
+                    <div class="compare-label">🛠️ 설치 및 증설</div>
+                    <div class="compare-row">
+
+                        <div class="method manual">
+                            <p class="compare-table">기존 방식</p>
+                            <p class="compare-text">대대적인 관로 공사 및 번거로운 전기 시설 작업이 필요</p>
+                        </div>
+
+                        <div class="vs-circle">VS</div>
+
+                        <div class="method smart" style="width: 17rem;">
+                            <p class="compare-table" title="text-align: center">스마트 어시팜</p>
+                            <p class="compare-text">기존 수동밸브 그대로 활용, 전문가가 <b>1시간 내 간편 설치</b></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<!-- ========================== ( 주요 상품 ) ================================================== -->
+
+    <section id="products" class="section product-gallery-section">
+        <div class="container">
+            <h3 class="section-title">🎁 주요 상품</h3>
+            <p class="compare-content">스마트 어시팜이 제안하는 <br>혁신적인 농업 솔루션 라인업입니다.</p>
+
+            <div class="product-grid">
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="통합컨트롤러.png" alt="스마트어시팜 통합컨트롤러" class="product-portfolio-img">
+                    </div>
+                    
+                    <h4>어시팜컨트롤러</h4>
+                    <p class="product-text">시스템의 두뇌, 전 기능을 통합 제어하는 메인 장비</p>
+                    <div class="product-price">
+                        <b>2,900,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="보호막 제어기.png" alt="보호막 제어기" class="product-portfolio-img">
+                    </div>
+                    <h4>보호막 제어기</h4>
+                    <p class="product-text">우박·서리·과도 햇빛 대비 보호막/차광막 지능 개폐</p>
+                    <div class="product-price">
+                        <b>800,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="농약 제어기.png" alt="농약 제어기" class="product-portfolio-img">
+                    </div>
+                    <h4>농약 살포기</h4>
+                    <p class="product-text">먼 거리에서 안전하게 살포하는 무인 자동살포 장치</p>
+                    <div class="product-price">
+                        <b>600,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="액비살포기.png" alt="액비살포기" class="product-portfolio-img">
+                    </div>
+                    <h4>액비 살포기</h4>
+                    <p class="product-text">작물의 영양을 지능적으로 공급하는 액체비료 살포</p>
+                    <div class="product-price">
+                        <b>680,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="관수 제어기.png" alt="관수 제어기" class="product-portfolio-img">
+                    </div>
+                    <h4>관수 제어기</h4>
+                    <p class="product-text">토양 습도에 맞춰 최적의 물을 공급하는 지능 밸브</p>
+                    <div class="product-price">
+                        <b>430,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="급수 제어기.png" alt="급수 제어기" class="product-portfolio-img">
+                    </div>
+                    <h4>급수 관리기</h4>
+                    <p class="product-text">마중물 필요없이 안정적 원수공급을 책임지는 장치</p>
+                    <div class="product-price">
+                        <b>270,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="감시 카메라.png" alt="감시 카메라" class="product-portfolio-img">
+                    </div>
+                    <h4>감시장비</h4>
+                    <p class="product-text">CCTV 및 센서를 통한 불철주야 실시간 현장모니터링</p>
+                    <div class="product-price">
+                        <b>610,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="예초로봇.png" alt="예초로봇" class="product-portfolio-img">
+                    </div>
+                    <h4>무인예초기</h4>
+                    <p class="product-text">노동력을 획기적으로 줄여주는 지능자율주행 예초기</p>
+                    <div class="product-price">
+                        <b>5,200,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-portfolio-img">
+                        <img src="산업무선라우터.png" alt="산업무선라우터" class="product-portfolio-img">
+                    </div>
+                    <h4>무선라우터</h4>
+                    <p class="product-text">인터넷 선이 없는 오지를 위한 고성능 무선 인터넷</p>
+                    <div class="product-price">
+                        <b>410,000원</b>
+                        <span class="price-unit">(시설비 별도)</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+<!-- ========================== ( 설치 현장 사례 ) =============================================== -->
+
+    <section id="portfolio" class="section" style="background-color: #e7f9e7; max-width: 100%;">
+        <div class="container">
+            <h3 class="section-title">설치 현장 사례</h3>
+            <p class="compare-content">전국 곳곳의 농장에서 <br>스마트 어시팜이 혁신을 만들고 있습니다.</p>
+
+            <div class="portfolio-grid">
+
+                <div class="portfolio-card">
+                    <div class="photo-placeholder">
+                        <img src="차광막 설치 농장.jpg" alt="과수원 설치 사례" onerror="this.src='https://via.placeholder.com/400x250?text=현장+사진+업로드+예정'">
+                    </div>
+                    
+                    <div class="portfolio-info">
+                        <span class="location-tag">📍 경북 영주시</span>
+                        <h4>사과 과수원 우박 방지 시스템</h4>
+                        <p class="feature-card-content">갑작스러운 우박 예보에도 스마트폰 원격 제어로 차광막을 즉시 가동하여 작물 피해를 완벽히 막았습니다.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card">
+                    <div class="photo-placeholder">
+                        <img src="액비제어기 설치.png" alt="하우스 설치 사례" onerror="this.src='https://via.placeholder.com/400x250?text=현장+사진+업로드+예정'">
+                    </div>
+
+                    <div class="portfolio-info">
+                        <span class="location-tag">📍 전남 나주시</span>
+                        <h4>시설 하우스 스마트 관수 제어</h4>
+                        <p class="feature-card-content">토양 습도 센서와 연동하여 최적의 급수 타이밍을 자동으로 조절, 물 소비량을 30% 절감했습니다.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card">
+                    <div class="photo-placeholder">
+                        <img src="농약살포 시설현장.png" alt="농약살포 시설현장" onerror="this.src='https://via.placeholder.com/400x250?text=현장+사진+업로드+예정'">
+                    </div>
+
+                    <div class="portfolio-info">
+                        <span class="location-tag">📍 경남 거창군</span>
+                        <h4>농약살포 시설현장</h4>
+                        <p class="feature-card-content">고된 약제 살포 작업을 무인화하여 노동 시간을 획기적으로 줄이고 농약 노출 위험으로부터 안전해졌습니다.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card">
+                    <div class="photo-placeholder">
+                        <img src="무인예초기.png" alt="노지 설치 사례" onerror="this.src='https://via.placeholder.com/400x250?text=현장+사진+업로드+예정'">
+                    </div>
+
+                    <div class="portfolio-info">
+                        <span class="location-tag">📍 충북 충주시</span>
+                        <h4>무인 예초기 도입</h4>
+                        <p class="feature-card-content">고된 예초 작업을 무인화하여 노동 시간을 획기적으로 줄이고 예초기 위험으로부터 안전해졌습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<!-- ========================== ( 견적문의 및 설치요청서 ) =========================================== -->
+
+    <section id="request" class="section">
+        <p class="estimate-text">📞견적문의 및 설치요청</p>
+        <p class="compare-content">전국 어디든 전문가가 직접 상담해드리며, 방문상담도 무료로 해드립니다.</p>
+    
+        <form action="https://formspree.io/f/여기에_고유코드_입력" method="POST" onsubmit="setTimeout(function(){window.location.reload();}, 500);">
+            <label class="feature-card-content">성함</label>
+            <input type="text" name="name" required>
+            
+            <label class="feature-card-content">연락처</label>
+            <input type="tel" name="phone" required>
+        
+            <label class="feature-card-content">상담 내용</label>
+            <textarea name="message"></textarea>
+        
+            <button 
+                type="submit" 
+                class="btn btn-install" 
+                style="font-size: 1rem !important;">
+                상담 신청하기
+            </button>
+        </form>
+    </section>
+
+
+<!-- ========================== ( 전용 제어 앱 설치 ) ============================================= -->
+
+    <section id="download" 
+        style="text-align: center; padding: 50px 20px; background: #e7f9e7;">
+        <p class="estimate-text">📱 전용 제어 앱 설치</p>
+        <p class="feature-card-content">스마트폰으로 언제 어디서든 농장을 관리하세요.</p>
+    
+        <a href="smart_assifarm_v1.apk" 
+            class="btn btn-app" 
+                download style="
+                    background: #1a73e8; 
+                    color: white; 
+                    padding: 13px 20px; 
+                    border-radius: 5px; 
+                    text-decoration: none;
+                    font-size: 1rem !important; 
+                    font-weight: bold; 
+                    display: inline-block;"
+            onClick="alert('앱 설치 파일이 다운로드됩니다. 설치 후 스마트폰 바탕화면에서 \'스마트어시팜\' 앱을 찾아 실행하세요!');">
+            Android 앱 다운로드
+        </a>
+
+        <p class="feature-card-content" style="font-size: 0.9rem; 
+            color: #666; 
+            margin-top: 15px;">
+            * 설치 시 '출처를 알 수 없는 앱' 허용 메시지가 나오면 확인을 눌러주세요.
+        </p>
+    </section>
+
+
+<!-- ========================== ( footer ) ================================================= -->
+
+    <footer>
+        <p style="
+            text-align:center; 
+            padding: 40px; 
+            color: #777; 
+            background: #eee; 
+            margin: 0;
+            font-size: 0.9rem !important;">
+            &copy; 2026 스마트 농업 솔루션. All rights reserved.
+        </p>
+    </footer>
+
+
+
+
+<!-- =================== JV-Script ========================================================= -->
+
+<!-- =================== 실제 기기 IP 주소 설정 ============================================= -->
+
+    <!--- 스마트어시팜 스위치 레이아웃-->
+    <script>
+        // === [실제 기기 IP 주소 설정] ===
+        const IP_PRO_4PM = "192.168.0.51"; // 첫 번째 Pro 4PM의 고정 IP주소
+        const IP_PLUS_1PM = "192.168.0.55"; // 두 번째 PLUS 1PM의 고정 IP주소
+
+
+// ===================== 알림음 설정 (성공: 띵동, 실패: 삐익) ============================== //
+
+        // 알림음 설정 (성공: 띵동, 실패: 삐익)
+        const successAudio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+        const errorAudio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock_short.ogg");
+
+        async function toggleDevice(device, element, channel, ip) {
+            const isOn = element.checked;
+            const statusText = document.getElementById('status-bar');
+            const card = document.getElementById(`card-${device}`);
+            
+
+// ===================== 상태 표시줄 업데이트=============================================== //
+
+            // 상태 표시줄 업데이트
+            statusText.innerText = `${device} 작동 중...`;
+
+            
+// ===================== Shelly Pro 4PM RPC API 주소 설정 ================================= //
+
+            // Shelly Pro 4PM RPC API 주소
+            const url = `http://${ip}/rpc/Switch.Set?id=${channel}&on=${isOn}`;
+
+            try { // 실제 환경에서는 Shelly의 응답을 기다린다.
+                const response = await fetch(url);
+                if (response.ok) {
+                    successAudio.play(); // ✅ 성공 알림음 재생
+                    statusText.innerText = `✅ ${device} ${isOn ? '켜짐' : '꺼짐'} 완료`;
+                    // 카드 배경색 강조 효과
+                    if(isOn) card.classList.add('on'); else card.classList.remove('on');
+                } 
+                
+                else { throw new Error(); }
+
+            } catch (error) {
+                errorAudio.play(); // ❌ 실패 알림음 재생
+                statusText.innerText = `❌ 연결 실패 (네트워크 확인)`;
+                element.checked = !isOn;
+                alert("기기와 연결할 수 없습니다. Wi-Fi 상태를 확인하세요.");
+            }
+        }
+
+
+// ===================== 스마트어시팜 스위치 ============================================== //
+
+        // 스마트어시팜 스위치 //
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+        const guideText = document.getElementById('guide');
+
+
+// ===================== 브라우저가 설치 가능함을 감지했을 때 ================================ //
+
+        // 브라우저가 설치 가능함을 감지했을 때
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); // 기본 팝업은 막고
+            deferredPrompt = e;  // 이벤트를 저장
+            installBtn.style.display = 'inline-block'; // 우리가 만든 버튼을 보여줌
+            guideText.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // 설치 창 띄우기
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('사용자가 앱 설치를 승인했습니다.');
+                }
+                deferredPrompt = null;
+                installBtn.style.display = 'none'; // 설치 후 버튼 숨김
+            }
+        });
+
+        // 이미 설치되어 있다면 버튼을 숨긴다.
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+            alert("바탕화면에 '스마트어시팜' 앱이 설치되었습니다!");
+        });
+
+
+// ===================== 알림음 파일 ==================================================== //
+
+        // const sounds = { normal: new Audio('alert.mp3') }; // 알림음 파일
+        // 1. 조작 핸들러 (보안 체크 포함)
+        function handleToggle(device, element) {
+            const isSecurityOn = document.getElementById('security-toggle').checked;
+            
+            if (isSecurityOn) {
+                const input = prompt("보안 인증: 비밀번호를 입력하세요.");
+                if (input !== PASS_CODE) {
+                    alert("비밀번호가 일치하지 않습니다.");
+                    element.checked = !element.checked; // 원래대로 복구
+                    return;
+                }
+            }
+            
+            // 실제 기기 제어 함수 호출
+            sendSignal(device, element.checked);
+            updateCardStyle(device, element.checked);
+        }
+
+
+// ===================== 카드 스타일 업데이트============================================== //
+
+        // 2. 카드 스타일 업데이트
+        function updateCardStyle(device, isOn) {
+            const card = document.getElementById(`card-${device}`);
+            if(isOn) card.classList.add('on');
+            else card.classList.remove('on');
+        }
+
+
+// ===================== 실제 신호 전송 (PLC/컨트롤러 IP 주소 필요) ======================== //
+
+        // 3. 실제 신호 전송 (PLC/컨트롤러 IP 주소 필요)
+        function sendSignal(device, isOn) {
+            console.log(`[신호 전송] ${device}: ${isOn ? 'ON' : 'OFF'}`);
+            // fetch(`http://192.168.0.100/control?device=${device}&status=${isOn ? 1 : 0}`)
+        }
+
+
+// ===================== 외부 조작 감지 알림 기능 ========================================== //
+
+        // 4. 외부 조작 감지 알림 기능
+        function showNotification(msg) {
+            const box = document.createElement('div');
+            box.className = 'floating-notify';
+            box.innerText = msg;
+            document.body.appendChild(box);
+            setTimeout(() => { box.style.opacity = '0'; setTimeout(()=>box.remove(), 500); }, 3000);
+        }
+
+
+// ===================== 5초마다 상태 동기화 (예시) ======================================== //
+
+        // 5초마다 상태 동기화 (예시)
+        setInterval(() => {
+            console.log("실시간 상태 동기화 중...");
+            // 여기서 fetch로 실제 상태를 가져와 UI를 업데이트하는 로직을 넣습니다.
+        }, 5000);
+
+
+// ===================== 모든 버튼을 효율적으로 관리하는 '이벤트 위임' 방식 =================== //
+
+        // 1. 모든 버튼을 효율적으로 관리하는 '이벤트 위임' 방식
+        document.querySelector('.product-grid').addEventListener('click', function(e) {
+            const card = e.target.closest('.product-card');
+            if (!card) return;
+
+
+// ===================== 버튼 중복 클릭 방지 (디바운스 처리) ================================== //
+
+        // 2. 버튼 중복 클릭 방지 (디바운스 처리)
+            clearTimeout(this.timer);
+                this.timer = setTimeout(() => {
+                handleControl(card.querySelector('h4').innerText);
+                }, 300); // 0.3초 이내의 클릭은 무시
+        });
+
+
+// ===================== 시각적 피드백 함수 (실제 제어 로직과 연동) =========================== //
+
+        // 3. 시각적 피드백 함수
+        function handleControl(productName) {
+            console.log(productName + " 제어 시작...");
+            // 여기에 실제 제어 API나 Formspree 연결 로직을 넣습니다.
+            alert(productName + " 시스템에 연결 중입니다. 잠시만 기다려 주세요.");
+        }
+
+
+// ==================== Wi-Fi 제어 로직 (실제 기기 IP 주소로 명령 전달) ======================= //
+
+        // Wi-Fi 제어 로직
+        function toggleDevice(device, element) {
+            const isOn = element.checked;
+            const statusText = element.nextElementSibling.nextElementSibling;
+            const card = document.getElementById('card-' + device);
+            
+
+// ===================== 시각적 변화 (UI 피드백) 및 실제 신호 전송 =========================== //
+
+            // 1. 시각적 변화 (UI 피드백)
+            statusText.innerText = isOn ? "ON" : "OFF";
+            if(isOn) card.classList.add('on');
+            else card.classList.remove('on');
+
+
+// ===================== 실제 Wi-Fi 신호 전송 (PLC/컨트롤러라면 PLC IP 주소 필요) =========== //
+
+            // 2. Wi-Fi 신호 전송 (실제 기기 IP 주소로 명령 전달)
+            // 예: http://192.168.0.100/water/on 형식
+            const controllerIP = "192.168.0.100"; // 실제 기기의 IP 주소로 변경 필요
+            const command = isOn ? "on" : "off";
+            
+            console.log(`${device} 기기로 ${command} 신호를 보냅니다.`);
+
+            // fetch 기능을 사용해 실제 장비에 신호를 보냅니다 (PLC 또는 아두이노 서버)
+            /* fetch(`http://${controllerIP}/${device}/${command}`)
+                .then(response => console.log('신호 전송 성공'))
+                .catch(error => alert('장비 연결 확인이 필요합니다.')); 
+            */
+        }
+
+// ==================================================================================
+// ==================================================================================
+
+        // 알림음 이 작동되는 원리
+        // 현장 작동: 농장에서 누군가 수동 버튼을 누르거나, 센서가 물 부족을 감지해 급수를 시작한다.
+        // 상태 변경: 기계 내부의 상태값이 OFF에서 ON으로 바꾼다.
+        // 감지: 관리자의 폰에 있는 control.html이 3초마다 기계에 물어보다가 "어? 켜졌네?"라고 알아챈다.
+        // 반응: 관리자의 폰 화면 속 스위치가 자동으로 스르륵 ON으로 옮겨가며 
+        // 배경이 초록색으로 변하고, "딩동" 소리가 난다.
+
+
+        // 1. 알림 소리 파일 설정 (알림음 파일이 control.html과 같은 폴더에 있어야 합니다)
+        const alertSound = new Audio('alert.mp3'); 
+
+        // 2. 장비의 실제 상태를 체크하는 함수 (예: 3초마다 한 번씩 기계에 물어봄)
+        function checkDeviceStatus() {
+            const controllerIP = "192.168.0.100"; // 실제 장비 IP
+
+            // 실제로는 장비의 상태값을 가져오는 주소(API)를 여기에 입력한다.
+            fetch(`http://${controllerIP}/get_all_status`)
+            .then(response => response.json())
+            .then(data => {
+                // data 예시: { water: "on", irrigation: "off", ... }
+                updateUI('water', data.water);
+                updateUI('irrigation', data.irrigation);
+                updateUI('shield', data.shield);
+                // ... 다른 장비들도 반복
+            })
+            .catch(error => console.log("연결 확인 중..."));
+        }
+
+        // 3. 받은 데이터에 따라 화면을 강제로 바꾸는 함수
+        function updateUI(device, status) {
+            const checkbox = document.querySelector(`#card-${device} input`);
+            const isNowOn = (status === "on");
+
+            // 만약 현재 화면 상태와 실제 기계 상태가 다르다면? (외부 조작 발생!)
+            if (checkbox.checked !== isNowOn) {
+                checkbox.checked = isNowOn; // 스위치 위치 변경
+                toggleVisuals(device, isNowOn); // 색상 변경
+        
+                if (isNowOn) {
+                    alertSound.play(); // 켜졌을 때만 알림음 재생
+                    console.log(`${device}가 외부 요인에 의해 작동되었습니다!`);
+                }
+            }
+        }
+
+// =================================================================== //
+
+        // 5분마다 자동으로 기계 상태 확인 (폴링 방식)
+        setInterval(checkDeviceStatus, 30000);
+
+// ===============================================================================
+
+        /* 1. 사운드 설정: 장비 성격에 맞춰 다른 소리가 나게한다 */
+        const sounds = {
+            normal: new Audio('normal_alert.mp3'),  // 일반적인 작동 (급수, 관수 등)
+            warning: new Audio('warning_alert.mp3'), // 주의가 필요한 작동 (보호막, 농약 등)
+            safety: new Audio('safety_alert.mp3')    // 보안/감시 관련
+        };
+
+        /* 2. 상태 동기화 및 알림 로직 */
+        function updateUI(device, status) {
+            const checkbox = document.querySelector(`#card-${device} input`);
+            const isNowOn = (status === "on");
+
+            // 화면 상태와 실제 기계 상태가 다를 때 (외부 조작 발생!)
+            if (checkbox.checked !== isNowOn) {
+                checkbox.checked = isNowOn; 
+                toggleVisuals(device, isNowOn); // 배경색 변경 함수 호출
+
+                if (isNowOn) {
+        // 3. 장비별 맞춤 알림음 재생
+                    if (device === 'shield' || device === 'pesticide') {
+                        sounds.warning.play();
+                        showNotification(`⚠️ 경고: [${getDeviceName(device)}] 가 외부 조작으로 작동되었습니다!`);
+                    } else {
+                        sounds.normal.play();
+                        showNotification(`ℹ️ 알림: [${getDeviceName(device)}] 가 센서에 의해 가동되었습니다.`);
+                    }
+                } 
+
+                else {
+                    showNotification(`✅ 알림: [${getDeviceName(device)}] 가 정지되었습니다.`);
+                }
+            }
+        }
+
+        /* 4. 화면에 경고 팝업을 띄우는 함수 */
+        function showNotification(message) {
+            const notifyBox = document.createElement('div');
+            notifyBox.className = 'floating-notify';
+            notifyBox.innerText = message;
+            document.body.appendChild(notifyBox);
+
+            // 3초 후 자동으로 사라짐
+            setTimeout(() => {
+                notifyBox.style.opacity = '0';
+                setTimeout(() => notifyBox.remove(), 500);
+            }, 3000);
+        }
+
+// =================================================================== //
+
+        // 장비 영문명을 한글로 바꿔주는 도우미 함수
+        function getDeviceName(device) {
+            const names = { water: '급수', irrigation: '관수', shield: '보호막', pesticide: '농약', fertilizer: '액비' };
+            return names[device] || device;
+        }
+
+
+
+// =================== 비밀번호에 의한 보안 관리 ===================
+//
+//        // 1. 보안 설정 변수
+//        let isSecurityEnabled = true; // 비밀번호 사용 여부 (나중에 스위치로 조절 가능)
+//        const correctPassword = "1954"; // 사용자님의 탄생 연도로 설정해 보았습니다.
+//
+//        // 2. 제어 버튼 클릭 시 보안 체크
+//        function toggleDevice(device, element) {
+//            if (isSecurityEnabled) {
+//                const inputPw = prompt("비밀번호를 입력하세요:");
+//                if (inputPw !== correctPassword) {
+//                    alert("비밀번호가 틀렸습니다. 조작이 거부되었습니다.");
+//                    element.checked = !element.checked; // 스위치를 원래대로 돌림
+//                    return;
+//                }
+//            }
+//    
+//            // 비밀번호가 맞거나 보안이 꺼져있을 때만 실행
+//            executeCommand(device, element.checked);
+//        }
+//
+//        // 3. 실제 장비로 명령 전송 (HTTP 방식 예시)
+//        function executeCommand(device, isOn) {
+//            const controllerIP = "192.168.0.100";
+//            const status = isOn ? "1" : "0";
+//            
+//            // 실제 PLC의 쓰기 주소에 맞게 URL 구성
+//            // 예: http://192.168.0.100/api/write?name=P0000&value=1
+//            fetch(`http://${controllerIP}/api/write?name=${device}&value=${status}`)
+//                .then(res => console.log("전송 완료"))
+//                .catch(err => alert("기기 연결 실패! Wi-Fi 상태를 확인하세요."));
+//        }
+
+// =================================================================== //
+
+        // PLC로부터 모든 장비의 실시간 상태를 가져옴
+        async function syncWithPLC() {
+            try {
+                const response = await fetch("http://192.168.0.100/api/read_all");
+                const data = await response.json(); 
+                // 데이터 형식 예: { "P00": 1, "P01": 0, "P02": 1 ... }
+
+                updateSwitchUI('water', data.P00);
+                updateSwitchUI('irrigation', data.P01);
+                // ... 나머지 장비들
+            } catch (error) {
+                console.error("PLC와 연결할 수 없습니다.");
+            }
+        }
+
+        function updateSwitchUI(device, value) {
+            const checkbox = document.querySelector(`#card-${device} input`);
+            const isNowOn = (value === 1);
+            
+            if (checkbox.checked !== isNowOn) {
+                checkbox.checked = isNowOn;
+                // 외부 조작 시 소리 알림 로직은 그대로 유지
+                handleExternalChange(device, isNowOn); 
+            }
+        }
+
+        // 5분마다 자동 실행
+        setInterval(syncWithPLC, 30000);
+
+// =================================================================== //
+
+        // 비프 알림음 
+        <!--코드 동작 원리
+            1. setInterval: 이 명령어가 시계추처럼 일정 시간마다 코드를 실행한다. 
+               여기서는 0.5초마다 "삐삐" 소리를 내라고 명령한다.
+            2. count 변수: 소리가 몇 번 났는지 숫자를 센다. 1, 2, 3... 세다가 10이 되면 "이제 그만!"(clearInterval) 하고 멈춘다.
+            3. Oscillator: 실제 소리 파형을 만드는 장치다. frequency 숫자를 높이면 날카로운 소리가 나고, 낮추면 둔탁한 소리가 난다.
+            4. ExponentialRampToValueAtTime: 소리가 "삐!" 하고 갑자기 끊기면 거북하게 들린다. 
+               아주 짧은 시간(0.2초) 동안 소리를 부드럽게 줄여서 자연스러운 비프음을 만든다. --->
+
+        function playBeep10Times() {
+            // 1. 소리를 만드는 오디오 컨텍스트 생성
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            let count = 0;
+        
+            // 2. 반복 실행할 함수 (setInterval 사용)
+            const interval = setInterval(() => {
+                if (count >= 10) { // 10번 울리고 정지, (count >= 10)을 5로 바꾸면 5번 울리고 정지.
+                    clearInterval(interval);
+                    return;
+                }
+
+                // 비프음 한 번 생성 (삐삐 소리)
+                playShortBeep(audioCtx);
+                count++;
+            }, 500); // 0.5초 간격으로 반복 (속도를 조절하려면 이 숫자를 바꾼다.)
+        }
+
+// =================================================================== //
+
+        function playShortBeep(ctx) {
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+        
+            oscillator.type = 'sine'; // 소리 형태 (sine, square, triangle, sawtooth)
+            oscillator.frequency.setValueAtTime(880, ctx.currentTime); // 주파수(높낮이): 880Hz는 높은 '라' 소리
+
+            // 소리 크기 조절 (탁 끊기는 소리를 위해)
+            gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2); // 0.2초 동안 소리가 사라짐
+        
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+        
+            oscillator.start();
+            oscillator.stop(ctx.currentTime + 0.2); // 0.2초만 소리 냄
+        }
+
+
+// ===================== 화면을 왼쪽으로 밀면 스위치 패널로 이동 ========================== //
+
+        // 1. 터치 시작 지점과 끝 지점을 저장할 변수
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        // 2. 터치가 시작될 때 좌표 저장
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        // 3. 터치가 끝날 때 좌표 확인 및 이동 로직
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const swipeDistance = touchStartX - touchEndX; // 밀어낸 거리
+            const threshold = 100; // 최소 100픽셀 이상은 밀어야 작동하도록 설정
+
+            // 왼쪽으로 밀었을 때 (손가락이 오른쪽에서 왼쪽으로 이동)
+            if (swipeDistance > threshold) {
+                console.log("왼쪽으로 스와이프 감지: 스위치 패널로 이동합니다.");
+                window.location.href = "switch_panel.html"; // 실제 스위치 패널 페이지 주소로 변경하세요.
+            }
+        }
+
+    </script>
+
+</body>
+</html>

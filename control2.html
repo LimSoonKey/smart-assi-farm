@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>어시팜 스위치</title>
+
+    <style>
+        :root { 
+            --main-green: #d32f2f; 
+            --bg-light: #f1f8e9; 
+            --error-red: #d3d32f; 
+        }
+
+        body { 
+            font-family: sans-serif; 
+            background: var(--bg-light); 
+            margin: 0; 
+            padding: 15px; 
+            text-align: center; 
+        }
+
+        h2 { 
+            color: var(--main-green); 
+            margin-bottom: 20px; 
+            font-size: 1.6rem; 
+        }
+        
+        /* 화면이 스마트폰 사이즈에 자동으로 마춰지기 */
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px; 
+            max-width: 400px; /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
+            margin: 0 auto;
+        }
+
+/* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
+.control-card { 
+    background: rgb(188, 235, 181); /* 연한 녹색 배경 */
+    padding: 11px 10px; 
+    border-radius: 20px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+    border: 2px solid #4e7c3f;
+    transition: all 0.2s ease;
+    
+    /* 추가: 기본 글자색 (어두운 녹색 계열) */
+    color: #2e4d25; 
+}
+
+/* [켜짐 상태] .on 클래스가 추가되었을 때 */
+.control-card.on { 
+    border-color: var(--main-green); 
+    background-color: #32943a; /* 진한 녹색 배경 */
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.2); 
+
+    /* 핵심 추가: 배경이 진해지므로 글자색을 백색으로 변경 */
+    color: #ffffff !important; 
+}
+
+/* 추가 팁: 카드 내의 작은 설명글이나 아이콘이 있다면 함께 색상을 바꿔줍니다 */
+.control-card.on p, 
+.control-card.on span,
+.control-card.on label {
+    color: #ffffff;
+}
+
+        /* 카드 내부 레이아웃 */
+        .label { 
+            font-weight: bold; 
+            font-size: 1.4rem; 
+            text-decoration: none;
+            display: block; 
+            margin-bottom: 15px; 
+            color: #333; 
+        }
+
+        /* 스위치와 글자를 감싸는 컨테이너 */
+        .switch-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+
+        /* ON/OFF 글자 스타일 */
+        .status-label { 
+            font-size: 1rem; 
+            font-weight: 900; 
+            color: #4d9554; 
+        }
+
+        /* 스위치 상태에 따른 글자 색상 변화 */
+        input:not(:checked) ~ .off-label { color: var(--error-red); }
+        input:checked ~ .on-label { color: var(--main-green); }
+
+        /* 스위치 크기를 조금 더 키워 조작이 편하게 함 */
+        .switch { 
+            position: relative; 
+            display: inline-block; 
+            width: 85px; 
+            height: 40px; 
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider { 
+            position: absolute; 
+            cursor: pointer; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background-color: #8b8888; 
+            transition: .4s; 
+            border-radius: 34px; 
+        }
+
+        .slider:before { 
+            position: absolute; 
+            content: ""; 
+            height: 32px; 
+            width: 32px; 
+            left: 4px; 
+            bottom: 4px; 
+            background-color: white; 
+            transition: .4s; 
+            border-radius: 50%; 
+        }
+        
+        input:checked + .slider { background-color: var(--main-green); }
+        input:checked + .slider:before { transform: translateX(45px); } /* 스위치 왕복 거리 */
+
+        #status-bar { 
+            margin-top: 30px; 
+            font-weight: bold; 
+            color: #444; 
+            font-size: 1.1rem; 
+            height: 25px; 
+        }
+
+
+        /* =============== 농장 전환 버튼 ============== */
+        
+        .change-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px; 
+            max-width: 400px; /* 여기도 폭을 제한하면 폰 화면처럼 보입니다 */
+            margin: 0 auto;
+        }
+
+        /* 전환버튼을 감싸는 개별 바구니 */
+        .switch-card { 
+            background: rgb(160, 210, 235); 
+            border: 2px solid #628aaf !important;
+            border-radius: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            transition: all 0.2s ease;
+            cursor: pointer;
+            flex-direction: column !important;
+            overflow: hidden;           /* 넘치는 내용은 숨겨서 벌컥거림 방지 */
+
+            /* 핵심 정렬 코드 */
+            display: flex !important;           /* 정렬 모드 강제 활성화 */
+            justify-content: center !important;  /* 가로 중앙 */
+            align-items: center !important;      /* 세로 중앙 */
+    
+            /* 패딩은 0으로 만들고 높이로만 조절합니다 */
+            padding: 0 !important;  
+            margin: 0 !important;
+            height: 64px !important;    /* 85픽셀로 높이를 딱 고정합니다 */
+        }
+
+        /* 버튼 안의 링크 글자들도 정렬합니다 */
+        .switch-card a {
+            text-decoration: none;
+            line-height: 1;           /* 줄 간격을 고정하여 흔들림 방지 */
+        }
+
+        .switch-card .label {
+            /* 글자 자체에 숨어있는 여백을 제거합니다 */
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+            line-height: 1;                     /* 줄 간격 때문에 치우치는 현상 방지 */
+            font-weight: 700;
+        }
+
+        .timer-text {
+            font-size: 1.2rem;
+            color: #f8f8f5; /* 작동 중일 때 눈에 띄는 빨간색 */
+            margin-left: 10px;
+            font-weight: normal;
+        }
+
+        /* 잠금이 풀렸을 때 제목에 줄 효과 */
+        .unlocked-title {
+            color: #1a73e8 !important;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* 잠금 해제 시 버튼 색상 변화 */
+        .unlocked-btn {
+            background: #d32f2f !important;
+            color: white !important;
+            border-color: #d32f2f !important;
+        }
+
+        /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
+        body.unlocked .label {
+            cursor: pointer;
+            text-decoration: underline dotted #4e7c3f; /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
+        }
+
+        /* 주 전원은 빨간색이므로 강조 유지 */
+        #card-power .label {
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+
+
+<!-- ============================================================================ -->
+<!-- ============================================================================ -->
+
+<body>
+
+    <div style="background: white; 
+        border-radius: 20px; 
+        padding: 15px; 
+        margin-bottom: 10px; 
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+        max-width: 370px; 
+        margin-left: auto; 
+        margin-right: auto;">
+        
+        <h2 id="farm-title" onclick="editTitle()" style="margin-top:0;">유전리 농장<span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span></h2>
+    
+        <div style="display: flex; justify-content: space-around; font-size: 0.9rem; color: #555;">
+            <div>💧 수분: <span id="stat-moisture" style="font-weight:bold; color:#1a73e8;">--%</span></div>
+            <div>🧪 영양: <span id="stat-ec" style="font-weight:bold; color:#2e7d32;">--ms/cm</span></div>
+            <div>🌡️ 온도: <span id="stat-temp" style="font-weight:bold;">--°C</span></div>
+        </div>
+    </div>
+
+    <div class="control-grid">
+        <div class="control-card" id="card-water">
+            <span class="label" onclick="editItemLabel(this)">급 수</span>
+            <div class="switch-container">
+                <span class="status-label off-label">꺼짐</span>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleDevice('water', this, 0, IP_PRO_4PM)">
+                    <span class="slider"></span>
+                </label>
+                <span class="status-label on-label">켜짐</span>
+            </div>
+        </div>
+
+        <div class="control-card" id="card-irrigation">
+            <span class="label" onclick="editItemLabel(this)">관 수 <span id="timer-irrigation" class="timer-text"></span></span>
+            <div class="switch-container">
+                <span class="status-label off-label">꺼짐</span>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM)">
+                    <span class="slider"></span>
+                </label>
+                <span class="status-label on-label">켜짐</span>
+            </div>
+        </div>
+        
+        <div class="control-card" id="card-shield">
+            <span class="label" onclick="editItemLabel(this)">농 약 <span id="timer-shield" class="timer-text"></span></span>
+            <div class="switch-container">
+                <span class="status-label off-label">꺼짐</span>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
+                    <span class="slider"></span>
+                </label>
+                <span class="status-label on-label">켜짐</span>
+            </div>
+        </div>
+
+        <div class="control-card" id="card-pesticide">
+            <span class="label" onclick="editItemLabel(this)">액 비 <span id="timer-pesticide" class="timer-text"></span></span>
+            <div class="switch-container">
+                <span class="status-label off-label">꺼짐</span>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleDevice('pesticide', this, 3, IP_PRO_4PM)">
+                    <span class="slider"></span>
+                </label>
+                <span class="status-label on-label">켜짐</span>
+            </div>
+        </div>
+
+        <div class="control-card" id="card-fertilizer">
+            <span class="label" onclick="editItemLabel(this)">보호막</span>
+            <div class="switch-container">
+                <span class="status-label off-label">꺼짐</span>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleDevice('fertilizer', this, 0, IP_PLUS_1PM)">
+                    <span class="slider"></span>
+                </label>
+                <span class="status-label on-label">켜짐</span>
+            </div>
+        </div>
+
+        <div class="control-card" id="card-power">
+            <span class="label" style="color: #d32f2f;">주 전원</span>
+            <div class="switch-container">
+                <span class="status-label off-label">꺼짐</span>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleDevice('power', this, 0, IP_PLUS_1PM)">
+                    <span class="slider"></span>
+                </label>
+                <span class="status-label on-label">켜짐</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="status-bar">명령을 기다리는 중입니다. </div><br>
+
+    <div id="lock-status-container" style="margin-bottom: 20px;">
+        <button id="lock-btn" onmousedown="startLongPress()" onmouseup="endLongPress()" ontouchstart="startLongPress()" ontouchend="endLongPress()"
+            style="padding: 10px 20px; border-radius: 30px; border: 2px solid #555; background: #eee; cursor: pointer; transition: 0.3s;">
+            <span id="lock-icon">🔒</span> <span id="lock-text">농장명, 스위치명 수정 (3초간 꾹 누르세요)</span>
+        </button>
+    </div>
+        
+    <div class="change-grid">
+        <div class="switch-card" id="card-A">
+            <a href="control2.html" class="label" style="color: #17586f;">유전리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-B">
+            <a href="control3.html" class="label" style="color: #17586f;">백신리 농장</a>
+        </div>
+        
+        <div class="switch-card" id="card-C">
+            <a href="control4.html" class="label" style="color: #17586f;">안심리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-D">
+            <a href="control5.html"  class="label" style="color: #17586f;">옹암리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-E">
+            <a href="control6.html" class="label" style="color: #17586f;">산법리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-F">
+            <a href="control7.html" class="label" style="color: #17586f;">단촌리 농장</a>
+        </div>
+
+    </div>
+
+    
+    <script>
+        // 실제 설치 시 Shelly 기기의 IP로 수정할 것.
+        const IP_PRO_4PM = "192.168.0.51"; // 관수, 농약, 액비 등이 연결된 4채널 기기 IP
+        const IP_PLUS_1PM = "192.168.0.55"; // 보호막이나 주 전원이 연결된 1채널 기기 IP
+
+        // 알림음 설정 (성공: 띵동, 실패: 삐익)
+        const successAudio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+        const errorAudio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock_short.ogg");
+        let intervals = {}; // 각 타이머를 저장할 바구니
+
+        async function toggleDevice(device, element, channel, ip) {
+            const isOn = element.checked;
+
+            // [추가] 주 전원 안전장치 로직
+            if (device === 'power') {
+                const action = isOn ? "켜시겠습니까?" : "끄시겠습니까? 모든 기능이 중단될 수 있습니다.";
+                const confirmed = confirm(`[주 전원 설정] 정말 전원을 ${action}`);
+        
+                if (!confirmed) {
+                    element.checked = !isOn; // 취소를 누르면 스위치를 원래대로 돌립니다.
+                    return; // 함수 종료 (명령을 보내지 않음)
+                }
+            }
+
+            const statusText = document.getElementById('status-bar');
+            const card = document.getElementById(`card-${device}`);
+            const timerDisplay = document.getElementById(`timer-${device}`);
+
+            // [변경] 스위치를 켜자마자 일단 타이머와 화면 색상을 먼저 바꿉니다.
+            if (isOn) {
+                card.classList.add('on');
+                if (timerDisplay) {
+                    let seconds = 0;
+                    timerDisplay.innerText = " (00:00)";
+
+                    // 기존에 돌던 타이머가 있다면 끄고 새로 시작
+                    if(intervals[device]) clearInterval(intervals[device]); 
+                    intervals[device] = setInterval(() => {
+                        seconds++;
+                        let min = String(Math.floor(seconds / 60)).padStart(2, '0');
+                        let sec = String(seconds % 60).padStart(2, '0');
+                        timerDisplay.innerText = ` (${min}:${sec})`;
+                    }, 1000);
+                }
+            } else {
+                card.classList.remove('on');
+                if (timerDisplay) {
+                    clearInterval(intervals[device]);
+                    timerDisplay.innerText = "";
+                }
+            }
+
+            // 그 다음 실제로 기기에 명령을 보낸다.
+            statusText.innerText = `${device} 작동 명령을 보냅니다...`;
+            const url = `http://${ip}/rpc/Switch.Set?id=${channel}&on=${isOn}`;
+
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    successAudio.play();
+                    statusText.innerText = `✅ ${device} ${isOn ? '켜짐' : '꺼짐'} 완료`;
+                } else { throw new Error(); }
+            } catch (error) {
+                // 만약 기기 연결에 실패하면? 켰던 타이머를 다시 끄고 스위치도 되돌립니다.
+                errorAudio.play();
+                statusText.innerText = `❌ ${device} 연결 실패 (연결 상태 확인)`;
+                element.checked = !isOn; 
+                card.classList.remove('on');
+                if (timerDisplay) {
+                    clearInterval(intervals[device]);
+                    timerDisplay.innerText = "";
+                }
+            }
+        }
+
+
+        // 스위치(체크박스)의 상태가 변할 때 카드의 색상을 바꿉니다.
+        function toggleCardColor(checkbox, cardId) {
+            const card = document.getElementById(cardId);
+            if (checkbox.checked) {
+                card.classList.add('on'); // CSS의 .on 스타일 적용 (배경 진하게, 글자 흰색)
+            } else {
+                card.classList.remove('on'); // 기본 스타일로 복구
+            }
+        }
+
+
+        // 농장 이름 수정 로직 ============================================================
+
+        let pressTimer;
+        let isUnlocked = false;
+
+        // 1. 3초 꾹 누르기 로직
+        function startLongPress() {
+            pressTimer = setTimeout(() => {
+                toggleLock(); // 3초 지나면 잠금 해제
+            }, 3000);
+        }
+
+        function endLongPress() {
+            clearTimeout(pressTimer);
+        }
+
+        // 2. 잠금/해제 전환 함수
+        function toggleLock() {
+            isUnlocked = !isUnlocked;
+            const btn = document.getElementById('lock-btn');
+            const icon = document.getElementById('lock-icon');
+            const text = document.getElementById('lock-text');
+            const editIcon = document.getElementById('edit-icon');
+            const title = document.getElementById('farm-title');
+
+            if (isUnlocked) {
+                btn.classList.add('unlocked-btn');
+                icon.innerText = "🔓";
+                text.innerText = "설정 가능 (이름을 눌러 수정하세요)";
+                editIcon.style.display = "inline";
+                title.classList.add('unlocked-title');
+                if (window.navigator.vibrate) window.navigator.vibrate(100); // 진동 피드백
+            } else {
+                btn.classList.remove('unlocked-btn');
+                icon.innerText = "🔒";
+                text.innerText = "농장이름 수정 (3초간 꾹 누르세요)";
+                editIcon.style.display = "none";
+                title.classList.remove('unlocked-title');
+            }
+        }
+
+        // 3. 이름 수정 및 자동 잠금 기능
+        function editTitle() {
+            if (!isUnlocked) return; 
+        
+            const titleElement = document.getElementById('farm-title');
+
+            // ✏️ 아이콘 제외하고 이름만 가져오기
+            const currentName = titleElement.childNodes[0].textContent.trim();
+            const newName = prompt("새로운 농장 이름을 입력하세요:", currentName);
+    
+            // 확인을 눌렀고 내용이 있는 경우
+            if (newName !== null && newName.trim() !== "") {
+                const finalName = newName.trim();
+        
+                // 상단 제목 업데이트
+                titleElement.innerHTML = `${finalName} <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>`;
+        
+                // 하단 전환 버튼 이름도 동시에 업데이트
+                updateBottomButton(finalName);
+        
+                // 스마트폰 브라우저에 저장
+                localStorage.setItem(window.location.pathname, finalName);
+            }
+
+            // [핵심] 확인을 누르든 취소를 누르든 무조건 다시 잠금 상태로 회복
+            forceLock();
+        }
+
+
+        // =====================================================================================
+
+        // 항목 이름을 수정하는 함수
+        function editItemLabel(element) {
+
+            // 1. 현재 잠금 상태인지 확인 (잠겨있으면 수정 불가)
+            // 사장님의 코드에서 잠금해제 여부를 판단하는 변수명을 확인하라.
+            if (typeof isLocked !== 'undefined' && isLocked) {
+                console.log("잠금 상태입니다. 3초간 꾹 눌러 잠금을 해제하세요.");
+                return; 
+            }
+
+            // 2. 현재 이름 가져오기 (타이머 글자는 제외하고 순수 이름만 추출)
+            // 타이머 <span>이 있으면 그 앞의 텍스트만 가져옵니다.
+            let currentName = element.childNodes[0].textContent.trim();
+    
+            // 3. 사용자에게 새 이름 입력 받기
+            let newName = prompt("변경할 항목 이름을 입력하세요:", currentName);
+    
+            // 4. 입력값이 있고 취소하지 않았을 때만 변경
+            if (newName !== null && newName.trim() !== "") {
+                // 첫 번째 텍스트 노드(항목 이름)만 변경하여 타이머 기능은 살려둠.
+                element.childNodes[0].textContent = newName + " "; 
+                
+                // 5. 브라우저에 저장 (새로고침해도 유지되도록)
+                // 이 부분은 사장님의 로컬스토리지 저장 함수와 연결하면 좋다.
+                saveLabelsToLocalStorage(); 
+            }
+        }
+
+        // =====================================================================================
+
+        // 1. 센서 데이터를 화면에 뿌려주는 함수 (나중에 ESP32에서 데이터를 받아오면 이 함수를 호출하라)
+        function updateSensorDisplay(moisture, ec, temp) {
+            document.getElementById('stat-moisture').innerText = moisture + "%";
+            document.getElementById('stat-ec').innerText = ec + "ms/cm";
+            document.getElementById('stat-temp').innerText = temp + "°C";
+
+            // 하단 전환 버튼에도 현재 수분 상태를 작게 표시해준다.
+            const activeCardId = getActiveCardId();
+            const subLabel = document.querySelector(`#${activeCardId} .sub-status`);
+            if (subLabel) {
+                subLabel.innerText = `(수분: ${moisture}%)`;
+            }
+        }
+
+        // 1. 하단 버튼 이름을 업데이트하는 함수 (수정됨)
+        function updateBottomButton(name) {
+            // 모든 농장 버튼을 다 뒤지는 게 아니라, '현재 페이지'의 버튼만 정확히 찾아냅니다.
+            const activeCardId = getActiveCardId(); 
+    
+            // 현재 페이지가 control2.html이면 card-A의 글자만 바꿉니다.
+            const targetCard = document.getElementById(activeCardId);
+            if (targetCard) {
+                const targetLink = targetCard.querySelector('a');
+                if (targetLink) {
+                    // 이름과 수분 상태를 함께 업데이트
+                    const moisture = document.getElementById('stat-moisture').innerText.replace('%', '');
+                    targetLink.innerHTML = `${name} <br><span class="sub-status" style="font-size: 0.7rem; font-weight: normal; color: #000;">(수분: ${moisture}%)</span>`;
+                }
+            }
+        }
+
+        // 모든 하단 버튼의 이름과 수분을 한꺼번에 업데이트하는 함수
+        function updateAllBottomButtons() {
+            const farms = [
+                { id: 'card-A', path: 'control2.html', defaultName: '유전리 농장' },
+                { id: 'card-B', path: 'control3.html', defaultName: '백신리 농장' },
+                { id: 'card-C', path: 'control4.html', defaultName: '안심리 농장' },
+                { id: 'card-D', path: 'control5.html', defaultName: '옹암리 농장' },
+                { id: 'card-E', path: 'control6.html', defaultName: '산법리 농장' },
+                { id: 'card-F', path: 'control7.html', defaultName: '단촌리 농장' }
+            ];
+
+            farms.forEach(farm => {
+                const targetCard = document.getElementById(farm.id);
+                if (targetCard) {
+                    const targetLink = targetCard.querySelector('a');
+                    if (targetLink) {
+                        // 1. 저장된 이름 불러오기 (없으면 기본이름)
+                        const savedName = localStorage.getItem(farm.path) || farm.defaultName;
+                        
+                        // 2. 저장된 수분 데이터 불러오기 (나중에 센서값이 저장되게 설정할 수 있습니다)
+                        // 지금은 테스트용으로 현재 페이지 수치를 쓰거나, "로딩중"으로 표시합니다.
+                        const moisture = (farm.path === window.location.pathname) 
+                                         ? document.getElementById('stat-moisture').innerText.replace('%', '') 
+                                         : "--"; 
+        
+                        targetLink.innerHTML = `${savedName} <br><span class="sub-status" style="font-size: 1rem; font-weight: normal; color: #000;">(수분: ${moisture}%)</span>`;
+                    }
+                }
+            });
+        }
+
+
+        // 2. 현재 파일 이름에 맞춰서 어떤 버튼을 바꿀지 결정하는 '열쇠' (매우 중요)
+        function getActiveCardId() {
+            const path = window.location.pathname;
+            
+            // 파일 이름에 숫자가 포함되어 있는지 확인하여 해당 카드를 선택합니다.
+            if (path.includes('control2')) return 'card-A'; // 유전리
+            if (path.includes('control3')) return 'card-B'; // 백신리
+            if (path.includes('control4')) return 'card-C'; // 안심리
+            if (path.includes('control5')) return 'card-D'; // 옹암리
+            if (path.includes('control6')) return 'card-E'; // 산법리
+            if (path.includes('control7')) return 'card-F'; // 단촌리
+    
+            return 'card-A'; // 기본값
+        }
+
+        // 4. 무조건 잠금 상태로 되돌리는 함수
+        function forceLock() {
+            isUnlocked = false;
+            const btn = document.getElementById('lock-btn');
+            const icon = document.getElementById('lock-icon');
+            const text = document.getElementById('lock-text');
+            const editIcon = document.getElementById('edit-icon');
+            const title = document.getElementById('farm-title');
+
+            btn.classList.remove('unlocked-btn');
+            icon.innerText = "🔒";
+            text.innerText = "농장이름 수정 (3초간 꾹 누르세요)";
+            editIcon.style.display = "none";
+            title.classList.remove('unlocked-title');
+        }
+
+        // 5. 페이지 열릴 때 이름 불러오기 (각 농장별 기본 이름 설정)
+        window.onload = function() {
+            const path = window.location.pathname;
+            const savedName = localStorage.getItem(path);
+    
+            let defaultName = "유전리 농장";
+            if (path.includes('control3')) defaultName = "백신리 농장";
+            if (path.includes('control4')) defaultName = "안심리 농장";
+            if (path.includes('control5')) defaultName = "옹암리 농장";
+            if (path.includes('control6')) defaultName = "산법리 농장";
+            if (path.includes('control7')) defaultName = "단촌리 농장";
+
+            const farmName = savedName || defaultName;
+            document.getElementById('farm-title').innerHTML = `${farmName} <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>`;
+            
+            // [수정] 내 버튼만 바꾸는 게 아니라 전체 버튼을 다 업데이트합니다. 
+            updateAllBottomButtons();
+            
+            updateSensorDisplay(32, 1.2, 24); // 테스트 데이터
+        };
+
+        // [추가] 30초마다 센서 데이터를 가져오는 엔진
+        setInterval(function() {
+            fetchSensorData(); 
+        }, 300000); // 300,000ms = 5분
+
+        async function fetchSensorData() {
+            // 실제 센서가 연결된 ESP32의 IP 주소 (예: 192.168.0.60)
+            const sensorIp = "192.168.0.60"; 
+            const url = `http://${sensorIp}/get_sensor_data`; // ESP32가 데이터를 보내주는 주소
+
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const data = await response.json(); // 기기에서 받아온 데이터 (습도, 온도 등)
+                    // 받아온 실제 값으로 화면 업데이트
+                    updateSensorDisplay(data.moisture, data.ec, data.temp);
+                }
+            } catch (error) {
+                console.log("센서 데이터를 가져오는 데 실패했습니다.");
+            }
+        }
+
+        // [추가] 오른쪽 스와이프 시 홈페이지 이동 로직
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        // 터치 시작 지점 저장
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        // 터치 종료 시 계산
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            // 오른쪽으로 100픽셀 이상 밀었을 때
+            if (touchEndX - touchStartX > 100) {
+                // [주의] 스위치를 조작하는 중에는 이동하지 않도록 방어 로직을 넣는 것이 좋습니다.
+                window.location.href = "index.html"; 
+            }
+        }
+
+
+    </script>
+</body>
+</html>

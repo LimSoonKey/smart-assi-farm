@@ -739,7 +739,7 @@
                 background-size: cover !important;                 /* 모바일 화면에서는 배경 이미지가 너무 커지지 않도록 조절 */
                 background-position: center !important;  
                 background-repeat: no-repeat !important;                 
-                background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                background-image: 
                     url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920'); /* 실제 농장 이미지로 교체 가능 */
                 display: flex !important;
                 flex-direction: column !important;                 /* 위에서 아래로 순서대로 배치 */
@@ -772,26 +772,26 @@
 
             /* SMART ASSI-FARM 글자 크기 및 위치 */
             .media-top-center-title {
-                font-size: 2.2rem !important;                      /* px 대신 rem을 써서 적정 크기 유지 */
+                font-size: 2.2rem !important;               /* px 대신 rem을 써서 적정 크기 유지 */
                 font-weight: 900;
-                word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
-                letter-spacing: 1px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
+                word-break: keep-all;                       /* 단어가 중간에 잘리지 않게 보호 */
+                letter-spacing: 1px !important;             /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
 
-                position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
-                display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+                position: absolute !important;              /* absolute를 지우고 순서대로 배치 */
+                display: block !important;                  /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
 
-                top: 5.5rem !important;                              /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
-                margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
-                padding:  0px !important;                          /* 불필요한 패딩 제거 */
+                top: 3.2rem !important;                     /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
+                margin-bottom: 0px !important;              /* 아래쪽 문구와의 간격 */
+                padding:  0px !important;                   /* 불필요한 패딩 제거 */
 
-                left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
-                transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
+                left: 50% !important;                       /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+                transform: translateX(-50%) !important;     /* 정확한 중앙 정렬을 위한 보정 */
 
-                width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
-                text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
+                width: 100% !important;                     /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                text-align: center !important;              /* 모바일에서는 중앙 정렬 */
                 line-height: 1.2 !important;
                 text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
-                z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+                z-index: 10;                                /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
             }
 
 
@@ -808,7 +808,7 @@
                 position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
 
-                top: 16rem !important;                             /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
+                top: 12rem !important;                             /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
                 margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
                 padding:  0px !important;                          /* 불필요한 패딩 제거 */
 
@@ -844,7 +844,7 @@
                 position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
 
-                top: 16rem !important;                             /* 숫자가 커질 수록 글자가 내려감 */
+                top: 10rem !important;                             /* 숫자가 커질 수록 글자가 내려감 */
                 margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
                 padding: 0px !important;                           /* 불필요한 패딩 제거 */
 
@@ -878,7 +878,7 @@
                 position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
 
-                top: 22rem !important;                             /* 숫자가 커질 수록 글자가 내려감 */
+                top: 15rem !important;                             /* 숫자가 커질 수록 글자가 내려감 */
                 margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
                 padding: clamp(0px, 0.1vw, 3px) !important;        /* 불필요한 패딩 제거 */
 
@@ -916,7 +916,7 @@
                 position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
 
-                top: 29rem !important;                             /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
+                top: 21rem !important;                             /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
                 margin: 1.2rem auto !important;                    /* 중앙정렬 */
                 margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
                 padding: 0px !important;                           /* 불필요한 패딩 제거 */
@@ -924,12 +924,11 @@
                 left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
                 transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
 
-                width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
                 text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
                 text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
                 z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
 
-                width: 17rem !important;                           /* 사진 크기 */
+                width: 12rem !important;                           /* 사진 크기 */
                 background: none !important;                       /* 배경을 살짝 더 선명하게 */
                 backdrop-filter: none !important;
                 border: none !important;                           /* 위쪽에 투명한 여백 추가 */
@@ -952,16 +951,13 @@
                 position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
 
-                top: 42rem !important;  
+                top: 29rem !important;  
                 margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
                 padding:  0px !important;                          /* 불필요한 패딩 제거 */
                 padding-top: -50px !important;
 
-                left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
-                transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
-
                 width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
-                text-align: center / 100% 100% !important;         /* 모바일에서는 중앙 정렬 */
+                text-align: center / 100% 100% !important;         /* 버튼이 모바일에서는 중앙 정렬 */
                 line-height: clamp(1.1, 1.2vw, 1.4) !important;
                 text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
                 z-index: 1000;                                     /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
@@ -972,7 +968,7 @@
             /* 무료 상담신청 버튼 */
             .media-btn-consult {
                 display: inline-block;                             /* 내용만큼만 길어짐 */
-                width: 8rem !important;                            /* 화면의 80%만 차지 (수정 안 될 때 !important 사용) */
+                width: 7rem !important;                            /* 화면의 80%만 차지 (수정 안 될 때 !important 사용) */
                 height: 1.9rem;
                 padding: 12px 20px !important;                     /* 위아래 두께(높이) 유지 */
                 align-items: center;                               /* 글자가 버튼 세로 중앙에 있도록 */
@@ -1004,8 +1000,8 @@
                 position: fixed !important;
 
                 /* 위치 조정 */
-                top: 50.5rem !important;  
-                right: 1rem !important;                            /* 버튼을 오른쪽에 치우치게 */
+                top: 33.5rem !important;  
+                right: 0.5rem !important;                            /* 버튼을 오른쪽에 치우치게 */
 
                 /* 버튼 모양 및 크기 */
                 height: 2.8rem !important;                         /* 높이를 고정값으로 주어야 터치하기 편함 */

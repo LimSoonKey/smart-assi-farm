@@ -7,7 +7,7 @@
 
     <style>
         :root { 
-            --main-green: #d32f2f; 
+            --main-green: #FF1744; 
             --bg-light: #f1f8e9; 
             --error-red: #d3d32f; 
         }
@@ -37,7 +37,7 @@
 
 /* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
 .control-card { 
-    background: rgb(188, 235, 181); /* 연한 녹색 배경 */
+    background: rgb(203, 248, 197); /* 연한 녹색 배경 */
     padding: 8px 10px; 
     border-radius: 20px; 
     box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
@@ -203,9 +203,9 @@
 
         /* 잠금 해제 시 버튼 색상 변화 */
         .unlocked-btn {
-            background: #d32f2f !important;
+            background: #FF1744 !important;
             color: white !important;
-            border-color: #d32f2f !important;
+            border-color: #FF1744 !important;
         }
 
         /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
@@ -230,7 +230,7 @@
 
     <div style="background: white; 
         border-radius: 20px; 
-        padding: 15px; 
+        padding: 5px !important; 
         margin-bottom: 10px; 
         box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
         max-width: 370px; 
@@ -239,7 +239,7 @@
         
         <h2 id="farm-title" onclick="editTitle()" style="margin-top:0;">유전리 농장<span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span></h2>
     
-        <div style="display: flex; justify-content: space-around; font-size: 0.9rem; color: #555;">
+        <div style="display: flex; justify-content: space-around; font-size: 1rem; color: #555;">
             <div>💧 수분: <span id="stat-moisture" style="font-weight:bold; color:#1a73e8;">--%</span></div>
             <div>🧪 영양: <span id="stat-ec" style="font-weight:bold; color:#2e7d32;">--ms/cm</span></div>
             <div>🌡️ 온도: <span id="stat-temp" style="font-weight:bold;">--°C</span></div>

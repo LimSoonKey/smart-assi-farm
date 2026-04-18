@@ -7,7 +7,7 @@
 
     <style>
         :root { 
-            --main-green: #d32f2f; 
+            --main-green: #FF1744; 
             --bg-light: #f1f8e9; 
             --error-red: #d3d32f; 
         }
@@ -23,7 +23,7 @@
         h2 { 
             color: var(--main-green); 
             margin-bottom: 20px; 
-            font-size: 1.6rem; 
+            font-size: 1.8rem; 
         }
         
         /* 화면이 스마트폰 사이즈에 자동으로 마춰지기 */
@@ -35,41 +35,43 @@
             margin: 0 auto;
         }
 
-/* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
-.control-card { 
-    background: rgb(188, 235, 181); /* 연한 녹색 배경 */
-    padding: 11px 10px; 
-    border-radius: 20px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-    border: 2px solid #4e7c3f;
-    transition: all 0.2s ease;
-    
-    /* 추가: 기본 글자색 (어두운 녹색 계열) */
-    color: #2e4d25; 
-}
+        /* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
+        .control-card { 
+            background: #ccf9d0; /* 연한 녹색 배경 */
+            padding: 13px 10px; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            border: 2px solid #4e7c3f;
+            transition: all 0.2s ease;
+            
+            /* 추가: 기본 글자색 (어두운 녹색 계열) */
+            color: #2e4d25; 
+        }
 
-/* [켜짐 상태] .on 클래스가 추가되었을 때 */
-.control-card.on { 
-    border-color: var(--main-green); 
-    background-color: #32943a; /* 진한 녹색 배경 */
-    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.2); 
+        /* [켜짐 상태] .on 클래스가 추가되었을 때 */
+        .control-card.on { 
+            border-color: var(--main-green); 
+            background-color: #32943a; /* 진한 녹색 배경 */
+            box-shadow: 0 4px 15px #246927; 
 
-    /* 핵심 추가: 배경이 진해지므로 글자색을 백색으로 변경 */
-    color: #ffffff !important; 
-}
+            /* 핵심 추가: 배경이 진해지므로 글자색을 백색으로 변경 */
+            color: #ffffff !important; 
+        }
 
-/* 추가 팁: 카드 내의 작은 설명글이나 아이콘이 있다면 함께 색상을 바꿔줍니다 */
-.control-card.on p, 
-.control-card.on span,
-.control-card.on label {
-    color: #ffffff;
-}
+        /* 추가 팁: 카드 내의 작은 설명글이나 아이콘이 있다면 함께 색상을 바꿔줍니다 */
+        .control-card.on p, 
+        .control-card.on span,
+        .control-card.on label {
+            color: #ffffff;
+        }
 
         /* 카드 내부 레이아웃 */
         .label { 
             font-weight: bold; 
             font-size: 1.4rem; 
+            padding: 10px;
             text-decoration: none;
+            line-height: 2px;
             display: block; 
             margin-bottom: 15px; 
             color: #333; 
@@ -102,13 +104,19 @@
             height: 40px; 
         }
 
-        .switch input { opacity: 0; width: 0; height: 0; }
+        .switch input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+        }
 
         .slider { 
             position: absolute; 
             cursor: pointer; 
             top: 0; 
-            left: 0; 
+            text-align: center !important;
+            width: 80px;
+            left: 0px; 
             right: 0; 
             bottom: 0; 
             background-color: #8b8888; 
@@ -121,7 +129,7 @@
             content: ""; 
             height: 32px; 
             width: 32px; 
-            left: 4px; 
+            left: 2px; 
             bottom: 4px; 
             background-color: white; 
             transition: .4s; 
@@ -145,14 +153,14 @@
         .change-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px; 
+            gap: 15px; 
             max-width: 400px; /* 여기도 폭을 제한하면 폰 화면처럼 보입니다 */
             margin: 0 auto;
         }
 
         /* 전환버튼을 감싸는 개별 바구니 */
         .switch-card { 
-            background: rgb(160, 210, 235); 
+            background: rgb(180, 228, 252); 
             border: 2px solid #628aaf !important;
             border-radius: 20px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
@@ -203,9 +211,9 @@
 
         /* 잠금 해제 시 버튼 색상 변화 */
         .unlocked-btn {
-            background: #d32f2f !important;
+            background: #FF1744 !important;
             color: white !important;
-            border-color: #d32f2f !important;
+            border-color: #FF1744 !important;
         }
 
         /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
@@ -230,7 +238,7 @@
 
     <div style="background: white; 
         border-radius: 20px; 
-        padding: 15px; 
+        padding: 5px !important; 
         margin-bottom: 10px; 
         box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
         max-width: 370px; 
@@ -239,7 +247,7 @@
         
         <h2 id="farm-title" onclick="editTitle()" style="margin-top:0;">백신리 농장<span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span></h2>
     
-        <div style="display: flex; justify-content: space-around; font-size: 0.9rem; color: #555;">
+        <div style="display: flex; justify-content: space-around; font-size: 1rem; color: #555;">
             <div>💧 수분: <span id="stat-moisture" style="font-weight:bold; color:#1a73e8;">--%</span></div>
             <div>🧪 영양: <span id="stat-ec" style="font-weight:bold; color:#2e7d32;">--ms/cm</span></div>
             <div>🌡️ 온도: <span id="stat-temp" style="font-weight:bold;">--°C</span></div>
@@ -332,27 +340,27 @@
         
     <div class="change-grid">
         <div class="switch-card" id="card-A">
-            <a href="control2.html" class="label" style="color: #17586f;">유전리 농장</a>
+            <a href="control2.html" class="label" style="color: #101111;">유전리 농장</a>
         </div>
 
         <div class="switch-card" id="card-B">
-            <a href="control3.html" class="label" style="color: #17586f;">백신리 농장</a>
+            <a href="control3.html" class="label" style="color: #101111;">백신리 농장</a>
         </div>
         
         <div class="switch-card" id="card-C">
-            <a href="control4.html" class="label" style="color: #17586f;">안심리 농장</a>
+            <a href="control4.html" class="label" style="color: #101111;">안심리 농장</a>
         </div>
 
         <div class="switch-card" id="card-D">
-            <a href="control5.html"  class="label" style="color: #17586f;">옹암리 농장</a>
+            <a href="control5.html" class="label" style="color: #101111;">옹암리 농장</a>
         </div>
 
         <div class="switch-card" id="card-E">
-            <a href="control6.html" class="label" style="color: #17586f;">산법리 농장</a>
+            <a href="control6.html" class="label" style="color: #101111;">산법리 농장</a>
         </div>
 
         <div class="switch-card" id="card-F">
-            <a href="control7.html" class="label" style="color: #17586f;">단촌리 농장</a>
+            <a href="control7.html" class="label" style="color: #101111;">단촌리 농장</a>
         </div>
 
     </div>
@@ -445,6 +453,7 @@
         }
 
 
+
         // 농장 이름 수정 로직 ============================================================
 
         let pressTimer;
@@ -480,7 +489,7 @@
             } else {
                 btn.classList.remove('unlocked-btn');
                 icon.innerText = "🔒";
-                text.innerText = "농장이름 수정 (3초간 꾹 누르세요)";
+                text.innerText = "농장명, 스위치명 수정 (3초간 꾹 누르세요)";
                 editIcon.style.display = "none";
                 title.classList.remove('unlocked-title');
             }
@@ -514,36 +523,38 @@
             forceLock();
         }
 
-
-        // =====================================================================================
-
-        // 항목 이름을 수정하는 함수
+        // [수정 완료된 스위치 이름 변경 함수]
         function editItemLabel(element) {
-
-            // 1. 현재 잠금 상태인지 확인 (잠겨있으면 수정 불가)
-            // 사장님의 코드에서 잠금해제 여부를 판단하는 변수명을 확인하라.
-            if (typeof isLocked !== 'undefined' && isLocked) {
-                console.log("잠금 상태입니다. 3초간 꾹 눌러 잠금을 해제하세요.");
+            // 1. 잠금 상태 확인 (상단에 선언된 isUnlocked 변수를 확인합니다)
+            if (!isUnlocked) { 
+                // alert("🔒 현재 잠금 상태입니다. 하단 버튼을 3초간 꾹 눌러주세요.");
                 return; 
             }
 
-            // 2. 현재 이름 가져오기 (타이머 글자는 제외하고 순수 이름만 추출)
-            // 타이머 <span>이 있으면 그 앞의 텍스트만 가져옵니다.
+            // 2. 현재 이름 가져오기
             let currentName = element.childNodes[0].textContent.trim();
-    
+            
             // 3. 사용자에게 새 이름 입력 받기
-            let newName = prompt("변경할 항목 이름을 입력하세요:", currentName);
-    
-            // 4. 입력값이 있고 취소하지 않았을 때만 변경
+            let newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
+            
+            // 4. 입력값이 있을 때만 변경
             if (newName !== null && newName.trim() !== "") {
-                // 첫 번째 텍스트 노드(항목 이름)만 변경하여 타이머 기능은 살려둠.
-                element.childNodes[0].textContent = newName + " "; 
+                element.childNodes[0].textContent = newName + " ";
                 
-                // 5. 브라우저에 저장 (새로고침해도 유지되도록)
-                // 이 부분은 사장님의 로컬스토리지 저장 함수와 연결하면 좋다.
-                saveLabelsToLocalStorage(); 
+                // 브라우저에 저장하는 함수가 있다면 호출
+                if (typeof saveLabelsToLocalStorage === 'function') {
+                    saveLabelsToLocalStorage();
+                }
             }
-        }
+
+            // 5. 수정 후에는 안전하게 다시 잠금 (농장명 수정과 동일한 방식)
+            if (typeof toggleLock === 'function') {
+                toggleLock(); 
+            } else {
+                isUnlocked = false;
+            }
+        }        
+
 
         // =====================================================================================
 
@@ -636,7 +647,7 @@
 
             btn.classList.remove('unlocked-btn');
             icon.innerText = "🔒";
-            text.innerText = "농장이름 수정 (3초간 꾹 누르세요)";
+            text.innerText = "농장명, 스위치명 수정 (3초간 꾹 누르세요)";
             editIcon.style.display = "none";
             title.classList.remove('unlocked-title');
         }

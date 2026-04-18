@@ -705,7 +705,8 @@
 
 
 /* ============================================================================ */
-            /* [여기에 새로 드린 나가기 버튼 CSS를 붙여넣으세요] */
+            /* 나가기 버튼 */
+
             .exit-button-wrapper {
                 position: fixed;
                 top: 8px;
@@ -802,7 +803,7 @@
                 font-weight: 900;                                  /* 아주 두껍게 */
                 word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
                 letter-spacing: 2px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
-                color: #a7f758;                                  /* 수익 강조를 위한 노란색 계열 */
+                color: #b6f710;                                  
 
                 position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
@@ -818,14 +819,16 @@
                 text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
                 line-height: 1.2 !important;
                 z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+                text-shadow: 0px 0px 5px rgba(0,0,0,8); 
             }
 
             /* [스타일 블럭] "극대", "극소"만 특별 강조 */
             .media-point {
-                color: hsl(60, 96%, 50%) !important; 
+                color: #f6ff00 !important;
                 font-size: 1.6rem !important;                      /* 화면 폭에 따라 1.1rem에서 1.5rem 사이로 능동적 변화 */
                 font-weight: 900;                                  /* 아주 두껍게 */
                 word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
+                text-shadow: 0px 0px 5px rgba(0,0,0,8); 
             }
 
 
@@ -836,8 +839,9 @@
                 font-size: 1.1rem !important; 
                 font-weight: 500;                                  /* 아주 두껍게 */
                 word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
-                letter-spacing: 0px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
-                color: #0c0c0b;
+                letter-spacing: -1px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
+                text-shadow: 0px 0px 2.5px rgba(0,0,0,100); 
+                color: #fdfdfb;
 
                 position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
@@ -857,10 +861,11 @@
         
             /* "스마트어시팜" 강조체 */
             .media-promo-text b {
-                color: #ffeb3b;                                  /* 강조색: 노란색 */
+                color: #f6ff00 !important;
                 font-size: 1.2rem !important; 
                 font-weight: 900;                                  /* 아주 두껍게 */
                 line-height: 1.5 !important;
+                text-shadow: 0px 0px 2.5px rgba(0,0,0,100); 
             }
 
 
@@ -870,7 +875,7 @@
             .highlight-control {
                 display: inline-block;                             /* 배경색이 예쁘게 입혀지도록 설정 */
                 word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
-                color: #a7e768;                                  /* 수익 강조를 위한 노란색 계열 */
+                color: #b6f710;                                  
 
                 position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
@@ -973,8 +978,8 @@
                 font-weight: 900;                                  /* 아주 두껍게 */
                 text-decoration: none; 
                 white-space: nowrap;                               /* 글자가 두 줄로 꺾이지 않게 방지 */
-                background-color: #ff9800;
-                color: #fbf9f9;
+                background-color: #f6ff00;
+                color: #1263f9;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.2);          /* 입체감 추가 */
                 transition: all 0.2s;                              /* 부드러운 변화 */
             }
@@ -982,7 +987,7 @@
             /* 무료 상담신청 버튼 호버 효과: 흔들림 방지 */
             .media-btn-consult:hover {
                 transform: scale(1.05); 
-                background-color: #f57c00;
+                background-color: #f5a700;
             }
 
 
@@ -1370,11 +1375,11 @@
         </p>
 
         <p class="pc-bottom-center-consult media-bottom-center-consult">
-            <a href="#request" class="pc-btn-consult media-btn-consult">무료 상담신청</a>
+            <a href="#request" class="pc-btn-consult media-btn-consult">무료상담신청</a>
         </p>
 
         <a href="tel:010-8107-9697" class="phone-link">
-            <b>상담 전화</b>
+            📞<b>상 담</b>
         </a>
 
     <div class="exit-button-wrapper" onclick="handleExit()">

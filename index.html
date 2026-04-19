@@ -1051,6 +1051,12 @@
                 right: calc(20px + env(safe-area-inset-right)) !important;
             }
 
+            .phone-icon {
+                color: #2e7d32; /* 사장님이 좋아하시는 산뜻한 녹색 */
+                font-size: 1.2rem;
+                text-shadow: none; /* 그림자를 빼면 더 깨끗합니다 */
+            }
+
 
 /* ============================================================================= */
 /* ===================== ( 영농 안심 시스템 ) =================================== */
@@ -1417,7 +1423,7 @@
         </p>
 
         <a href="tel:010-8107-9697" class="phone-link">
-            📞<b>상 담</b>
+            <span class="phone-icon">📞</span><b>상 담</b>
         </a>
 
     <div class="exit-button-wrapper" onclick="handleExit()">

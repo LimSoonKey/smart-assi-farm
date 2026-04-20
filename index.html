@@ -267,7 +267,7 @@
             bottom: 20px; /* 위치를 아래에서 20px 띄움 */
             right: 5rem; /* 위치를 오른쪽에서 5rem 띄움 */
             margin: 15px; /* 신청하기 버튼과의 간격 */
-            z-index: 1000;
+            z-index: 9999;
 
             font-weight: bold;
             font-size: 1rem; /* 글자 크기 최적화 */
@@ -1337,6 +1337,10 @@
                 min-height: 35px !important;
                 padding: 0 15px !important;    /* 옆으로만 여백을 줍니다 */
                 margin-top: 5px !important;    /* 버튼끼리 붙지 않게 여백 */
+                display: inline-block; /* 클릭 영역을 확실히 확보합니다 */
+                position: relative;    /* 위치를 고정합니다 */
+                z-index: 9999;        /* 다른 어떤 것보다 맨 위에 올라오게 합니다 */
+                cursor: pointer;      /* 마우스를 올리면 손가락 모양이 나오게 합니다 */
             }
 
             /* 글자 크기도 한꺼번에 조절 */
@@ -1421,7 +1425,9 @@
             <a href="#request" class="pc-btn-consult media-btn-consult">무료상담신청</a>
         </p>
 
-        <a href="tel:01081079697" class="phone-link">
+        <a href="tel:01081079697" 
+            class="phone-link" 
+            style="display: inline-block; padding: 5px 10px;">
             <span class="phone-icon">📞</span><b>상 담</b>
         </a>
 

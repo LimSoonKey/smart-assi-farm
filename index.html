@@ -2284,31 +2284,39 @@
         }
 
 
-// ===================== 화면을 왼쪽으로 쓸면 스위치 패널로 이동 ========================== //
+        // ===================== 화면을 왼쪽으로 쓸면 스위치 패널로 이동 ========================== //
 
-// 1. 손가락 터치 시작 지점 저장용 변수
-let touchstartX = 0;
-let touchendX = 0;
+        // 1. 손가락 터치 시작 지점 저장용 변수
+        let touchstartX = 0;
+        let touchstartY = 0; // 위아래 움직임도 체크합니다
+        let touchendX = 0;
+        let touchendY = 0;
 
-// 2. 터치 시작 감지
-window.addEventListener('touchstart', function(event) {
-    touchstartX = event.changedTouches[0].screenX;
-}, false);
+        // 2. 터치 시작 감지
+        window.addEventListener('touchstart', function(event) {
+            touchstartX = event.changedTouches[0].screenX;
+            touchstartY = event.changedTouches[0].screenY;
+        }, {passive: true}); // {passive: true}는 화면 버벅임을 줄여줍니다.
 
-// 3. 터치 끝 감지
-window.addEventListener('touchend', function(event) {
-    touchendX = event.changedTouches[0].screenX;
-    handleGesture();
-}, false);
+        // 3. 터치 끝 감지
+        window.addEventListener('touchend', function(event) {
+            touchendX = event.changedTouches[0].screenX;
+            touchendY = event.changedTouches[0].screenY;
+            handleGesture();
+        }, {passive: true});
 
-// 4. 움직임 계산 및 페이지 이동
-function handleGesture() {
-    // 손가락이 왼쪽으로 100픽셀 이상 움직였을 때 (스와이프)
-    if (touchstartX - touchendX > 100) {
-        // 사장님이 만드신 스위치 패널 파일명으로 수정하세요
-        window.location.href = 'control2.html'; 
-    }
-}
+        function handleGesture() {
+            const xDiff = touchstartX - touchendX; // 가로 이동 거리
+            const yDiff = Math.abs(touchstartY - touchendY); // 세로 이동 거리 (절대값)
+
+            // 1. 가로로 100픽셀 이상 움직였고
+            // 2. 세로로 움직인 거리보다 가로로 움직인 거리가 더 클 때만 (실수 방지)
+            if (xDiff > 100 && xDiff > yDiff) {
+                console.log("좌측 스와이프 감지! 페이지 이동합니다.");
+                // 사장님의 스위치 파일명이 'control2.html'이 맞는지 꼭 확인하세요!
+                window.location.href = 'control2.html'; 
+            }
+        }
 
 
 

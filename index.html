@@ -1044,6 +1044,16 @@
                 text-decoration: none !important;
             }
 
+.phone-link {
+    display: inline-block; /* 클릭 영역을 확실히 확보합니다 */
+    position: relative;    /* 위치를 고정합니다 */
+    z-index: 9999;        /* 다른 어떤 것보다 맨 위에 올라오게 합니다 */
+    cursor: pointer;      /* 마우스를 올리면 손가락 모양이 나오게 합니다 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit;       /* 글자색 유지 */
+    pointer-events: auto !important; /* 클릭이 반드시 전달되게 강제함 */    
+}            
+
             /* 아이폰 등 노치 디자인 대응, 화면을 축소하거나 모바일 기기를 가로로 돌릴 때 버튼이 가려지는 것을 막는다. */
             .btn-phone-new {
                 bottom: calc(20px + env(safe-area-inset-bottom)) !important;
@@ -1341,6 +1351,9 @@
                 position: relative;    /* 위치를 고정합니다 */
                 z-index: 9999;        /* 다른 어떤 것보다 맨 위에 올라오게 합니다 */
                 cursor: pointer;      /* 마우스를 올리면 손가락 모양이 나오게 합니다 */
+                text-decoration: none; /* 밑줄 제거 */
+                color: inherit;       /* 글자색 유지 */
+                pointer-events: auto !important; /* 클릭이 반드시 전달되게 강제함 */
             }
 
             /* 글자 크기도 한꺼번에 조절 */

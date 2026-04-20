@@ -18,7 +18,6 @@
     <meta property="og:title" content="스마트어시팜">
     <meta property="og:description" content="전국 어디서나 스마트폰으로 내 농장을 관리하세요.">
     <meta property="og:image" content="로고사진주소.jpg">
-    <title>스마트어시팜</title>
     <link rel="manifest" href="manifest.json">
 
     <!-- 스마트어시팜 아이콘 설정 -->
@@ -2351,12 +2350,13 @@
             }
         }
 
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-          .then(() => console.log("서비스 워커 등록 성공!"))
-          .catch(err => console.log("서비스 워커 등록 실패:", err));
-    }
-
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('서비스 워커 등록 성공!', reg))
+        .catch(err => console.log('서비스 워커 등록 실패:', err));
+    });
+}
 
     </script>
 

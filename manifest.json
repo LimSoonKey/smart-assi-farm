@@ -1,15 +1,22 @@
 {
-  "name": "스마트어시팜",
   "short_name": "어시팜",
-  "start_url": "control.html",
-  "display": "standalone",
-  "background_color": "#f1f8e9",
-  "theme_color": "#2e7d32",
+  "name": "Smart Assi-Farm",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2362/2362306.png",
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#2e7d32",
+  "background_color": "#ffffff"
 }

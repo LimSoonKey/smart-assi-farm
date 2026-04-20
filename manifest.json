@@ -3,13 +3,13 @@
   "name": "Smart Assi-Farm",
   "icons": [
     {
-      "src": "icon_192.png",
+      "src": "https://limsoonkey.github.io/smart-assi-farm/icon_192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon_512.png",
+      "src": "https://limsoonkey.github.io/smart-assi-farm/icon_512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

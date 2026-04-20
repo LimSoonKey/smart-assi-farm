@@ -38,7 +38,8 @@
         /* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
         .control-card { 
             background: #ccf9d0; /* 연한 녹색 배경 */
-            padding: 13px 10px; 
+            height: 85px;
+            padding: 10px 0; 
             border-radius: 20px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
             border: 2px solid #4e7c3f;
@@ -333,7 +334,7 @@
 
     <div id="lock-status-container" style="margin-bottom: 20px;">
         <button id="lock-btn" onmousedown="startLongPress()" onmouseup="endLongPress()" ontouchstart="startLongPress()" ontouchend="endLongPress()"
-            style="padding: 10px 20px; border-radius: 30px; border: 2px solid #555; background: #eee; cursor: pointer; transition: 0.3s;">
+            style="width: 300px !important; padding: 10px 0px; border-radius: 30px; border: 2px solid #555; background: #eee; cursor: pointer; transition: 0.3s;">
             <span id="lock-icon">🔒</span> <span id="lock-text">농장명, 스위치명 수정 (3초간 꾹 누르세요)</span>
         </button>
     </div>

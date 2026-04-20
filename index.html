@@ -1438,11 +1438,20 @@
             <a href="#request" class="pc-btn-consult media-btn-consult">무료상담신청</a>
         </p>
 
-        <a href="tel:01081079697" 
-            class="phone-link" 
-            style="display: inline-block; padding: 5px 10px;">
-            <span class="phone-icon">📞</span><b>상 담</b>
-        </a>
+<a href="tel:01081079697" class="phone-link" style="
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center;
+    text-decoration: none; 
+    color: inherit; 
+    padding: 15px 25px; /* 손가락으로 누르기 좋게 여백을 크게 줍니다 */
+    position: relative; 
+    z-index: 99999; /* 화면의 다른 어떤 것보다 위에 있게 합니다 */
+    -webkit-tap-highlight-color: transparent; /* 터치 시 잔상 제거 */
+">
+    <span class="phone-icon" style="font-size: 1.2rem; margin-right: 5px;">📞</span>
+    <b style="font-size: 1.1rem; color: #333;">상 담</b>
+</a>
 
     <div class="exit-button-wrapper" onclick="handleExit()">
         <div class="exit-button">

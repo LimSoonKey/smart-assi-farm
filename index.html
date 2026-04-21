@@ -129,6 +129,27 @@
 /* ================================================================================= */
 
         /* 어시팜 스위치 버튼 */
+        .highlight-control {
+            display: inline-block;                             /* 배경색이 예쁘게 입혀지도록 설정 */
+            word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
+            position: absolute !important;                     /* absolute를 지우고 순서대로 배치 */
+            display: block !important;                         /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+
+            top: 31rem !important;                             /* 숫자가 커질 수록 글자가 내려감 */
+            margin-bottom: 0px !important;                     /* 아래쪽 문구와의 간격 */
+            padding: clamp(0px, 0.1vw, 3px) !important;        /* 불필요한 패딩 제거 */
+
+            left: 50% !important;                              /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+            transform: translateX(-50%) !important;            /* 정확한 중앙 정렬을 위한 보정 */
+
+            width: 100% !important;                            /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+            text-align: center !important;                     /* 모바일에서는 중앙 정렬 */
+            line-height: 1.2 !important;
+            z-index: 10;                                       /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+        }
+
+
+        /* 어시팜 스위치 버튼 */
         .btn-control {
             display: inline-block;                 /* 내용만큼만 차지하게 설정 */
             width: auto;                           /* 내용만큼만 너비 차지 */
@@ -158,7 +179,7 @@
         /* 왼쪽 하단: 컨트롤러와 농약살포기 이미지 위치 */
         .pc-bottom-left-product {
             position: absolute;
-            bottom: 40px;                          /* 아래에서 40px 띄움 */
+            bottom: 35px;                          /* 아래에서 40px 띄움 */
             left: 40px;                            /* 왼쪽에서 40px 띄움 */
             width: 280px;                          /* 이미지 크기 조절 */
             background: rgba(255, 255, 255, 0.1);
@@ -236,8 +257,9 @@
 
             position: fixed; 
             bottom: 20px; /* 위치를 아래에서 20px 띄움 */
-            right: 5rem; /* 위치를 오른쪽에서 5rem 띄움 */
-            margin: 15px; /* 신청하기 버튼과의 간격 */
+            top: 100px !important;
+            right: -22rem; /* 위치를 오른쪽에서 5rem 띄움 */
+            margin: 10px; /* 신청하기 버튼과의 간격 */
             z-index: 9999;
 
             font-weight: bold;
@@ -792,7 +814,7 @@
                 font-size: 1.1rem !important; 
                 font-weight: 500;                                  /* 아주 두껍게 */
                 word-break: keep-all;                              /* 단어가 중간에 잘리지 않게 보호 */
-                letter-spacing: 0px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
+                letter-spacing: -1px !important;                    /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
                 text-shadow: 0px 0px 2.5px rgba(0,0,0,100); 
                 color: #fdfdfb;
 
@@ -1379,20 +1401,20 @@
             <a href="#request" class="pc-btn-consult media-btn-consult">무료상담신청</a>
         </p>
 
-<a href="tel:01081079697" class="phone-link" style="
-    display: inline-flex; 
-    align-items: center; 
-    justify-content: center;
-    text-decoration: none; 
-    color: inherit; 
-    padding: 15px 25px; /* 손가락으로 누르기 좋게 여백을 크게 줍니다 */
-    position: relative; 
-    z-index: 99999; /* 화면의 다른 어떤 것보다 위에 있게 합니다 */
-    -webkit-tap-highlight-color: transparent; /* 터치 시 잔상 제거 */
-">
-    <span class="phone-icon" style="font-size: 1.2rem; margin-right: 5px;">📞</span>
-    <b style="font-size: 1.1rem; color: #ffffff;">상 담</b>
-</a>
+        <a href="tel:01081079697" class="phone-link" style="
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
+            text-decoration: none; 
+            color: inherit; 
+            padding: 10px 25px; /* 손가락으로 누르기 좋게 여백을 크게 줍니다 */
+            position: relative; 
+            z-index: 99999; /* 화면의 다른 어떤 것보다 위에 있게 합니다 */
+            -webkit-tap-highlight-color: transparent; /* 터치 시 잔상 제거 */
+        ">
+            <span class="phone-icon" style="font-size: 1.2rem; margin-right: 5px;">📞</span>
+            <b style="font-size: 1.1rem; color: #ffffff;">상 담</b>
+        </a>
 
     </section>
 
@@ -1798,32 +1820,39 @@
 
 <!-- ========================== ( 전용 제어 앱 설치 ) ============================================= -->
 
-    <section id="download" 
-        style="text-align: center; padding: 50px 20px; background: #e7f9e7;">
-        <p class="estimate-text">📱 전용 제어 앱 설치</p>
-        <p class="feature-card-content">스마트폰으로 언제 어디서든 농장을 관리하세요.</p>
-    
-        <a href="smart_assifarm_v1.apk" 
-            class="btn btn-app" 
-                download style="
-                    background: #1a73e8; 
-                    color: white; 
-                    padding: 13px 20px; 
-                    border-radius: 5px; 
-                    text-decoration: none;
-                    font-size: 1rem !important; 
-                    font-weight: bold; 
-                    display: inline-block;"
-            onClick="alert('앱 설치 파일이 다운로드됩니다. 설치 후 스마트폰 바탕화면에서 \'스마트어시팜\' 앱을 찾아 실행하세요!');">
-            Android 앱 다운로드
-        </a>
+<section id="install-guide" style="text-align: center; padding: 40px 20px; background: #f0fdf4; border-radius: 20px; margin: 20px;">
+    <p style="font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;">📱 스마트 어시팜 전용 앱 설치</p>
+    <p style="color: #555; margin-bottom: 20px;">전용 앱을 설치하면 매우 편리합니다.</p>
 
-        <p class="feature-card-content" style="font-size: 0.9rem; 
-            color: #666; 
-            margin-top: 15px;">
-            * 설치 시 '출처를 알 수 없는 앱' 허용 메시지가 나오면 확인을 눌러주세요.
-        </p>
-    </section>
+    <button onclick="showTutorial()" style="
+        background: #4828a7; 
+        color: white; 
+        padding: 15px 25px; 
+        border-radius: 30px; 
+        border: none;
+        font-size: 1.1rem; 
+        font-weight: bold; 
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        📲 전용 앱 설치하기
+    </button>
+
+</section>
+
+<div id="tutorialOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000;" onclick="closeTutorial()">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 25px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center;" onclick="event.stopPropagation()">
+        <h3 style="color: #28a745; margin-bottom: 15px;">아이콘 설치 방법</h3>
+        <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+            <p>1. 우측 상단 <b>점 3개(⋮)</b>를 누릅니다.</p>
+            <p>2. 메뉴에서 <b>'홈 화면에 추가'</b>를 선택합니다.</p>
+            <p>3. <b>'추가'</b> 버튼을 누르면 설치 완료!</p>
+        </div>
+        <div style="background: #eee; padding: 40px 0; border-radius: 10px; margin-bottom: 15px; color: #666;">
+            [여기에 가이드 사진을 넣어주세요]
+        </div>
+        <button onclick="closeTutorial()" style="width: 100%; padding: 12px; background: #333; color: white; border: none; border-radius: 10px; font-weight: bold;">확인했습니다</button>
+    </div>
+</div>
 
 
 <!-- ========================== ( footer ) ================================================= -->
@@ -2169,40 +2198,6 @@
         }
 
 
-
-// =================== 비밀번호에 의한 보안 관리 ===================
-//
-//        // 1. 보안 설정 변수
-//        let isSecurityEnabled = true; // 비밀번호 사용 여부 (나중에 스위치로 조절 가능)
-//        const correctPassword = "1954"; // 사용자님의 탄생 연도로 설정해 보았습니다.
-//
-//        // 2. 제어 버튼 클릭 시 보안 체크
-//        function toggleDevice(device, element) {
-//            if (isSecurityEnabled) {
-//                const inputPw = prompt("비밀번호를 입력하세요:");
-//                if (inputPw !== correctPassword) {
-//                    alert("비밀번호가 틀렸습니다. 조작이 거부되었습니다.");
-//                    element.checked = !element.checked; // 스위치를 원래대로 돌림
-//                    return;
-//                }
-//            }
-//    
-//            // 비밀번호가 맞거나 보안이 꺼져있을 때만 실행
-//            executeCommand(device, element.checked);
-//        }
-//
-//        // 3. 실제 장비로 명령 전송 (HTTP 방식 예시)
-//        function executeCommand(device, isOn) {
-//            const controllerIP = "192.168.0.100";
-//            const status = isOn ? "1" : "0";
-//            
-//            // 실제 PLC의 쓰기 주소에 맞게 URL 구성
-//            // 예: http://192.168.0.100/api/write?name=P0000&value=1
-//            fetch(`http://${controllerIP}/api/write?name=${device}&value=${status}`)
-//                .then(res => console.log("전송 완료"))
-//                .catch(err => alert("기기 연결 실패! Wi-Fi 상태를 확인하세요."));
-//        }
-
 // =================================================================== //
 
         // PLC로부터 모든 장비의 실시간 상태를 가져옴
@@ -2318,15 +2313,31 @@
             }
         }
 
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('서비스 워커 등록 성공!', reg))
+                .catch(err => console.log('서비스 워커 등록 실패:', err));
+            });
+        }
 
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('서비스 워커 등록 성공!', reg))
-        .catch(err => console.log('서비스 워커 등록 실패:', err));
-    });
-}
+        // 전용 앱 설치하기 ===================================================
+
+    // 이 함수가 버튼의 onclick="showTutorial()"과 연결됩니다.
+    function showTutorial() {
+        // 'tutorialOverlay'라는 ID를 가진 박스를 화면에 보이게(block) 합니다.
+        const overlay = document.getElementById('tutorialOverlay');
+        if (overlay) {
+            overlay.style.display = 'block';
+        } else {
+            console.error("아이디가 tutorialOverlay인 요소를 찾을 수 없습니다.");
+        }
+    }
+
+    function closeTutorial() {
+        document.getElementById('tutorialOverlay').style.display = 'none';
+    }
 
     </script>
 

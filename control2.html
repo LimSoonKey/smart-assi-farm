@@ -228,6 +228,14 @@
             font-weight: bold;
         }
 
+        /* 화면 크기에 따라서 폰트 사이즈가 유연하게 변함 */ 
+        @media (max-width: 320px) {
+            html { font-size: 14px; }
+        }
+        @media (min-width: 768px) {
+            html { font-size: 18px; }
+        }
+
     </style>
 </head>
 

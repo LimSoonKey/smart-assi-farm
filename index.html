@@ -665,6 +665,15 @@
             text-decoration: none;
         }
 
+        /* 화면 크기에 따라 유연하게 변하는 폰트 사이트 */
+        .block-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .block-desc {
+            font-size: 0.9rem;
+        }
+
 
 
 
@@ -1349,6 +1358,15 @@
             font-size: 24px;
             pointer-events: none; /* 클릭 방해 금지 */
         }
+
+
+/* ==================== 화면 크기에 따라 유연하게 변하는 폰트 사이트 ==================== */
+        @media (max-width: 320px) {
+            html { font-size: 14px; }
+        }
+        @media (min-width: 768px) {
+            html { font-size: 18px; }
+        }         
 
     </style>
 </head>

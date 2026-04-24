@@ -18,17 +18,13 @@
     <meta property="og:title" content="스마트어시팜">
     <meta property="og:description" content="전국 어디서나 스마트폰으로 내 농장을 관리하세요.">
     <meta property="og:image" content="로고사진주소.jpg">
-    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2e7d32">
+    <link rel="manifest" href="./manifest.json">
 
     <!-- 스마트어시팜 아이콘 설정 -->
-    <link rel="apple-touch-icon" href="icon_512.png">
     <link rel="icon" href="icon_512.png">
+    <link rel="apple-touch-icon" href="icon_512.png">
     <title>스마트어시팜</title>
-
-    <link rel="manifest" href="./manifest.json">
-    
-    <meta name="theme-color" content="#2e7d32">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="./icon-192.png">
@@ -1359,14 +1355,11 @@
 
 
 
-
-
 <!-- ======================================================================================= -->
 <!-- =================== body ============================================================== -->
 
 <body>
 
-    <link rel="apple-touch-icon" href="이미지경로.png">
     <link rel="icon" href="이미지경로.png">
     <header class="header"><img src="smart-assi-farm.jpg" style="width: 180px;"></header>
 
@@ -1916,6 +1909,7 @@
         // === [실제 기기 IP 주소 설정] ===
         const IP_PRO_4PM = "192.168.0.51"; // 첫 번째 Pro 4PM의 고정 IP주소
         const IP_PLUS_1PM = "192.168.0.55"; // 두 번째 PLUS 1PM의 고정 IP주소
+        const PASS_CODE = "1234"; // 사장님이 원하시는 비밀번호로 바꾸세요.
 
 
 // ===================== 알림음 설정 (성공: 띵동, 실패: 삐익) ============================== //
@@ -2029,13 +2023,20 @@
             else card.classList.remove('on');
         }
 
+        function toggleVisuals(device, isOn) {
+            const card = document.getElementById(`card-${device}`);
+            if (card) {
+                if (isOn) card.classList.add('on');
+                else card.classList.remove('on');
+            }
+        }
+
 
 // ===================== 실제 신호 전송 (PLC/컨트롤러 IP 주소 필요) ======================== //
 
         // 3. 실제 신호 전송 (PLC/컨트롤러 IP 주소 필요)
         function sendSignal(device, isOn) {
             console.log(`[신호 전송] ${device}: ${isOn ? 'ON' : 'OFF'}`);
-            // fetch(`http://192.168.0.100/control?device=${device}&status=${isOn ? 1 : 0}`)
         }
 
 
@@ -2088,39 +2089,6 @@
         }
 
 
-// ==================== Wi-Fi 제어 로직 (실제 기기 IP 주소로 명령 전달) ======================= //
-
-        // Wi-Fi 제어 로직
-        function toggleDevice(device, element) {
-            const isOn = element.checked;
-            const statusText = element.nextElementSibling.nextElementSibling;
-            const card = document.getElementById('card-' + device);
-            
-
-// ===================== 시각적 변화 (UI 피드백) 및 실제 신호 전송 =========================== //
-
-            // 1. 시각적 변화 (UI 피드백)
-            statusText.innerText = isOn ? "ON" : "OFF";
-            if(isOn) card.classList.add('on');
-            else card.classList.remove('on');
-
-
-// ===================== 실제 Wi-Fi 신호 전송 (PLC/컨트롤러라면 PLC IP 주소 필요) =========== //
-
-            // 2. Wi-Fi 신호 전송 (실제 기기 IP 주소로 명령 전달)
-            // 예: http://192.168.0.100/water/on 형식
-            const controllerIP = "192.168.0.100"; // 실제 기기의 IP 주소로 변경 필요
-            const command = isOn ? "on" : "off";
-            
-            console.log(`${device} 기기로 ${command} 신호를 보냅니다.`);
-
-            // fetch 기능을 사용해 실제 장비에 신호를 보냅니다 (PLC 또는 아두이노 서버)
-            /* fetch(`http://${controllerIP}/${device}/${command}`)
-                .then(response => console.log('신호 전송 성공'))
-                .catch(error => alert('장비 연결 확인이 필요합니다.')); 
-            */
-        }
-
 // ==================================================================================
 // ==================================================================================
 
@@ -2137,19 +2105,16 @@
 
         // 2. 장비의 실제 상태를 체크하는 함수 (예: 3초마다 한 번씩 기계에 물어봄)
         function checkDeviceStatus() {
-            const controllerIP = "192.168.0.100"; // 실제 장비 IP
-
-            // 실제로는 장비의 상태값을 가져오는 주소(API)를 여기에 입력한다.
-            fetch(`http://${controllerIP}/get_all_status`)
+            // 상단에 선언한 IP_PRO_4PM 변수를 사용합니다.
+            fetch(`http://${IP_PRO_4PM}/rpc/Switch.GetStatus?id=0`) // 예시: 0번 채널 상태 확인
             .then(response => response.json())
             .then(data => {
-                // data 예시: { water: "on", irrigation: "off", ... }
-                updateUI('water', data.water);
-                updateUI('irrigation', data.irrigation);
-                updateUI('shield', data.shield);
-                // ... 다른 장비들도 반복
+                // Shelly Pro 4PM의 응답 형식에 맞춰 업데이트
+                if (data.output !== undefined) {
+                    updateUI('water', data.output ? "on" : "off");
+                }
             })
-            .catch(error => console.log("연결 확인 중..."));
+            .catch(error => console.log("기기 연결 확인 중..."));
         }
 
         // 3. 받은 데이터에 따라 화면을 강제로 바꾸는 함수
@@ -2232,37 +2197,6 @@
             return names[device] || device;
         }
 
-
-// =================================================================== //
-
-        // PLC로부터 모든 장비의 실시간 상태를 가져옴
-        async function syncWithPLC() {
-            try {
-                const response = await fetch("http://192.168.0.100/api/read_all");
-                const data = await response.json(); 
-                // 데이터 형식 예: { "P00": 1, "P01": 0, "P02": 1 ... }
-
-                updateSwitchUI('water', data.P00);
-                updateSwitchUI('irrigation', data.P01);
-                // ... 나머지 장비들
-            } catch (error) {
-                console.error("PLC와 연결할 수 없습니다.");
-            }
-        }
-
-        function updateSwitchUI(device, value) {
-            const checkbox = document.querySelector(`#card-${device} input`);
-            const isNowOn = (value === 1);
-            
-            if (checkbox.checked !== isNowOn) {
-                checkbox.checked = isNowOn;
-                // 외부 조작 시 소리 알림 로직은 그대로 유지
-                handleExternalChange(device, isNowOn); 
-            }
-        }
-
-        // 5분마다 자동 실행
-        setInterval(syncWithPLC, 30000);
 
 // =================================================================== //
 

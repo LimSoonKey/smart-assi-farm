@@ -1110,7 +1110,7 @@
                 margin-bottom: 20px !important;
                 color: #333;
                 letter-spacing: -1px;
-                font-size: clamp(0.25rem, 5.1vw, 1.6rem) !important;
+                font-size: 1.5rem !important;
                 padding: 0 10px;                                   /* 양옆에 아주 살짝 여백을 주어 글자가 화면 끝에 붙지 않게 함 */
                 line-height: clamp(1.1, 1.2vw, 1.4) !important;
             }
@@ -1922,35 +1922,44 @@
             const isOn = element.checked;
             const statusText = document.getElementById('status-bar');
             const card = document.getElementById(`card-${device}`);
-            
-
-// ===================== 상태 표시줄 업데이트=============================================== //
-
-            // 상태 표시줄 업데이트
+        
+            // ============= 상태 표시줄 업데이트 ========================
             statusText.innerText = `${device} 작동 중...`;
 
-            
-// ===================== Shelly Pro 4PM RPC API 주소 설정 ================================= //
-
-            // Shelly Pro 4PM RPC API 주소
+            // 1. [핵심] 연결 시도 시간을 5초(5000ms)로 설정하는 도구입니다.
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5초 지나면 포기!
+        
+            // ============  Shelly Pro 4PM RPC API 주소  ======================
             const url = `http://${ip}/rpc/Switch.Set?id=${channel}&on=${isOn}`;
 
-            try { // 실제 환경에서는 Shelly의 응답을 기다린다.
-                const response = await fetch(url);
-                if (response.ok) {
-                    successAudio.play(); // ✅ 성공 알림음 재생
-                    statusText.innerText = `✅ ${device} ${isOn ? '켜짐' : '꺼짐'} 완료`;
-                    // 카드 배경색 강조 효과
-                    if(isOn) card.classList.add('on'); else card.classList.remove('on');
-                } 
+            try {
+                // 2. fetch를 보낼 때 위에서 만든 signal을 함께 보냅니다.
+                const response = await fetch(url, { signal: controller.signal });
                 
-                else { throw new Error(); }
+                clearTimeout(timeoutId); // 5초 안에 성공했으므로 타이머 해제
+
+                if (response.ok) {
+                    successAudio.play();
+                    statusText.innerText = `✅ ${device} ${isOn ? '켜짐' : '꺼짐'} 완료`;
+                    if(isOn) card.classList.add('on'); else card.classList.remove('on');
+                } else { 
+                    throw new Error(); 
+                }
 
             } catch (error) {
-                errorAudio.play(); // ❌ 실패 알림음 재생
-                statusText.innerText = `❌ 연결 실패 (네트워크 확인)`;
+                clearTimeout(timeoutId); // 실패했더라도 타이머 해제
+        
+                errorAudio.play();
+                // 에러 원인이 '중단(timeout)'인지 확인하여 메시지 출력
+                if (error.name === 'AbortError') {
+                    statusText.innerText = `❌ 연결 시간 초과 (5초 경과)`;
+                } else {
+                    statusText.innerText = `❌ 연결 실패 (네트워크 확인)`;
+                }
+        
                 element.checked = !isOn;
-                alert("기기와 연결할 수 없습니다. Wi-Fi 상태를 확인하세요.");
+                alert(`${device} 기기 응답이 너무 늦습니다. Wi-Fi 상태를 확인하세요.`);
             }
         }
 

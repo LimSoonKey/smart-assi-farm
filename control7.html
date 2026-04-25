@@ -580,11 +580,32 @@
     
         // 5. [초기화] 페이지 로드 시 실행
         window.onload = function() {
-            const name = localStorage.getItem(window.location.pathname) || "유전리 농장";
-            document.getElementById('farm-title').innerHTML = `${name} <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>`;
+            const path = window.location.pathname;
+            // 1. 현재 파일명만 추출 (예: control3.html)
+            const fileName = path.split('/').pop(); 
+    
+            // 2. 저장된 이름 불러오기
+            const savedName = localStorage.getItem(fileName);
+    
+            // 3. 파일명에 따른 기본 농장 이름 설정
+            let defaultName = "유전리 농장";
+            if (fileName.includes('control3')) defaultName = "백신리 농장";
+            if (fileName.includes('control4')) defaultName = "안심리 농장";
+            if (fileName.includes('control5')) defaultName = "옹암리 농장";
+            if (fileName.includes('control6')) defaultName = "산법리 농장";
+            if (fileName.includes('control7')) defaultName = "단촌리 농장";
+
+            const farmName = savedName || defaultName;
+    
+            // 4. 화면에 농장 이름 표시
+            const titleElement = document.getElementById('farm-title');
+            if (titleElement) {
+                titleElement.innerHTML = `${farmName} <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>`;
+            }
+    
+            // 5. 하단 버튼들 및 센서 데이터 업데이트
             updateAllBottomButtons();
-            updateSensorDisplay(32, 1.2, 24); // 초기 테스트값
-            setInterval(fetchSensorData, 30000); // 30초마다 갱신
+            updateSensorDisplay(32, 1.2, 24); // 테스트 데이터
         };
 
         // 스와이프 뒤로가기

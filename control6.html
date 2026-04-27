@@ -236,6 +236,32 @@
             html { font-size: 18px; }
         }
 
+/* --- 보안 알림 레이아웃 --- */
+#emergency-msg {
+    display: none; /* 평소엔 숨김 */
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    width: 90%; max-width: 400px; padding: 20px;
+    background-color: white; border: 5px solid #FF1744; border-radius: 15px;
+    z-index: 10001; cursor: pointer; text-align: center;
+}
+
+/* 빨간 글자 깜박임 효과 */
+.blink-red {
+    color: #FF1744; font-size: 1.8rem; font-weight: bold;
+    animation: alert-blink 0.6s infinite;
+}
+@keyframes alert-blink {
+    0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; }
+}
+
+/* CCTV 팝업 스타일 */
+#cctv-popup {
+    display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+    width: 95%; max-width: 500px; background: #000; border-radius: 20px;
+    z-index: 10002; padding: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+
     </style>
 </head>
 
@@ -614,6 +640,50 @@
         document.addEventListener('touchend', e => {
             if (e.changedTouches[0].screenX - touchStartX > 150) window.location.href = "index.html";
         }, false);
+
+        
+// --- 보안 시스템 동작 로직 ---
+
+// 1. 침입 감지 시 실행 (Blynk V10 핀이 1이 되면 이 함수를 호출하게 설정)
+function triggerSecurityAlert(farmName) {
+    const msgBox = document.getElementById('emergency-msg');
+    msgBox.style.display = 'block';
+    msgBox.innerHTML = `<div class="blink-red">${farmName} 침입자 감지!</div><p style="margin:5px 0; color:#333;">(여기를 터치하면 상황 확인)</p>`;
+
+    // 음성 알림 반복 시작
+    if (!window.alertInterval) {
+        window.alertInterval = setInterval(() => {
+            const utterance = new SpeechSynthesisUtterance(`${farmName}에 침입자가 감지되었습니다.`);
+            utterance.lang = 'ko-KR';
+            window.speechSynthesis.speak(utterance);
+        }, 3000);
+    }
+
+    // 현장 장비 작동 (서치라이트 V5, 싸이렌 V6)
+    fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V5=1`);
+    fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V6=1`);
+}
+
+// 2. 알림 글자 터치 시 실행되는 함수
+async function handleAlertClick() {
+    // 음성 알림 및 현장 싸이렌 정지
+    clearInterval(window.alertInterval);
+    window.alertInterval = null;
+    window.speechSynthesis.cancel();
+    
+    // 현장 싸이렌 OFF (V6)
+    fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V6=0`);
+
+    // CCTV 팝업 띄우기
+    document.getElementById('cctv-popup').style.display = 'block';
+    
+    // 알림 메시지 숨기기
+    document.getElementById('emergency-msg').style.display = 'none';
+
+    // 센서 상태 초기화 (Blynk V10을 다시 0으로)
+    fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V10=0`);
+}
+
     </script>
 </body>
 </html>

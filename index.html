@@ -22,12 +22,12 @@
     <link rel="manifest" href="./manifest.json">
 
     <!-- 스마트어시팜 아이콘 설정 -->
-    <link rel="icon" href="icon_512.png">
-    <link rel="apple-touch-icon" href="icon_512.png">
+    <link rel="icon" href="icon_512.jpg">
+    <link rel="apple-touch-icon" href="icon_512.jpg">
     <title>스마트어시팜</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="./icon-192.png">
+    <link rel="apple-touch-icon" href="./icon-192.jpg">
 
     <style>
         /* 기본 설정 */
@@ -935,7 +935,8 @@
                 padding:  0px !important;                    /* 불필요한 패딩 제거 */
                 padding-top: -50px !important;
                 width: 100% !important;                      /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
-                text-align: center / 100% 100% !important;   /* 버튼이 모바일에서는 중앙 정렬 */
+                left: 50% !important;                        /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+                transform: translateX(-50%) !important;      /* 버튼의 절반만큼 왼쪽으로 당겨서 완벽한 중앙 배치 */
                 line-height: clamp(1.1, 1.2vw, 1.4) !important;
                 z-index: 1000;                               /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
                 word-break: keep-all;                        /* 단어가 중간에 잘리지 않게 보호 */
@@ -987,7 +988,8 @@
 
                 /* 위치 조정 */
                 top: 37rem !important;  
-                right: -10px !important;                     /* 버튼을 오른쪽에 치우치게 */
+                right: 20px !important;                     /* 버튼을 오른쪽에 치우치게 */
+                left: auto !important;                      /* 왼쪽 위치는 자동으로 */
 
                 /* 버튼 모양 및 크기 */
                 height: 2.8rem !important;                   /* 높이를 고정값으로 주어야 터치하기 편함 */
@@ -1000,7 +1002,7 @@
                 color: white !important;
                 border: 2px solid #ae9921 !important;
                 box-shadow: 0px 0px 5px rgba(0,0,0,8);       /* 입체감 추가 */
-                z-index: 11;                                 /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+                z-index: 99999;                              /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
                 bottom:0px; 
 
                 font-size: 1.1rem !important;
@@ -1301,29 +1303,6 @@
                 text-align: center !important;
                 padding: 20px 0 !important;
                 line-height: clamp(1.1, 1.2vw, 1.4) !important;            
-            }
-
-/* ===================== 울타리 안 ============================================= */
-
-            /* 울타리 안: 무료 상담신청 버튼과 상담전화 버튼을 콤마(,)를 사용해서 한꺼번에 가둔다 */
-            .btn-phone-link, .btn-consult-link {
-                height: 35px !important;                     /* 세로폭 강제 다이어트 */
-                min-height: 35px !important;
-                padding: 0 15px !important;                  /* 옆으로만 여백을 줍니다 */
-                margin-top: 5px !important;                  /* 버튼끼리 붙지 않게 여백 */
-                display: inline-block;                       /* 클릭 영역을 확실히 확보합니다 */
-                position: relative;                          /* 위치를 고정합니다 */
-                z-index: 9999;                               /* 다른 어떤 것보다 맨 위에 올라오게 합니다 */
-                cursor: pointer;                             /* 마우스를 올리면 손가락 모양이 나오게 합니다 */
-                text-decoration: none;                       /* 밑줄 제거 */
-                color: inherit;                              /* 글자색 유지 */
-                pointer-events: auto !important;             /* 클릭이 반드시 전달되게 강제함 */
-            }
-
-            /* 글자 크기도 한꺼번에 조절 */
-            .btn-phone-text, .btn-consult-text {
-                font-size: 0.9rem !important;
-                line-height: 1 !important;
             }
 
             

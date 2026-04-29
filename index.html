@@ -37,7 +37,7 @@
             height: 100%;
             font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
             max-width: 100%;
-            overflow-x: hidden;                            /* 가로 스크롤 발생을 원천 차단 */
+            overflow-x: hidden;                              /* 가로 스크롤 발생을 원천 차단 */
             position: relative;
         }
 
@@ -50,7 +50,7 @@
         }
 
         /* 지금은 아무 영향없어 보여도 나중에 이미지 추가할 때 반응형으로 잘 나오도록 미리 설정해두는 코드 */
-        img { max-width: 100%; height: auto; }             /* 결코 지우지 말 것 */
+        img { max-width: 100%; height: auto; }               /* 결코 지우지 말 것 */
 
 
 /* ============================================================================ */
@@ -61,14 +61,14 @@
                 url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1920'); /* 실제 농장 이미지로 교체 가능 */
             background-size: cover;
             background-position: center;
-            height: 92vh;                                  /* 화면 높이의 92% */
+            height: 92vh;                                    /* 화면 높이의 92% */
             display: flex;
-            flex-direction: column;                        /* 세로로 쌓기 */
-            justify-content: center;                       /* 세로 방향 중앙 */
-            align-items: center;                           /* 가로 방향 중앙 */
+            flex-direction: column;                          /* 세로로 쌓기 */
+            justify-content: center;                         /* 세로 방향 중앙 */
+            align-items: center;                             /* 가로 방향 중앙 */
             color: white;
             text-align: center;
-            gap: 20px !important;                          /* 요소들 사이의 간격을 일정하게 유지 */
+            gap: 20px !important;                            /* 요소들 사이의 간격을 일정하게 유지 */
         }
 
 /* ================================================================================= */
@@ -78,9 +78,9 @@
             position: relative !important;
             top: 110px !important;
             bottom: -130px !important;
-            font-size: 4.5rem !important;                  /* px 대신 rem을 써서 적정 크기 유지 */
+            font-size: 4.5rem !important;                    /* px 대신 rem을 써서 적정 크기 유지 */
             font-weight: 900;
-            margin-top: 0 !important;                      /* 위쪽 마진을 아예 없앰 */
+            margin-top: 0 !important;                        /* 위쪽 마진을 아예 없앰 */
             margin-bottom: 30px;
             letter-spacing: 5px;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
@@ -92,13 +92,13 @@
         .pc-highlight {
             position: relative !important; 
             top: 200px !important;
-            color: #a7e768;                              /* 수익 강조를 위한 노란색 계열 */
+            color: #a7e768;                                /* 수익 강조를 위한 노란색 계열 */
             font-size: 2.5rem !important;            
-            font-weight: 900;                              /* 아주 두껍게 */
-            display: inline-block;                         /* 배경색이 예쁘게 입혀지도록 설정 */
-            margin-top: -70px !important;                  /* 위쪽 마진을 아예 없앰 */
+            font-weight: 900;                                /* 아주 두껍게 */
+            display: inline-block;                           /* 배경색이 예쁘게 입혀지도록 설정 */
+            margin-top: -70px !important;                    /* 위쪽 마진을 아예 없앰 */
             line-height: 1;
-            word-break: keep-all;                          /* 단어가 중간에 잘리지 않게 보호 */
+            word-break: keep-all;                            /* 단어가 중간에 잘리지 않게 보호 */
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
             letter-spacing: 2px;
         }
@@ -107,8 +107,8 @@
         .pc-point {
             color: hsl(60, 98%, 48%) !important; 
             font-size: 2.8rem; 
-            font-weight: 900;                              /* 아주 두껍게 */
-            word-break: keep-all;                          /* 단어가 중간에 잘리지 않게 보호 */
+            font-weight: 900;                                /* 아주 두껍게 */
+            word-break: keep-all;                            /* 단어가 중간에 잘리지 않게 보호 */
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5); 
         }
 
@@ -122,13 +122,13 @@
             bottom: 0px !important;
             font-size: 1.6rem !important;
             line-height: 1.5;
-            margin-top: 10px !important;                   /* 위쪽 마진을 아예 없앰 */
+            margin-top: 10px !important;                     /* 위쪽 마진을 아예 없앰 */
             margin-bottom: 40px;
             font-weight: 500;                      
         } 
         
         .pc-promo-text b {
-            color: #ffeb3b;                              /* 강조색: 노란색 */
+            color: #ffeb3b;                                /* 강조색: 노란색 */
             font-size: 1.9rem;
         }
 
@@ -137,31 +137,31 @@
 
         /* 어시팜 스위치 버튼 */
         .highlight-control {
-            display: inline-block;                         /* 배경색이 예쁘게 입혀지도록 설정 */
-            word-break: keep-all;                          /* 단어가 중간에 잘리지 않게 보호 */
+            display: inline-block;                           /* 배경색이 예쁘게 입혀지도록 설정 */
+            word-break: keep-all;                            /* 단어가 중간에 잘리지 않게 보호 */
             position: relative !important; 
             bottom: -400px !important;
-            display: block !important;                     /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
-            top: 120px !important;                         /* 숫자가 커질 수록 글자가 내려감 */
-            margin-bottom: 0px !important;                 /* 아래쪽 문구와의 간격 */
-            padding: clamp(0px, 0.1vw, 3px) !important;    /* 불필요한 패딩 제거 */
-            left: 50% !important;                          /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
-            transform: translateX(-50%) !important;        /* 정확한 중앙 정렬을 위한 보정 */
-            width: 100% !important;                        /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
-            text-align: center !important;                 /* 모바일에서는 중앙 정렬 */
+            display: block !important;                       /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
+            top: 120px !important;                           /* 숫자가 커질 수록 글자가 내려감 */
+            margin-bottom: 0px !important;                   /* 아래쪽 문구와의 간격 */
+            padding: clamp(0px, 0.1vw, 3px) !important;      /* 불필요한 패딩 제거 */
+            left: 50% !important;                            /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
+            transform: translateX(-50%) !important;          /* 정확한 중앙 정렬을 위한 보정 */
+            width: 100% !important;                          /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+            text-align: center !important;                   /* 모바일에서는 중앙 정렬 */
             line-height: 1.2 !important;
-            z-index: 10;                                   /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
+            z-index: 10;                                     /* 다른 요소보다 로고보다 뒤로 가지 않고 앞에 표시 */
         }
 
 
         /* 어시팜 스위치 버튼 */
         .btn-control {
-            display: inline-block;                         /* 내용만큼만 차지하게 설정 */
-            width: auto;                                   /* 내용만큼만 너비 차지 */
-            min-width: 160px;                              /* 최소 너비는 확보 */
-            max-width: 170px;                              /* [중요] 아무리 길어져도 이 선은 넘지 않게 제한 */
-            padding: 10px 20px;                            /* 위아래 두께와 좌우 여백 */
-            margin: 30px !important;                       /* 버튼 사이의 간격 */
+            display: inline-block;                           /* 내용만큼만 차지하게 설정 */
+            width: auto;                                     /* 내용만큼만 너비 차지 */
+            min-width: 160px;                                /* 최소 너비는 확보 */
+            max-width: 170px;                                /* [중요] 아무리 길어져도 이 선은 넘지 않게 제한 */
+            padding: 10px 20px;                              /* 위아래 두께와 좌우 여백 */
+            margin: 30px !important;                         /* 버튼 사이의 간격 */
             background-color: #9ad19c;
             color: rgb(231, 18, 18);
             border: 2px solid #4caf50;
@@ -185,17 +185,17 @@
         /* 왼쪽 하단: 컨트롤러와 농약살포기 이미지 위치 */
         .pc-bottom-left-product {
             position: relative !important;
-            bottom: -115px;                                /* 아래에서 40px 띄움 */
-            left: clamp(-90rem, 0vw, -25rem) !important;   /* 왼쪽에서 40px 띄움 */
-            width: 280px;                                  /* 이미지 크기 조절 */
+            bottom: -115px;                                  /* 아래에서 40px 띄움 */
+            left: clamp(-90rem, 0vw, -25rem) !important;     /* 왼쪽에서 40px 띄움 */
+            width: 280px;                                    /* 이미지 크기 조절 */
             padding: 0px;
             text-align: left;
         } 
 
         /* 왼쪽 하단: 컨트롤러와 농약살포기 이미지 크기 */
         .pc-bottom-left-product img { 
-            max-width: 100%;                               /* 부모 박스보다 커지지 않게 설정 */
-            height: auto;                                  /* 가로세로 비율 유지 */
+            max-width: 100%;                                 /* 부모 박스보다 커지지 않게 설정 */
+            height: auto;                                    /* 가로세로 비율 유지 */
         } 
 
         .pc-bottom-left-product p { 
@@ -210,8 +210,8 @@
         /* 무료 상담신청 버튼을 감싸는 박스: 위치 조절 */
         .pc-bottom-center-consult {
             position: relative !important;
-            bottom: 0px;                                   /* 고정된 px 대신 vh를 써서 화면 높이에 따라 유동적으로 배치 */
-            width: 90%;                                    /* 모바일에서 부모 너비를 넘지 않도록 설정 */
+            bottom: 0px;                                     /* 고정된 px 대신 vh를 써서 화면 높이에 따라 유동적으로 배치 */
+            width: 90%;                                      /* 모바일에서 부모 너비를 넘지 않도록 설정 */
             left: 50%;
             transform: translateX(-55.6%);
             text-align: center;
@@ -220,18 +220,18 @@
 
         /* 무료 상담신청 버튼: 크기 및 디자인 */
         .pc-btn-consult {
-            display: inline-block;                         /* 크기 조절이 가능하도록 설정 */
-            padding: 10px 25px;                            /* 좌우 여백을 %로 주어 화면 크기에 따라 버튼 폭이 변함 */
+            display: inline-block;                           /* 크기 조절이 가능하도록 설정 */
+            padding: 10px 25px;                              /* 좌우 여백을 %로 주어 화면 크기에 따라 버튼 폭이 변함 */
             background-color: #ff9800;
             color: white;
             border: 2px solid #896704;
             text-decoration: none;
             border-radius: 10px;
-            font-size: 1rem;                               /* 모바일에 적당한 크기로 살짝 조정 */
+            font-size: 1rem;                                 /* 모바일에 적당한 크기로 살짝 조정 */
             font-weight: bold;
-            white-space: nowrap;                           /* 글자가 두 줄로 꺾이지 않게 방지 */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);      /* 입체감 추가 */
-            transition: all 0.2s;                          /* 부드러운 변화 */
+            white-space: nowrap;                             /* 글자가 두 줄로 꺾이지 않게 방지 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);        /* 입체감 추가 */
+            transition: all 0.2s;                            /* 부드러운 변화 */
         } 
 
         /* 무료 상담신청 버튼 호버 효과: 흔들림 방지 */
@@ -246,15 +246,15 @@
         .pc-phone-link {
             /* 글자와 아이콘을 수직/수평 정중앙으로 보냄 */
             position: fixed !important; 
-            left: 80% !important;                          /* 오른쪽에서 30px */
+            left: 80% !important;                            /* 오른쪽에서 30px */
             bottom: 10% !important;
 
             /* 모양 고정 */
             display: inline-block !important;
             align-items: center !important;
             justify-content: center !important;
-            width: 100px !important;                       /* 가로 크기 고정 */
-            height: 35px !important;                       /* 세로 크기 고정 */
+            width: 100px !important;                         /* 가로 크기 고정 */
+            height: 35px !important;                         /* 세로 크기 고정 */
 
             /* 디자인 */
             background-color: #2e7d32;
@@ -264,17 +264,17 @@
             z-index: 9999;
 
             /* 간섭 차단 */
-            margin: 0px !important;                        /* 신청하기 버튼과의 간격 */
+            margin: 0px !important;                          /* 신청하기 버튼과의 간격 */
             top: auto !important;
             text-decoration: none !important;
 
             /* 크기 고정 */
-            padding: 5px 20px;                             /* 넓이 */
+            padding: 5px 20px;                               /* 넓이 */
             -webkit-tap-highlight-color: transparent;
             font-weight: bold;
-            font-size: 1rem;                               /* 글자 크기 최적화 */
+            font-size: 1rem;                                 /* 글자 크기 최적화 */
             color: white; 
-            white-space: nowrap;                           /* 글자가 두 줄로 겹치지 않게 방지 */
+            white-space: nowrap;                             /* 글자가 두 줄로 겹치지 않게 방지 */
             display: inline-block;
         }
 
@@ -324,7 +324,7 @@
 
         /* 프리미엄 비교 섹션 스타일 */
         .premium-compare-section {
-            background-color: #fcfdfc;                     /* 아주 연한 녹색 배경 */
+            background-color: #fcfdfc;                       /* 아주 연한 녹색 배경 */
             padding: 6rem 1rem;
         }
 
@@ -361,8 +361,8 @@
         .compare-grid {
             display: grid;
             gap: 30px;
-            padding: 1rem 10px !important;                 /* 좌우에 20px 정도의 고정 여백을 준다 */
-            box-sizing: border-box;                        /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
+            padding: 1rem 10px !important;                   /* 좌우에 20px 정도의 고정 여백을 준다 */
+            box-sizing: border-box;                          /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
         }
 
         /* 비교 섹션 아이템 */
@@ -371,16 +371,14 @@
             background: white;
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);    /* 부드러운 그림자 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);      /* 부드러운 그림자 */
             border: 1px solid #eee;
             transition: transform 0.3s ease;
-            box-sizing: border-box;                        /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
+            box-sizing: border-box;                          /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
         }
 
         /* 비교 섹션 아이템 호버 효과 */
-        .compare-item:hover {
-            transform: translateY(-5px);                   /* 호버 효과 */
-        }
+        .compare-item:hover {transform: translateY(-5px);}   /* 호버 효과 */
 
         /* 비교 항목 라벨 */
         .compare-label {
@@ -404,17 +402,17 @@
 
         /* 비교 상자 제목 */
         .compare-table {
-            font-size: 1.3rem !important;                  /* 모바일에서는 글자 크기 줄임 */
+            font-size: 1.3rem !important;                    /* 모바일에서는 글자 크기 줄임 */
             font-weight: 700;
             color: #555;
             flex: 1;
-            text-align: center;                            /* 모바일에서는 중앙 정렬 */
+            text-align: center;                              /* 모바일에서는 중앙 정렬 */
         }
 
         /* 비교 상품 특징 내용 */
         .compare-content {
             font-size: 1.4rem;
-            font-weight: 400;                              /* 아주 두껍게 */
+            font-weight: 400;                                /* 아주 두껍게 */
             text-align: center; 
         }
 
@@ -428,7 +426,7 @@
 
         /* 비교 VS원 스타일 */
         .vs-circle {
-            background: #777;                              /* 차분한 그레이 */
+            background: #777;                                /* 차분한 그레이 */
             color: white;
             width: 50px;
             height: 50px;
@@ -469,24 +467,19 @@
             border: 1px solid #eee;
         }
 
-        .manual h4 {
-            color: #555;
-        }
+        .manual h4 {color: #555;}
 
         /* 스마트 어시팜 스타일 (생동감 있게 강조) */
         .smart {
-            background-color: #e8f5e9;                   /* 연한 녹색 배경 */
+            background-color: #e8f5e9;                       /* 연한 녹색 배경 */
             color: #2e7d32;
             border: 1px solid #c8e6c9;
         }
 
-        .smart h4 {
-            color: #1b5e20;
-        }
+        .smart h4 {color: #1b5e20;}
 
-        .smart p b {
-            color: #1b5e20;                              /* 강조된 텍스트 색상 */
-        }
+        .smart p b {color: #1b5e20;}                         /* 강조된 텍스트 색상 */
+        
 
 
 /* ============================================================================ */        
@@ -499,25 +492,25 @@
 
         /* 상품 전시관 & 설치 사례 포트폴리오 전체를 감싸는 영역 */
         .section { 
-            padding: 4rem 20px;                            /* 좌우에 20px 정도의 고정 여백을 준다 */
+            padding: 4rem 20px;                              /* 좌우에 20px 정도의 고정 여백을 준다 */
             max-width: 1300px !important; 
             margin: auto;
-            box-sizing: border-box;                        /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
+            box-sizing: border-box;                          /* 패딩이 박스 너비에 포함되도록 설정 (매우 중요!) */
         }
 
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 상품관 폭 */
-            gap: 20px;                                     /* 카드와 카드 사이의 간격 */
-            padding: 10px;                                 /* 그리드 안쪽에도 살짝 여백 */
+            gap: 20px;                                       /* 카드와 카드 사이의 간격 */
+            padding: 10px;                                   /* 그리드 안쪽에도 살짝 여백 */
         }
 
         /* 모든 상품 카드를 메인 상품과 동일하게 통일 */
         .product-card {
-            background-color: #fffffe;                   /* 연한 녹색 바탕으로 통일 */
-            border: 2px solid #2e7d32;                   /* 짙은 녹색 테두리로 통일 */
-            border-radius: 20px;                           /* 모서리를 더 부드럽게 */
-            padding: 30px 20px;                            /* 위아래와 양옆 */
+            background-color: #fffffe;                     /* 연한 녹색 바탕으로 통일 */
+            border: 2px solid #2e7d32;                     /* 짙은 녹색 테두리로 통일 */
+            border-radius: 20px;                             /* 모서리를 더 부드럽게 */
+            padding: 30px 20px;                              /* 위아래와 양옆 */
             text-align: center;
             transition: all 0.3s ease;
             box-shadow: 0 8px 20px rgba(46, 125, 50, 0.1); /* 은은한 녹색 그림자 */
@@ -553,9 +546,9 @@
         .product-price {
             font-size: 1.2rem;
             font-weight: 800;
-            color: #d32f2f;                              /* 가격은 명확하게 붉은색 유지 */
+            color: #d32f2f;                                /* 가격은 명확하게 붉은색 유지 */
             margin: 10px 0;
-            background: white;                           /* 가격 배경을 흰색으로 살짝 감싸 가독성 확보 */
+            background: white;                             /* 가격 배경을 흰색으로 살짝 감싸 가독성 확보 */
             display: inline-block;
             padding: 2px 10px;
             border-radius: 5px;
@@ -563,12 +556,12 @@
 
         /* 상품 포트폴리오 이미지 전용 스타일 */
         .product-portfolio-img {
-            width: 100% !important;                        /* 카드 폭에 꽉 차게 */
+            width: 100% !important;                          /* 카드 폭에 꽉 차게 */
             height: 200px !important;
-            max-width: 200px !important;                   /* 너무 커지지 않게 제한 */
-            margin: 0 auto 15px auto !important;           /* 중앙 정렬 및 아래 간격 */
+            max-width: 200px !important;                     /* 너무 커지지 않게 제한 */
+            margin: 0 auto 15px auto !important;             /* 중앙 정렬 및 아래 간격 */
             display: block !important;
-            border-radius: 10px;                           /* 모서리를 살짝 둥글게 */
+            border-radius: 10px;                             /* 모서리를 살짝 둥글게 */
         }
 
         .price-unit {
@@ -579,7 +572,7 @@
 
         /* 설치 현장 사례 섹션 스타일 */
         .portfolio-section {
-            background-color: #f9fbf9;                   /* 아주 연한 바탕색 */
+            background-color: #f9fbf9;                     /* 아주 연한 바탕색 */
             padding: 80px 0;
         }
 
@@ -606,9 +599,7 @@
         }
 
         /* 설치 현장 사례 호버 */
-        .portfolio-card:hover {
-            transform: translateY(-8px);
-        }
+        .portfolio-card:hover {transform: translateY(-8px);}
 
         /* 설치 현장 사례 사진 공간 생성 */
         .photo-placeholder {
@@ -625,7 +616,7 @@
         .photo-placeholder img {
             width: 100%;
             height: 100%;
-            object-fit: cover;                             /* 이미지가 비율에 맞게 꽉 차도록 설정 */
+            object-fit: cover;                               /* 이미지가 비율에 맞게 꽉 차도록 설정 */
         }
 
         .portfolio-info { padding: 25px; }
@@ -684,11 +675,8 @@
             font-size: 1.25rem;
             margin-bottom: 0.5rem;
         }
-        .block-desc {
-            font-size: 0.9rem;
-        }
 
-
+        .block-desc {font-size: 0.9rem;}
 
 
 /* ============================================================================ */        
@@ -772,17 +760,13 @@
                 font-weight: 900;
                 word-break: keep-all;                        /* 단어가 중간에 잘리지 않게 보호 */
                 letter-spacing: 1px !important;              /* 숫자가 커질 수록 글자 사이 간격이 넓어짐 */
-
                 position: absolute !important;               /* absolute를 지우고 순서대로 배치 */
                 display: block !important;                   /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
-
                 top: 4.8rem !important;                      /* 숫자가 커질 수록 SMART ASSI-FARM 글자가 내려감 */
                 margin-bottom: 0px !important;               /* 아래쪽 문구와의 간격 */
                 padding:  0px !important;                    /* 불필요한 패딩 제거 */
-
                 left: 50% !important;                        /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
                 transform: translateX(-50%) !important;      /* 정확한 중앙 정렬을 위한 보정 */
-
                 width: 100% !important;                      /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
                 text-align: center !important;               /* 모바일에서는 중앙 정렬 */
                 line-height: 1.2 !important;
@@ -932,7 +916,7 @@
                 display: block !important;                   /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
                 top: 33rem !important;  
                 margin-bottom: 0px !important;               /* 아래쪽 문구와의 간격 */
-                padding:  0px !important;                    /* 불필요한 패딩 제거 */
+                padding: 0px !important;                     /* 불필요한 패딩 제거 */
                 padding-top: -50px !important;
                 width: 100% !important;                      /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
                 left: 50% !important;                        /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
@@ -945,7 +929,7 @@
             /* 무료 상담신청 버튼 */
             .media-btn-consult {
                 display: inline-block;                       /* 내용만큼만 길어짐 */
-                width: 6.3rem !important;                      /* 화면의 80%만 차지 (수정 안 될 때 !important 사용) */
+                width: 6.3rem !important;                    /* 화면의 80%만 차지 (수정 안 될 때 !important 사용) */
                 height: 1.9rem;
                 padding: 12px 15px !important;               /* 위아래 두께(높이) 유지 */
                 align-items: center;                         /* 글자가 버튼 세로 중앙에 있도록 */
@@ -988,12 +972,12 @@
 
                 /* 위치 조정 */
                 top: 37rem !important;  
-                right: 10px !important;                     /* 버튼을 오른쪽에 치우치게 */
-                left: auto !important;                      /* 왼쪽 위치는 자동으로 */
+                right: 10px !important;                      /* 버튼을 오른쪽에 치우치게 */
+                left: auto !important;                       /* 왼쪽 위치는 자동으로 */
 
                 /* 버튼 모양 및 크기 */
                 height: 2.8rem !important;                   /* 높이를 고정값으로 주어야 터치하기 편함 */
-                width: 5.5rem !important;                      /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
+                width: 5.5rem !important;                    /* 모바일에서는 글자가 화면 폭에 맞게 늘어나도록 설정 */
                 min-width: 27px !important;
                 padding: 0px 0px !important;                 /* 불필요한 패딩 제거 */
                 border-radius: 50px !important;              /* 둥근 버튼으로 강조 */
@@ -1066,10 +1050,10 @@
                 display: flex;                               /* 블록 대신 플렉스 권장 */
                 flex-direction: column;                      /* 세로로 배치 */
                 align-items: left !important;                /* 자식 요소들을 가로 중앙으로 */
-                width: 21rem !important;                     /* 모바일에서 화면 폭의 95% 차지 */
+                width: 23.3rem !important;                     /* 모바일에서 화면 폭의 95% 차지 */
                 max-width: 600px !important;                 /* 너무 커지지 않도록 최대폭 제한 */
                 line-height: 1.2 !important;
-            }
+                padding: 0px !important;                     /* 불필요한 패딩 제거 */}
 
             /* 비교 상자 제목 */
             .compare-table {
@@ -1080,10 +1064,7 @@
                 text-align: center;                          /* 모바일에서는 중앙 정렬 */
             }
 
-            .compare-table th, .compare-table td { 
-                padding: 10px 5px; 
-            }
-
+            .compare-table th, .compare-table td {padding: 10px 5px;}
 
             /* 내부 카드 */            
             .compare-item {
@@ -1336,12 +1317,8 @@
 
 
 /* ==================== 화면 크기에 따라 유연하게 변하는 폰트 사이트 ==================== */
-        @media (max-width: 320px) {
-            html { font-size: 14px; }
-        }
-        @media (min-width: 768px) {
-            html { font-size: 18px; }
-        }
+        @media (max-width: 320px) {html { font-size: 14px; }}
+        @media (min-width: 768px) {html { font-size: 18px; }}
 
         /* --- 보안 알림 레이아웃 --- */
         #emergency-msg {
@@ -1369,9 +1346,7 @@
             animation: alert-blink 0.6s infinite;
         }
 
-        @keyframes alert-blink {
-            0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; }
-        }
+        @keyframes alert-blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
         /* CCTV 팝업 스타일 */
         #cctv-popup {
@@ -1932,8 +1907,6 @@
             &copy; 2026 스마트 농업 솔루션. All rights reserved.
         </p>
     </footer>
-
-
 
 
 <!-- =================== JV-Script ========================================================= -->

@@ -1728,7 +1728,7 @@
                         <img src="산업무선라우터.jpg" alt="산업무선라우터" class="product-portfolio-img">
                     </div>
                     <h4>무선라우터</h4>
-                    <p class="product-text">인터넷 선이 없는 오지를 위한 고성능 무선 인터넷</p>
+                    <p class="product-text">인터넷 선이 없는 오지를 위한 산업용 무선 인터넷</p>
                     <div class="product-price">
                         <b>410,000원</b>
                         <span class="price-unit">(시설비 별도)</span>
@@ -1804,7 +1804,7 @@
 <!-- ========================== ( 견적문의 및 설치요청서 ) =========================================== -->
 
 <section id="request" class="section">
-    <p class="estimate-text">📞 견적문의 및 설치요청</p>
+    <p class="estimate-text">견적문의 및 설치요청</p>
     <p class="compare-content">전국 어디든 전문가가 직접 상담해드리며, 방문상담도 무료로 해드립니다.</p>
 
     <!-- action에 실제 Formspree ID를 넣으세요 (예: https://formspree.io/f/mqkvzrq) -->
@@ -2375,50 +2375,78 @@
 
 // ===================== 상담 신청 접수 및 알림 기능 (Formspree 사용) =========================== //
         
-        //1. 변수 선언 (이 부분은 한 번만 있어야 합니다)
-        const form = document.getElementById("contact-form");
-        const status = document.getElementById("form-status");
-        const btn = document.getElementById("submit-btn");
+const form = document.getElementById("contact-form");
+    const status = document.getElementById("form-status");
+    const btn = document.getElementById("submit-btn");
 
-        // // 2. 전송 처리 함수
-        async function handleSubmit(event) {
-            event.preventDefault(); // 페이지 새로고침 방지
-            const data = new FormData(event.target);
-       
-            btn.disabled = true;
-            btn.innerText = "전송 중...";
-            status.innerHTML = "잠시만 기다려주세요...";
+    // 스마트 어시팜 특유의 '삐삐' 소리를 만드는 함수
+    function playAssiFarmBeep() {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function beep(delay) {
+            setTimeout(() => {
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
 
-            fetch(event.target.action, {
-                method: form.method,
-                body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    status.style.color = "#28a745"; // 성공 (녹색)
-                    status.innerHTML = "✅ 접수되었습니다! 곧 연락드리겠습니다.";
-                    btn.innerText = "신청 완료";
-                    form.reset(); // 입력창 비우기
-                } else {
-                    response.json().then(data => {
-                        status.style.color = "#dc3545"; // 실패 (빨간색)
-                        status.innerHTML = "❌ 오류가 발생했습니다. 양식 해시를 확인해주세요.";
-                        btn.disabled = false;
-                        btn.innerText = "다시 시도하기";
-                    });
-                }
-            }).catch(error => {
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.type = 'square'; // 약간 기계적인 느낌의 사각파
+                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // '삐' 소리 주파수
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.1);
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            }, delay);
+        }
+
+        // '삐삐' '삐삐' '삐삐' 세 번 울림 (간격을 두고 실행)
+        beep(0);   
+        beep(300); 
+        beep(600); 
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+
+        btn.disabled = true;
+        btn.innerText = "전송 중...";
+        status.innerHTML = "잠시만 기다려주세요...";
+
+        fetch(event.target.action, {
+            method: form.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                // 성공 시 알림음 재생
+                playAssiFarmBeep();
+
+                status.style.color = "#28a745";
+                status.innerHTML = "✅ 접수되었습니다! 곧 연락드리겠습니다.";
+                btn.innerText = "신청 완료";
+                form.reset();
+            } else {
                 status.style.color = "#dc3545";
-                status.innerHTML = "❌ 네트워크 연결을 확인해주세요.";
+                status.innerHTML = "❌ 오류가 발생했습니다. 다시 시도해 주세요.";
                 btn.disabled = false;
                 btn.innerText = "다시 시도하기";
-            });
-        }
-    
-        //3. 이벤트 리스너 등록
+            }
+        }).catch(error => {
+            status.style.color = "#dc3545";
+            status.innerHTML = "❌ 네트워크 연결을 확인해 주세요.";
+            btn.disabled = false;
+            btn.innerText = "다시 시도하기";
+        });
+    }
+
+    if (form) {
         form.addEventListener("submit", handleSubmit);
+    }
 
     </script>
 

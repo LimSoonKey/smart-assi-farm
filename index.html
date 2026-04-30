@@ -1049,9 +1049,11 @@
                 position: relative !important;               /* 고정좌표 무효화 */
                 margin: 0px !important;                      /* 위아래 여백, 좌우 중앙 정렬 */
                 display: flex;                               /* 블록 대신 플렉스 권장 */
+                overflow: visible !important;                 /* 내부 요소들이 넘쳐도 보이도록 */
                 flex-direction: column;                      /* 세로로 배치 */
                 align-items: left !important;                /* 자식 요소들을 가로 중앙으로 */
-                width: 23.3rem !important;                     /* 모바일에서 화면 폭의 95% 차지 */
+                justify-content: center;                     /* 세로 방향 중앙 정렬 */
+                width: 100% !important;                     /* 모바일에서 화면 폭의 95% 차지 */
                 max-width: 600px !important;                 /* 너무 커지지 않도록 최대폭 제한 */
                 line-height: 1.2 !important;
                 padding: 0px !important;                     /* 불필요한 패딩 제거 */

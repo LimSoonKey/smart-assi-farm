@@ -1630,8 +1630,7 @@
                 <div class="product-card">
                     <div class="product-portfolio-img">
                         <img src="통합컨트롤러.jpg" alt="스마트어시팜 통합컨트롤러" class="product-portfolio-img">
-                    </div>
-                    
+                    </div>                    
                     <h4>어시팜컨트롤러</h4>
                     <p class="product-text">시스템의 두뇌, 전 기능을 통합 제어하는 메인 장비</p>
                     <div class="product-price">
@@ -1642,7 +1641,7 @@
 
                 <div class="product-card">
                     <div class="product-portfolio-img">
-                        <img src="보호막 제어기.jpg" alt="보호막 제어기" class="product-portfolio-img">
+                        <img src="shield-controller.jpg" alt="보호막 제어기" class="product-portfolio-img">
                     </div>
                     <h4>보호막 제어기</h4>
                     <p class="product-text">우박·서리·과도 햇빛 대비 보호막/차광막 지능 개폐</p>
@@ -1654,7 +1653,7 @@
 
                 <div class="product-card">
                     <div class="product-portfolio-img">
-                        <img src="농약 제어기.jpg" alt="농약 제어기" class="product-portfolio-img">
+                        <img src="pesticide-controller.jpg" alt="농약 제어기" class="product-portfolio-img">
                     </div>
                     <h4>농약 살포기</h4>
                     <p class="product-text">먼 거리에서 안전하게 살포하는 무인 자동살포 장치</p>
@@ -1678,7 +1677,7 @@
 
                 <div class="product-card">
                     <div class="product-portfolio-img">
-                        <img src="관수 제어기.jpg" alt="관수 제어기" class="product-portfolio-img">
+                        <img src="watering-controller.jpg" alt="관수 제어기" class="product-portfolio-img">
                     </div>
                     <h4>관수 제어기</h4>
                     <p class="product-text">토양 습도에 맞춰 최적의 물을 공급하는 지능 밸브</p>
@@ -1690,7 +1689,7 @@
 
                 <div class="product-card">
                     <div class="product-portfolio-img">
-                        <img src="급수 제어기.jpg" alt="급수 제어기" class="product-portfolio-img">
+                        <img src="pump-controller.jpg" alt="급수 제어기" class="product-portfolio-img">
                     </div>
                     <h4>급수 관리기</h4>
                     <p class="product-text">마중물 필요없이 안정적 원수공급을 책임지는 장치</p>
@@ -1702,7 +1701,7 @@
 
                 <div class="product-card">
                     <div class="product-portfolio-img">
-                        <img src="감시 카메라.jpg" alt="감시 카메라" class="product-portfolio-img">
+                        <img src="monitor-camera.jpg" alt="감시 카메라" class="product-portfolio-img">
                     </div>
                     <h4>감시장비</h4>
                     <p class="product-text">CCTV 및 센서를 통한 불철주야 실시간 현장모니터링</p>
@@ -1752,7 +1751,7 @@
 
                 <div class="portfolio-card">
                     <div class="photo-placeholder">
-                        <img src="차광막 설치 농장.jpg" alt="과수원 설치 사례" onerror="this.src='https://via.placeholder.com/400x250?text=현장+사진+업로드+예정'">
+                        <img src="shield.jpg" alt="과수원 설치 사례" onerror="this.src='https://via.placeholder.com/400x250?text=현장+사진+업로드+예정'">
                     </div>
                     
                     <div class="portfolio-info">
@@ -1804,28 +1803,29 @@
 
 <!-- ========================== ( 견적문의 및 설치요청서 ) =========================================== -->
 
-    <section id="request" class="section">
-        <p class="estimate-text">📞견적문의 및 설치요청</p>
-        <p class="compare-content">전국 어디든 전문가가 직접 상담해드리며, 방문상담도 무료로 해드립니다.</p>
+<section id="request" class="section">
+    <p class="estimate-text">📞 견적문의 및 설치요청</p>
+    <p class="compare-content">전국 어디든 전문가가 직접 상담해드리며, 방문상담도 무료로 해드립니다.</p>
+
+    <!-- action에 실제 Formspree ID를 넣으세요 (예: https://formspree.io/f/mqkvzrq) -->
+    <form id="contact-form" action="https://formspree.io/f/xvzlplja" method="POST">
+        <label class="feature-card-content">성함</label>
+        <input type="text" name="name" required placeholder="성함을 입력해주세요">
+        
+        <label class="feature-card-content">연락처</label>
+        <input type="tel" name="phone" required placeholder="010-0000-0000">
     
-        <form action="https://formspree.io/f/여기에_고유코드_입력" method="POST" onsubmit="setTimeout(function(){window.location.reload();}, 500);">
-            <label class="feature-card-content">성함</label>
-            <input type="text" name="name" required>
-            
-            <label class="feature-card-content">연락처</label>
-            <input type="tel" name="phone" required>
+        <label class="feature-card-content">상담 내용</label>
+        <textarea name="message" placeholder="원하시는 상담 내용을 적어주세요."></textarea>
+    
+        <button type="submit" id="submit-btn" class="btn btn-install" style="font-size: 1rem !important; width: 100%;">
+            상담 신청하기
+        </button>
         
-            <label class="feature-card-content">상담 내용</label>
-            <textarea name="message"></textarea>
-        
-            <button 
-                type="submit" 
-                class="btn btn-install" 
-                style="font-size: 1rem !important;">
-                상담 신청하기
-            </button>
-        </form>
-    </section>
+        <!-- 신청 결과 메시지가 표시될 곳 -->
+        <p id="form-status" style="margin-top: 15px; text-align: center; font-weight: bold;"></p>
+    </form>
+</section>
 
 
 <!-- ========================== ( 전용 제어 앱 설치 ) ============================================= -->
@@ -2371,6 +2371,54 @@
             // 센서 상태 초기화 (Blynk V10을 다시 0으로)
             fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V10=0`);
         }
+
+
+// ===================== 상담 신청 접수 및 알림 기능 (Formspree 사용) =========================== //
+        
+        //1. 변수 선언 (이 부분은 한 번만 있어야 합니다)
+        const form = document.getElementById("contact-form");
+        const status = document.getElementById("form-status");
+        const btn = document.getElementById("submit-btn");
+
+        // // 2. 전송 처리 함수
+        async function handleSubmit(event) {
+            event.preventDefault(); // 페이지 새로고침 방지
+            const data = new FormData(event.target);
+       
+            btn.disabled = true;
+            btn.innerText = "전송 중...";
+            status.innerHTML = "잠시만 기다려주세요...";
+
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    status.style.color = "#28a745"; // 성공 (녹색)
+                    status.innerHTML = "✅ 접수되었습니다! 곧 연락드리겠습니다.";
+                    btn.innerText = "신청 완료";
+                    form.reset(); // 입력창 비우기
+                } else {
+                    response.json().then(data => {
+                        status.style.color = "#dc3545"; // 실패 (빨간색)
+                        status.innerHTML = "❌ 오류가 발생했습니다. 양식 해시를 확인해주세요.";
+                        btn.disabled = false;
+                        btn.innerText = "다시 시도하기";
+                    });
+                }
+            }).catch(error => {
+                status.style.color = "#dc3545";
+                status.innerHTML = "❌ 네트워크 연결을 확인해주세요.";
+                btn.disabled = false;
+                btn.innerText = "다시 시도하기";
+            });
+        }
+    
+        //3. 이벤트 리스너 등록
+        form.addEventListener("submit", handleSubmit);
 
     </script>
 

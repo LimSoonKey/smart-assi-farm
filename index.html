@@ -1804,10 +1804,10 @@
 <!-- ========================== ( 견적문의 및 설치요청서 ) =========================================== -->
 
 <section id="request" class="section">
-    <p class="estimate-text">견적문의 및 설치요청</p>
+    <p class="estimate-text">📞견적문의 및 설치요청</p>
     <p class="compare-content">전국 어디든 전문가가 직접 상담해드리며, 방문상담도 무료로 해드립니다.</p>
 
-    <!-- action에 실제 Formspree ID를 넣으세요 (예: https://formspree.io/f/mqkvzrq) -->
+    <!-- target="_blank"나 action 이동을 방지하기 위해 id로 제어합니다 -->
     <form id="contact-form" action="https://formspree.io/f/xvzlplja" method="POST">
         <label class="feature-card-content">성함</label>
         <input type="text" name="name" required placeholder="성함을 입력해주세요">
@@ -1822,8 +1822,8 @@
             상담 신청하기
         </button>
         
-        <!-- 신청 결과 메시지가 표시될 곳 -->
-        <p id="form-status" style="margin-top: 15px; text-align: center; font-weight: bold;"></p>
+        <!-- 이 부분이 즉시 한글로 바뀔 메시지 창입니다 -->
+        <p id="form-status" style="margin-top: 15px; text-align: center; font-weight: bold; min-height: 24px;"></p>
     </form>
 </section>
 
@@ -2379,40 +2379,13 @@ const form = document.getElementById("contact-form");
     const status = document.getElementById("form-status");
     const btn = document.getElementById("submit-btn");
 
-    // 스마트 어시팜 특유의 '삐삐' 소리를 만드는 함수
-    function playAssiFarmBeep() {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function beep(delay) {
-            setTimeout(() => {
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-
-                oscillator.type = 'square'; // 약간 기계적인 느낌의 사각파
-                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // '삐' 소리 주파수
-                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-
-                oscillator.start();
-                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.1);
-                oscillator.stop(audioCtx.currentTime + 0.1);
-            }, delay);
-        }
-
-        // '삐삐' '삐삐' '삐삐' 세 번 울림 (간격을 두고 실행)
-        beep(0);   
-        beep(300); 
-        beep(600); 
-    }
-
     async function handleSubmit(event) {
-        event.preventDefault();
+        event.preventDefault(); // 중요: 영문 결과 페이지로 넘어가는 것을 완전히 막습니다.
+        
         const data = new FormData(event.target);
-
         btn.disabled = true;
         btn.innerText = "전송 중...";
+        status.style.color = "black";
         status.innerHTML = "잠시만 기다려주세요...";
 
         fetch(event.target.action, {
@@ -2423,16 +2396,14 @@ const form = document.getElementById("contact-form");
             }
         }).then(response => {
             if (response.ok) {
-                // 성공 시 알림음 재생
-                playAssiFarmBeep();
-
+                // 성공 시 즉시 한글 메시지 표시
                 status.style.color = "#28a745";
-                status.innerHTML = "✅ 접수되었습니다! 곧 연락드리겠습니다.";
+                status.innerHTML = "✅ 감사해요! 양식이 성공적으로 제출되었습니다.";
                 btn.innerText = "신청 완료";
-                form.reset();
+                form.reset(); // 양식 비우기
             } else {
                 status.style.color = "#dc3545";
-                status.innerHTML = "❌ 오류가 발생했습니다. 다시 시도해 주세요.";
+                status.innerHTML = "❌ 전송 오류가 발생했습니다. 다시 시도해 주세요.";
                 btn.disabled = false;
                 btn.innerText = "다시 시도하기";
             }

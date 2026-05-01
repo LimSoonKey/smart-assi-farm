@@ -74,7 +74,7 @@
         /* SMART ASSI-FARM 글자 크기 및 위치 */
         .pc-top-center-title {
             position: relative !important;
-            top: 110px !important;
+            top: 100px !important;
             bottom: -130px !important;
             font-size: 4.5rem !important;                    /* px 대신 rem을 써서 적정 크기 유지 */
             font-weight: 900;
@@ -140,7 +140,7 @@
             position: relative !important; 
             bottom: -400px !important;
             display: block !important;                       /* flex 대신 block을 써서 한 줄을 다 차지하게 합니다 */
-            top: 120px !important;                           /* 숫자가 커질 수록 글자가 내려감 */
+            top: 140px !important;                           /* 숫자가 커질 수록 글자가 내려감 */
             margin-bottom: 0px !important;                   /* 아래쪽 문구와의 간격 */
             padding: clamp(0px, 0.1vw, 3px) !important;      /* 불필요한 패딩 제거 */
             left: 50% !important;                            /* 가운데로 보냄, 즉 왼쪽에서 50% 위치 */
@@ -333,7 +333,7 @@
         }
 
         /* 비교 섹션 제목 */
-        .section-title {
+        .pc-section-title {
             text-align: center;
             font-size: 2rem;
             font-weight: 800;
@@ -343,12 +343,12 @@
         }
 
         /* 비교 섹션 "스마트 어시팜" 글자에 브랜드 테마 색상 적용 */
-        .section-title span {
+        .pc-section-title span {
             color: #2e7d32;                                /* 어시팜 브랜드 테마 색상 */
         }
 
         /* 비교 섹션 부제목 */
-        .section-subtitle {
+        .pc-section-subtitle {
             text-align: center;
             font-size: 1.2rem;
             color: #666;
@@ -567,6 +567,9 @@
             color: #888;
             font-weight: normal;
         }
+
+
+/* ===================== 설치 현장 사례 =================================== */
 
         /* 설치 현장 사례 섹션 스타일 */
         .portfolio-section {
@@ -1094,7 +1097,7 @@
             }
 
             /* 비교 섹션의 타이틀 글자 크기 */
-            .section-title {
+            .media-section-title {
                 text-align: center !important;               /* 모바일에서도 강제로 중앙 정렬 */
                 margin-top: 30px !important;                 /* 모바일에서는 위아래 여백을 조금 줄여서 깔끔하게 배치 */
                 margin-bottom: 20px !important;
@@ -1105,7 +1108,7 @@
                 line-height: clamp(1.1, 1.2vw, 1.4) !important;
             }
 
-            .section-title span { color: #2e7d32; }         /* 각 섹션의 타이틀 스타일의 테마 색상 */            
+            .media-section-title span { color: #2e7d32; }         /* 각 섹션의 타이틀 스타일의 테마 색상 */            
 
             /* 각각의 비교 제목 크기 */
             .compare-label {
@@ -1427,7 +1430,7 @@
 <!-- ========================== ( 영농 안심 시스템 ) ======================================== -->
 
     <section class="section" style="background-color: #e7f9e7; max-width: 100%;">
-        <h3 class="section-title">🛡️ 영농 안심 시스템</h3>
+        <h3 class="pc-section-title media-section-title">🛡️ 영농 안심 시스템</h3>
         <div class="feature-grid">
 
             <div class="feature-card">
@@ -1462,7 +1465,7 @@
 <!-- ========================== ( 핵심 스마트 기능 ) ============================================== -->
 
     <section class="section">
-        <h3 class="section-title">💡 핵심 스마트 기능</h3>
+        <h3 class="pc-section-title media-section-title">💡 핵심 스마트 기능</h3>
         <div class="feature-grid">
     
             <div class="feature-card">
@@ -1513,7 +1516,7 @@
 
     <section class="section" style="background-color: #e7f9e7; max-width: 100%;">
         <div class="container">
-            <h3 class="section-title">🌱 차이를 넘어 <span>혁신!</span></h3>
+            <h3 class="pc-section-title media-section-title">🌱 차이를 넘어 <span>혁신!</span></h3>
             <p class="compare-content">기존의 번거로움을 벗은, 스마트한 농업 기준</p>
 
             <div class="compare-grid">
@@ -1620,7 +1623,7 @@
 
     <section id="products" class="section product-gallery-section">
         <div class="container">
-            <h3 class="section-title">🎁 주요 상품</h3>
+            <h3 class="pc-section-title media-section-title">🎁 주요 상품</h3>
             <p class="compare-content">스마트 어시팜이 제안하는 <br>혁신적인 농업 솔루션 라인업입니다.</p>
 
             <div class="product-grid">
@@ -1742,7 +1745,7 @@
 
     <section id="portfolio" class="section" style="background-color: #e7f9e7; max-width: 100%;">
         <div class="container">
-            <h3 class="section-title"><span style="font-size: 1.5rem; text-shadow: 0px 0px 5px rgba(0,0,0,8);">✨</span> 설치 현장 사례</h3>
+            <h3 class="pc-section-title media-section-title"><span style="text-shadow: 0px 0px 5px rgba(0,0,0,8);">✨</span> 설치 현장 사례</h3>
             <p class="compare-content">전국 곳곳의 농장에서 <br>스마트 어시팜이 혁신을 만들고 있습니다.</p>
 
             <div class="portfolio-grid">

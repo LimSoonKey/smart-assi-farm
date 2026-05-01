@@ -1801,29 +1801,29 @@
 
 <!-- ========================== ( 견적문의 및 설치요청서 ) =========================================== -->
 
-<section id="request" class="section">
-    <p class="estimate-text"><span style="color: #3E2723; font-size: 1.5rem;">📜</span> 견적문의 및 설치요청</p>
-    <p class="compare-content">전국 어디든 전문가가 직접 상담해드리며, 방문상담도 무료로 해드립니다.</p>
+    <section id="request" class="section">
+        <p class="estimate-text"><span style="color: #3E2723; font-size: 1.3rem;">📜</span> 견적문의 및 설치요청</p>
+        <p class="compare-content">전국 어디든 전문가가 직접 상담해드리며, 방문상담도 무료로 해드립니다.</p>
 
-    <!-- target="_blank"나 action 이동을 방지하기 위해 id로 제어합니다 -->
-    <form id="contact-form" action="https://formspree.io/f/xvzlplja" method="POST">
-        <label class="feature-card-content">성함</label>
-        <input type="text" name="name" required placeholder="성함을 입력해주세요">
+        <!-- target="_blank"나 action 이동을 방지하기 위해 id로 제어합니다 -->
+        <form id="contact-form" action="https://formspree.io/f/xvzlplja" method="POST">
+            <label class="feature-card-content">성함</label>
+            <input type="text" name="name" required placeholder="성함을 입력해주세요">
         
-        <label class="feature-card-content">연락처</label>
-        <input type="tel" name="phone" required placeholder="010-0000-0000">
+            <label class="feature-card-content">연락처</label>
+            <input type="tel" name="phone" required placeholder="010-0000-0000">
     
-        <label class="feature-card-content">상담 내용</label>
-        <textarea name="message" placeholder="원하시는 상담 내용을 적어주세요."></textarea>
+            <label class="feature-card-content">상담 내용</label>
+            <textarea name="message" placeholder="원하시는 상담 내용을 적어주세요."></textarea>
     
-        <button type="submit" id="submit-btn" class="btn btn-install" style="font-size: 1rem !important; width: 100%;">
-            상담 신청하기
-        </button>
+            <button type="submit" id="submit-btn" class="btn btn-install" style="font-size: 1rem !important; width: 100%;">
+                상담 신청하기
+            </button>
         
-        <!-- 이 부분이 즉시 한글로 바뀔 메시지 창입니다 -->
-        <p id="form-status" style="margin-top: 15px; text-align: center; font-weight: bold; min-height: 24px;"></p>
-    </form>
-</section>
+            <!-- 이 부분이 즉시 한글로 바뀔 메시지 창입니다 -->
+            <p id="form-status" style="margin-top: 15px; text-align: center; font-weight: bold; min-height: 24px;"></p>
+        </form>
+    </section>
 
 
 <!-- ========================== ( 전용 제어 앱 설치 ) ============================================= -->
@@ -2372,50 +2372,50 @@
 
 
 // ===================== 상담 신청 접수 및 알림 기능 (Formspree 사용) =========================== //
-        
-const form = document.getElementById("contact-form");
-    const status = document.getElementById("form-status");
-    const btn = document.getElementById("submit-btn");
 
-    async function handleSubmit(event) {
-        event.preventDefault(); // 중요: 영문 결과 페이지로 넘어가는 것을 완전히 막습니다.
-        
-        const data = new FormData(event.target);
-        btn.disabled = true;
-        btn.innerText = "전송 중...";
-        status.style.color = "black";
-        status.innerHTML = "잠시만 기다려주세요...";
+        const form = document.getElementById("contact-form");
+        const status = document.getElementById("form-status");
+        const btn = document.getElementById("submit-btn");
 
-        fetch(event.target.action, {
-            method: form.method,
-            body: data,
-            headers: {
-                'Accept': 'application/json'
-            }
-        }).then(response => {
-            if (response.ok) {
-                // 성공 시 즉시 한글 메시지 표시
-                status.style.color = "#28a745";
-                status.innerHTML = "✅ 감사해요! 양식이 성공적으로 제출되었습니다.";
-                btn.innerText = "신청 완료";
-                form.reset(); // 양식 비우기
-            } else {
+        async function handleSubmit(event) {
+            event.preventDefault(); // 중요: 영문 결과 페이지로 넘어가는 것을 완전히 막습니다.
+        
+            const data = new FormData(event.target);
+            btn.disabled = true;
+            btn.innerText = "전송 중...";
+            status.style.color = "black";
+            status.innerHTML = "잠시만 기다려주세요...";
+
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // 성공 시 즉시 한글 메시지 표시
+                    status.style.color = "#28a745";
+                    status.innerHTML = "✅ 감사해요! 양식이 성공적으로 제출되었습니다.";
+                    btn.innerText = "신청 완료";
+                    form.reset(); // 양식 비우기
+                } else {
+                    status.style.color = "#dc3545";
+                    status.innerHTML = "❌ 전송 오류가 발생했습니다. 다시 시도해 주세요.";
+                    btn.disabled = false;
+                    btn.innerText = "다시 시도하기";
+                }
+            }).catch(error => {
                 status.style.color = "#dc3545";
-                status.innerHTML = "❌ 전송 오류가 발생했습니다. 다시 시도해 주세요.";
+                status.innerHTML = "❌ 네트워크 연결을 확인해 주세요.";
                 btn.disabled = false;
                 btn.innerText = "다시 시도하기";
-            }
-        }).catch(error => {
-            status.style.color = "#dc3545";
-            status.innerHTML = "❌ 네트워크 연결을 확인해 주세요.";
-            btn.disabled = false;
-            btn.innerText = "다시 시도하기";
-        });
-    }
+            });
+        }
 
-    if (form) {
-        form.addEventListener("submit", handleSubmit);
-    }
+        if (form) {
+            form.addEventListener("submit", handleSubmit);
+        }
 
     </script>
 

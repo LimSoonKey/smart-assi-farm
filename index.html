@@ -1801,7 +1801,7 @@
                     <div class="portfolio-info">
                         <span class="location-tag">📍 전북 무주군</span>
                         <h4>방상팬 설치현장</h4>
-                        <p class="feature-card-content">고된 약제 살포 작업을 무인화하여 노동 시간을 획기적으로 줄이고 농약 노출 위험으로부터 안전해졌습니다.</p>
+                        <p class="feature-card-content">갑자기 하강하는 기온을 민감센서가 감지하여 방상팬을 작동시므로 서리 냉해 피해를 완벽히 막았습니다.</p>
                     </div>
                 </div>
 
@@ -1932,6 +1932,33 @@
         </p>
     </footer>
 
+
+<!-- =================== 화면 위로 점프 ========================================================= -->
+    <!-- 개선된 TOP 버튼 (클릭 시 모든 스크롤 초기화) -->
+    <div id="smart-top-btn" 
+         onclick="window.scrollTo({top: 0, behavior: 'smooth'}); 
+                  document.documentElement.scrollTo({top: 0, behavior: 'smooth'}); 
+                  document.body.scrollTo({top: 0, behavior: 'smooth'});
+                  Array.from(document.querySelectorAll('*')).forEach(el => el.scrollTop = 0);" 
+         style="display: block !important; 
+                position: fixed !important; 
+                bottom: 100px !important; 
+                right: 30px !important; 
+                width: 60px !important; 
+                height: 60px !important; 
+                background-color: rgba(0, 0, 0, 0.4) !important; 
+                color: white !important; 
+                border-radius: 50% !important; 
+                text-align: center !important; 
+                line-height: 56px !important; 
+                font-size: 25px !important; 
+                z-index: 9999999 !important; 
+                cursor: pointer !important; 
+                box-shadow: 2px 2px 10px rgba(0,0,0,0.3) !important; 
+                visibility: visible !important; 
+                opacity: 1 !important;">
+        ︿
+    </div> 
 
 <!-- =================== JV-Script ========================================================= -->
 

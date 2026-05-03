@@ -1376,6 +1376,59 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
 
+
+        /* ============= 상품 카드를 눌렀을 때 상품 제원과 결제 버튼, 로그인/회원가입 및 결제로 이어짐 ============= */
+/* 모달 배경 */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 10000; /* 다른 요소보다 위에 띄움 */
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.7); /* 배경 어둡게 */
+}
+
+/* 모달 몸체 */
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 0;
+    width: 90%;
+    max-width: 550px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden; /* 내부 결제바 고정을 위해 */
+}
+
+.modal-body {
+    padding: 30px;
+    padding-bottom: 100px; /* 결제바 공간 확보 */
+}
+
+/* 닫기 버튼 */
+.close-btn {
+    position: absolute;
+    right: 20px; top: 15px;
+    font-size: 35px;
+    color: #aaa;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* 동동 뜨는 결제 바 */
+.floating-payment-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+}
+
     </style>
 </head>
 
@@ -1635,9 +1688,9 @@
 
             <div class="product-grid">
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('통합관제기', '2,900,000', '시스템의 두뇌, 전 기능을 통합 제어하는 핵심 장비', '입력전압: AC 220V / 제어방식: Wi-Fi, LoRa / 특징: 12채널 통합제어')">
                     <div class="product-portfolio-img">
-                        <img src="통합컨트롤러.jpg" alt="스마트어시팜 통합컨트롤러" class="product-portfolio-img">
+                        <img src="통합컨트롤러.jpg" alt="어시팜통합관제기" class="product-portfolio-img">
                     </div>                    
                     <h4>어시팜통합관제기</h4>
                     <p class="product-text">시스템의 두뇌, 전 기능을 통합 제어하는 핵심 장비</p>
@@ -1647,7 +1700,7 @@
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('보호막 제어기', '800,000', '우박·서리·과도 햇빛 대비 보호막/차광막 지능 개폐', '구동방식: DC 모터 제어 / 센서: 조도, 온도 감지 / 특징: 자동 개폐 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="shield-controller.jpg" alt="보호막 제어기" class="product-portfolio-img">
                     </div>
@@ -1659,7 +1712,7 @@
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('농약 살포기', '600,000', '먼 거리에서 안전하게 살포하는 무인 자동살포 장치', '구동방식: DC 모터 제어 / 특징: wifi 원격 작동 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="pesticide-controller.jpg" alt="농약 제어기" class="product-portfolio-img">
                     </div>
@@ -1671,19 +1724,19 @@
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('액비 살포기', '680,000', '작물의 영양을 지능적으로 살펴 공급하는 액체비료 살포', '구동방식: AC220V 펌프 제어 /센서: 영양상태 감지 / 특징: 센서의 정보에 따라 자동 작동 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="액비살포기.jpg" alt="액비살포기" class="product-portfolio-img">
                     </div>
                     <h4>액비 살포기</h4>
-                    <p class="product-text">작물의 영양을 지능적으로 공급하는 액체비료 살포</p>
+                    <p class="product-text">작물의 영양을 지능적으로 살펴 공급하는 액체비료 살포</p>
                     <div class="product-price">
                         <b>680,000원</b>
                         <span class="price-unit">(시설비 별도)</span>
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('방상팬 컨트롤러', '720,000', '서리/냉해피해를 원천차단하는 지능형 방상팬 제어기', '구동방식: DC 모터 제어 /센서: 온도, 습도 감지 / 특징: 자동 작동 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="방상팬 컨트롤러.jpg" alt="방상팬 컨트롤러" class="product-portfolio-img">
                     </div>
@@ -1695,7 +1748,7 @@
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('관수 제어기', '430,000', '토양 습도에 맞춰 최적의 물을 공급하는 지능 밸브', '구동방식: AC220V 펌프제어 /센서: 토양 습도 감지 / 특징: 자동 작동 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="watering-controller.jpg" alt="관수 제어기" class="product-portfolio-img">
                     </div>
@@ -1707,7 +1760,7 @@
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('급수 관리기', '270,000', '마중물 필요없이 안정적 원수공급을 책임지는 장치', '구동방식: AC220V 펌프제어 /센서: 수위 감지 / 특징: 자동 작동 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="pump-controller.jpg" alt="급수 제어기" class="product-portfolio-img">
                     </div>
@@ -1719,19 +1772,19 @@
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('감시장비', '610,000', 'CCTV 및 센서를 통한 불철주야 실시간 현장 감시', '구동방식: DC5V 펌프제어 /센서: 동작, 소리 감지 / 특징: 자동 작동 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="monitor-camera.jpg" alt="감시 카메라" class="product-portfolio-img">
                     </div>
                     <h4>감시장비</h4>
-                    <p class="product-text">CCTV 및 센서를 통한 불철주야 실시간 현장모니터링</p>
+                    <p class="product-text">CCTV 및 센서를 통한 불철주야 실시간 현장 감시</p>
                     <div class="product-price">
                         <b>610,000원</b>
                         <span class="price-unit">(시설비 별도)</span>
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('무인예초기', '5,200,000', '노동력을 획기적으로 줄여주는 지능자율주행 예초기', '구동방식: DC 모터 제어 /센서: 장애물과 잡초 감지 / 특징: 자동 작동 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="예초로봇.jpg" alt="예초로봇" class="product-portfolio-img">
                     </div>
@@ -1743,7 +1796,7 @@
                     </div>
                 </div>
 
-                <div class="product-card">
+                <div class="product-card" onclick="openDetail('무선라우터', '410,000', '인터넷 선이 없는 오지를 위한 산업용 무선 인터넷', '구동방식: AC220V 펌프제어 /센서: 네트워크 상태 감지 / 특징: 자동 작동 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="산업무선라우터.jpg" alt="산업무선라우터" class="product-portfolio-img">
                     </div>
@@ -1973,7 +2026,6 @@
     </div> 
 
 
-
 <!-- =================== JV-Script ========================================================= -->
 
 <!-- =================== 실제 기기 IP 주소 설정 ============================================= -->
@@ -2055,17 +2107,20 @@
             guideText.style.display = 'block';
         });
 
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt(); // 설치 창 띄우기
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('사용자가 앱 설치를 승인했습니다.');
+        // installBtn이 실제로 존재할 때만 안쪽 코드를 실행합니다.
+        if (installBtn) { 
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt(); // 설치 창 띄우기
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        console.log('사용자가 앱 설치를 승인했습니다.');
+                    }
+                    deferredPrompt = null;
+                    installBtn.style.display = 'none'; // 설치 후 버튼 숨김
                 }
-                deferredPrompt = null;
-                installBtn.style.display = 'none'; // 설치 후 버튼 숨김
-            }
-        });
+            });
+        }
 
         // 이미 설치되어 있다면 버튼을 숨긴다.
         window.addEventListener('appinstalled', () => {
@@ -2283,13 +2338,14 @@
         // =================================================================== //
 
         // 비프 알림음 
-        <!--코드 동작 원리
-            1. setInterval: 이 명령어가 시계추처럼 일정 시간마다 코드를 실행한다. 
-               여기서는 0.5초마다 "삐삐" 소리를 내라고 명령한다.
-            2. count 변수: 소리가 몇 번 났는지 숫자를 센다. 1, 2, 3... 세다가 10이 되면 "이제 그만!"(clearInterval) 하고 멈춘다.
-            3. Oscillator: 실제 소리 파형을 만드는 장치다. frequency 숫자를 높이면 날카로운 소리가 나고, 낮추면 둔탁한 소리가 난다.
-            4. ExponentialRampToValueAtTime: 소리가 "삐!" 하고 갑자기 끊기면 거북하게 들린다. 
-               아주 짧은 시간(0.2초) 동안 소리를 부드럽게 줄여서 자연스러운 비프음을 만든다. --->
+        // 코드 동작 원리
+            // 1. setInterval: 이 명령어가 시계추처럼 일정 시간마다 코드를 실행한다. 
+            //    여기서는 0.5초마다 "삐삐" 소리를 내라고 명령한다.
+            // 2. count 변수: 소리가 몇 번 났는지 숫자를 센다. 1, 2, 3... 세다가 10이 되면 "이제 그만!"(clearInterval) 하고 멈춘다.
+            // 2. count 변수: 소리가 몇 번 났는지 숫자를 센다. 1, 2, 3... 세다가 10이 되면 "이제 그만!"(clearInterval) 하고 멈춘다.
+            // 3. Oscillator: 실제 소리 파형을 만드는 장치다. frequency 숫자를 높이면 날카로운 소리가 나고, 낮추면 둔탁한 소리가 난다.
+            // 4. ExponentialRampToValueAtTime: 소리가 "삐!" 하고 갑자기 끊기면 거북하게 들린다. 
+            //   아주 짧은 시간(0.2초) 동안 소리를 부드럽게 줄여서 자연스러운 비프음을 만든다. 
 
         function playBeep10Times() {
             // 1. 소리를 만드는 오디오 컨텍스트 생성
@@ -2479,7 +2535,96 @@
             form.addEventListener("submit", handleSubmit);
         }
 
+
+        // 모든 코드를 감싸서 다른 에러의 간섭을 줄입니다.
+        window.onload = function() {
+            console.log("스마트 어시팜 자바스크립트가 정상 로드되었습니다.");
+        };
+
+        /** 
+         * 스마트 어시팜 통합 제어 스크립트
+         * 에러 방지를 위해 HTML 맨 하단에 배치하세요.
+         */
+
+        // 상품 상세창 열기 함수
+        function openDetail(name, price, desc, spec) {
+            try {
+                // 1. 데이터 채우기
+                document.getElementById('modal-title').innerText = name;
+                document.getElementById('modal-price').innerText = price;
+                document.getElementById('modal-desc').innerText = desc;
+                document.getElementById('modal-spec').innerText = spec;
+        
+                // 2. 창 보이기
+                const modal = document.getElementById('product-detail-modal');
+                if (modal) {
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+                    console.log("성공: " + name + " 창을 열었습니다.");
+                } else {
+                    alert("상세창(modal) HTML 코드를 찾을 수 없습니다. ID를 확인해주세요.");
+                }
+            } catch (err) {
+                console.error("실행 오류 발생:", err);
+            }
+        }
+
+        // 상세창 닫기 함수
+        function closeDetail() {
+            const modal = document.getElementById('product-detail-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // 스크롤 복원
+            }
+        }
+
+        // 결제 버튼 -> 로그인 화면 이동
+        function goToLogin() {
+            // login.html 파일이 같은 폴더에 있어야 합니다.
+            window.location.href = 'login.html';
+        }
+
+        // 배경(검은 부분) 클릭 시 닫기 기능
+        window.onclick = function(event) {
+            const modal = document.getElementById('product-detail-modal');
+            if (event.target == modal) {
+                closeDetail();
+            }
+        }
+
     </script>
+
+
+    <!-- =================== 상품 상세 제원 및 결제 진입 모달 ============================================================-->
+    <!-- 상품 상세 제원 모달 (HTML 맨 하단 </body> 직전에 추가) -->
+    <div id="product-detail-modal" class="modal">
+        <div class="modal-content">
+            <!-- 닫기 버튼 -->
+            <span class="close-btn" onclick="closeDetail()">&times;</span>
+        
+            <div class="modal-body">
+                <h2 id="modal-title">상품명</h2>
+                <p id="modal-desc" style="color: #666; margin-top: 10px;">상품 설명</p>
+            
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            
+                <div class="spec-box">
+                    <h4 style="color: #28a745; margin-bottom: 10px;">📋 상세 제원</h4>
+                    <p id="modal-spec" style="line-height: 1.6; background: #f9f9f9; padding: 15px; border-radius: 8px;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 동동 뜨는 결제 바 -->
+        <div class="floating-payment-bar">
+            <div class="modal-price-info">
+                <span style="font-size: 0.9rem; color: #888;">판매가</span><br>
+                <strong id="modal-price" style="font-size: 1.4rem; color: #333;">0</strong>원
+            </div>
+            <button class="pay-btn" onclick="goToLogin()">구매하기 (로그인 필요)</button>
+        </div>
+    </div>
+
 
 </body>
 </html>

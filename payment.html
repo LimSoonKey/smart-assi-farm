@@ -19,7 +19,12 @@
         
         /* 결제 수단 스타일: 위에서 아래로 나열되도록 수정 */
         .method-group { display: flex; gap: 10px; margin-top: 10px; }
-        .method-item { text-align: center; border: 1px solid #ddd; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .method-item { 
+            text-align: center; 
+            border: 1px solid #ddd; 
+            width: 100%; 
+            letter-spacing: -1px;
+            padding: 10px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
         .method-item input { display: none; }
         .method-item.active { border-color: #28a745; background: #eafaf1; color: #28a745; font-weight: bold; }
 

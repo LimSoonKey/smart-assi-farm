@@ -5,31 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>스마트 어시팜 - 결제하기</title>
     <style>
-        body { 
-            font-family: 'Pretendard', sans-serif; 
-            background-color: #f8f9fa; 
-            margin: 0; 
-            padding: 0px; display: flex; justify-content: center; }
-        .payment-container { 
-            background: white; 
-            width: 100%; 
-            max-width: 500px !important; 
-            padding: 10px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-        }
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; margin: 0; padding: 5px; display: flex; justify-content: center; }
+        .payment-container { background: white; width: 100%; max-width: 500px !important; padding: 10px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h2 { color: #28a745; text-align: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; }
         .info-box {background: #fdfdfd; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin-bottom: 5px; }
-        .info-title { font-weight: bold; color: #555; margin-bottom: 10px; display: block; font-size: 0.9rem; }
+        .info-title { 
+            font-weight: bold; 
+            color: #555; 
+            margin-bottom: 0px; 
+            display: block; 
+            font-size: 0.9rem; }
         .price { font-size: 1.4rem; color: #e74c3c; font-weight: bold; text-align: right; }
         
         /* 결제 수단 스타일: 위에서 아래로 나열되도록 수정 */
         .method-group { display: flex; gap: 10px; margin-top: 10px; }
-        .method-item { text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .method-item { text-align: center; border: 1px solid #ddd; width: 100%;padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
         .method-item input { display: none; }
         .method-item.active { border-color: #28a745; background: #eafaf1; color: #28a745; font-weight: bold; }
 
-        .btn-pay { background: #28a745; color: white; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 1.2rem; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        .btn-pay { 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 18px; 
+            width: 100%; 
+            gap: 10px;
+            border-radius: 10px; font-size: 1.2rem; cursor: pointer; font-weight: bold; margin-top: 20px; }
         
         /* 결제 상세 정보 영역 스타일 */
         #payment-details { display:none; margin-top:15px; padding:15px; background:#f9f9f9; border-radius:10px; border:1px dashed #ccc; }
@@ -38,14 +39,16 @@
         input[type="text"], input[type="password"] { box-sizing: border-box; }
     </style>
 </head>
+
+
 <body>
     <div class="payment-container">
         <h2>주문 결제</h2>
         
         <div class="info-box">
             <span class="info-title">주문 상품 / 고객</span>
-            <div style="font-weight: bold;" id="prod-info">상품 정보 불러오는 중...</div>
-            <div id="user-info" style="color: #666; font-size: 0.9rem;">고객 정보 불러오는 중...</div>
+            <div style="font-weight: bold; text-align: right;" id="prod-info">상품 정보 불러오는 중...</div>
+            <div id="user-info" style="color: #666; font-size: 0.9rem; text-align: right; ">고객 정보 불러오는 중...</div>
         </div>
 
         <div class="info-box">

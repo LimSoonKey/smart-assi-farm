@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>어시팜 - 통합 관리자 시스템</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background: #f4f7f6; padding: 30 shadow; }
+        .admin-container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1a5c2a; border-bottom: 3px solid #28a745; padding-bottom: 10px; }
+        .order-card { border: 1px solid #eee; padding: 20px; margin-bottom: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .status-ready { background: #fff3cd; color: #856404; } /* 출고대기 */
+        .status-shipped { background: #d1ecf1; color: #0c5460; } /* 배송중 */
+        .scan-input { padding: 10px; border: 1px solid #28a745; border-radius: 5px; width: 200px; }
+        .btn-scan { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        #admin-auth { text-align: center; padding: 50px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 보안 인증 화면 -->
+    <div id="admin-auth">
+        <h2>관리자 인증</h2>
+        <input type="password" id="admin-pw" placeholder="관리자 비밀번호 입력">
+        <button onclick="checkAdmin()">접속하기</button>
+    </div>
+
+    <!-- 2. 실제 관리 화면 (인증 후 보임) -->
+    <div id="admin-main" class="admin-container" style="display:none;">
+        <h1>📦 실시간 주문 배송 관리</h1>
+        <div id="order-list">
+            <!-- 주문 내역이 여기에 나타납니다 -->
+        </div>
+    </div>
+
+    <script>
+        // 관리자 비번 (임시: 7777)
+        function checkAdmin() {
+            const pw = document.getElementById('admin-pw').value;
+            if(pw === "7777") {
+                document.getElementById('admin-auth').style.display = 'none';
+                document.getElementById('admin-main').style.display = 'block';
+                loadOrders();
+            } else {
+                alert("비밀번호가 틀렸습니다.");
+            }
+        }
+
+        // 주문 내역 불러오기 (금고에서 데이터 추출)
+        function loadOrders() {
+            const orderList = document.getElementById('order-list');
+            const savedEmail = localStorage.getItem('savedEmail');
+            const savedName = localStorage.getItem('savedName');
+            const product = localStorage.getItem('selectedProductName');
+            const price = localStorage.getItem('selectedProductPrice');
+
+            if(!savedEmail) {
+                orderList.innerHTML = "<p>접수된 주문이 없습니다.</p>";
+                return;
+            }
+
+            // 주문 카드 생성
+            orderList.innerHTML = `
+                <div class="order-card">
+                    <div>
+                        <span class="status-badge status-ready" id="status-text">출고대기</span>
+                        <h3>${product} (${price}원)</h3>
+                        <p>주문자: ${savedName} (${savedEmail})</p>
+                    </div>
+                    <div>
+                        <input type="text" class="scan-input" id="tracking-no" placeholder="운송장 번호 스캔/입력">
+                        <button class="btn-scan" onclick="handleShipping()">출고 알림 전송</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 출고 스캔 처리 함수
+        function handleShipping() {
+            const trackingNo = document.getElementById('tracking-no').value;
+            if(!trackingNo) {
+                alert("운송장 번호를 입력해주세요.");
+                return;
+            }
+
+            // 1. 상태 변경
+            document.getElementById('status-text').innerText = "배송중";
+            document.getElementById('status-text').className = "status-badge status-shipped";
+
+            // 2. 알림 전송 시뮬레이션 (네이버 톡톡 API 연동 지점)
+            alert("입력하신 운송장[" + trackingNo + "]으로 고객님께 출고 알림톡이 전송되었습니다.");
+            
+            // 3. 배송 조회 링크 생성 (예: 우체국택배 기준)
+            console.log("배송 추적 시작: https://service.epost.go.kr/trace.RetrieveDomRBPk_Detail.comm?sid1=" + trackingNo);
+        }
+    </script>
+</body>
+</html>

@@ -13,7 +13,7 @@
         .price { font-size: 1.4rem; color: #e74c3c; font-weight: bold; text-align: right; }
         
         /* 결제 수단 스타일: 위에서 아래로 나열되도록 수정 */
-        .method-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .method-group { display: flex; gap: 10px; margin-top: 10px; }
         .method-item { text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
         .method-item input { display: none; }
         .method-item.active { border-color: #28a745; background: #eafaf1; color: #28a745; font-weight: bold; }
@@ -29,7 +29,7 @@
 </head>
 <body>
     <div class="payment-container">
-        <h2>주문 및 결제</h2>
+        <h2>주문 결제</h2>
         
         <div class="info-box">
             <span class="info-title">주문 상품 / 고객</span>

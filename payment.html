@@ -9,17 +9,22 @@
         .payment-container { background: white; width: 100%; max-width: 500px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h2 { color: #28a745; text-align: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; }
         .info-box { background: #fdfdfd; border: 1px solid #eee; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .info-title { font-weight: bold; color: #555; margin-bottom: 5px; display: block; font-size: 0.9rem; }
+        .info-title { font-weight: bold; color: #555; margin-bottom: 10px; display: block; font-size: 0.9rem; }
         .price { font-size: 1.4rem; color: #e74c3c; font-weight: bold; text-align: right; }
         
-        /* 결제 수단 스타일 */
-        .method-group { display: flex; gap: 10px; margin-top: 10px; }
-        .method-item { flex: 1; text-align: center; border: 1px solid #ddd; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+        /* 결제 수단 스타일: 위에서 아래로 나열되도록 수정 */
+        .method-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .method-item { text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
         .method-item input { display: none; }
         .method-item.active { border-color: #28a745; background: #eafaf1; color: #28a745; font-weight: bold; }
 
         .btn-pay { background: #28a745; color: white; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 1.2rem; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        
+        /* 결제 상세 정보 영역 스타일 */
+        #payment-details { display:none; margin-top:15px; padding:15px; background:#f9f9f9; border-radius:10px; border:1px dashed #ccc; }
         #bank-guide { font-size: 0.9rem; color: #666; margin-top: 10px; display: none; background: #f1f1f1; padding: 10px; border-radius: 5px; }
+        
+        input[type="text"], input[type="password"] { box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -49,32 +54,29 @@
             </div>
         </div>
 
+        <!-- 카드 정보/계좌 정보 창을 컨테이너 내부로 이동 -->
+        <div id="payment-details">
+            <!-- 카드 결제 선택 시 -->
+            <div id="card-form" style="display:none;">
+                <span class="info-title">카드 정보 등록</span>
+                <input type="text" placeholder="카드번호 16자리" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
+                <input type="password" placeholder="비밀번호 앞 2자리" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:5px;">
+            </div>
+
+            <!-- 계좌이체 선택 시 -->
+            <div id="transfer-info" style="display:none;">
+                <span class="info-title">입금 전용 가상계좌</span>
+                <div style="font-size:1.1rem; color:#28a745; font-weight:bold;">농협 301-1234-5678-99</div>
+                <div style="font-size:0.9rem; color:#666;">예금주: (주)스마트어시팜_임순기</div>
+                <p style="font-size:0.8rem; color:#e74c3c; margin-top:5px;">* 정확히 <span id="check-price"></span>원을 입금해야 확인이 완료됩니다.</p>
+            </div>
+        </div>
+
         <button class="btn-pay" onclick="handlePayment()">결제하기</button>
     </div>
 
-    <!-- 결제 정보 표시 구역 추가 -->
-<div id="payment-details" style="display:none; margin-top:15px; padding:15px; background:#f9f9f9; border-radius:10px; border:1px dashed #ccc;">
-    <!-- 카드 결제 선택 시 -->
-    <div id="card-form" style="display:none;">
-        <span class="info-title">카드 정보 등록</span>
-        <input type="text" placeholder="카드번호 16자리" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
-        <input type="password" placeholder="비밀번호 앞 2자리" style="width:45%; padding:10px; border:1px solid #ddd; border-radius:5px;">
-    </div>
-
-    <!-- 계좌이체 선택 시 -->
-    <div id="transfer-info" style="display:none;">
-        <span class="info-title">입금 전용 가상계좌</span>
-        <div style="font-size:1.1rem; color:#28a745; font-weight:bold;">농협 301-1234-5678-99</div>
-        <div style="font-size:0.9rem; color:#666;">예금주: (주)스마트어시팜_임순기</div>
-        <p style="font-size:0.8rem; color:#e74c3c; margin-top:5px;">* 정확히 <span id="check-price"></span>원을 입금해야 확인이 완료됩니다.</p>
-    </div>
-</div>
-
-
-
-
     <script>
-        // 금고에서 정보 가져오기
+        // 기존 스크립트 내용과 동일 (수정 불필요)
         const savedName = localStorage.getItem('savedName') || "고객";
         const productName = localStorage.getItem('selectedProductName') || "상품";
         const productPrice = localStorage.getItem('selectedProductPrice') || "가격문의";
@@ -84,37 +86,39 @@
         document.getElementById('prod-info').innerText = productName;
         document.getElementById('total-price').innerText = productPrice;
 
-function selectMethod(method, element) {
-        currentMethod = method;
-        document.querySelectorAll('.method-item').forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
-        
-        const details = document.getElementById('payment-details');
-        const card = document.getElementById('card-form');
-        const transfer = document.getElementById('transfer-info');
-        const vbank = document.getElementById('bank-guide'); // 이전 무통장입금 가이드
-        
-        details.style.display = "block";
-        card.style.display = (method === 'card') ? "block" : "none";
-        transfer.style.display = (method === 'transfer') ? "block" : "none";
-        vbank.style.display = (method === 'vbank') ? "block" : "none";
+        function selectMethod(method, element) {
+            currentMethod = method;
+            document.querySelectorAll('.method-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            
+            const details = document.getElementById('payment-details');
+            const card = document.getElementById('card-form');
+            const transfer = document.getElementById('transfer-info');
+            const vbank = document.getElementById('bank-guide');
+            
+            // 상세 정보 표시 로직
+            if (method === 'vbank') {
+                details.style.display = "none";
+                vbank.style.display = "block";
+            } else {
+                details.style.display = "block";
+                vbank.style.display = "none";
+                card.style.display = (method === 'card') ? "block" : "none";
+                transfer.style.display = (method === 'transfer') ? "block" : "none";
+            }
 
-        // 안내문에 현재 결제 금액 표시
-        document.getElementById('check-price').innerText = productPrice;
-    }
-
-    function handlePayment() {
-        if(!currentMethod) { alert("결제 수단을 선택해주세요."); return; }
-
-        if(currentMethod === 'transfer') {
-            alert("입금 대기 중입니다. 금액이 일치하면 자동으로 완료 처리가 됩니다.");
-        } else if(currentMethod === 'card') {
-            alert("카드사 보안 인증 중입니다... 결제가 완료되었습니다!");
+            document.getElementById('check-price').innerText = productPrice;
         }
-        
-        // 여기에 선생님 폰으로 알림 보내는 로직 연동
-        location.href = 'index.html';
-    }
+
+        function handlePayment() {
+            if(!currentMethod) { alert("결제 수단을 선택해주세요."); return; }
+            if(currentMethod === 'transfer') {
+                alert("입금 대기 중입니다. 금액이 일치하면 자동으로 완료 처리가 됩니다.");
+            } else if(currentMethod === 'card') {
+                alert("카드사 보안 인증 중입니다... 결제가 완료되었습니다!");
+            }
+            location.href = 'index.html';
+        }
     </script>
 </body>
 </html>

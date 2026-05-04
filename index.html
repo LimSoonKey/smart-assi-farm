@@ -481,7 +481,6 @@
         .smart p b {color: #1b5e20;}                         /* 강조된 텍스트 색상 */
         
 
-
 /* ============================================================================ */        
 
         /* 상품 전시관 전용 스타일 */
@@ -884,6 +883,7 @@
                 text-shadow: 0px 0px 5px rgba(0,0,0,8); 
             }
  
+
             /* ============================================================================ */
 
             /* 컨트롤러와 농약살포기 이미지 */
@@ -1277,7 +1277,6 @@
 
 
             /* ============================================================================= */
-
             /* 견적문의 및 설치요청 글자 크기 */
             .estimate-text {
                 font-size: 1.5rem !important;                /* 모바일에서는 글자 크기 줄임 */
@@ -1288,8 +1287,8 @@
                 line-height: clamp(1.1, 1.2vw, 1.4) !important;
             }
 
-            /* ============================================================================= */
 
+            /* ============================================================================= */
             /* 푸터 글자 크기 */
             .footer {
                 font-size: clamp(0.2rem, 3vw, 1rem) !important; /* 모바일에서는 글자 크기 줄임 */
@@ -1314,7 +1313,7 @@
         }
 
 
-/* ===================== 화면을 왼쪽으로 밀면 스위치 패널로 이동 ====================== */
+        /* ===================== 화면을 왼쪽으로 밀면 스위치 패널로 이동 ====================== */
 
         /* 오른쪽 끝에 '밀어서 이동' 힌트 (선택 사항) */
         body::after {
@@ -1329,7 +1328,7 @@
         }
 
 
-/* ==================== 화면 크기에 따라 유연하게 변하는 폰트 사이트 ==================== */
+        /* ==================== 화면 크기에 따라 유연하게 변하는 폰트 사이트 ==================== */
         @media (max-width: 320px) {html { font-size: 14px; }}
         @media (min-width: 768px) {html { font-size: 18px; }}
 
@@ -1521,7 +1520,6 @@
 
 
 <!-- ========================== (body content section) ===================================== -->
-
 <!-- ========================== ( 영농 안심 시스템 ) ======================================== -->
 
     <section class="section" style="background-color: #e7f9e7; max-width: 100%;">
@@ -2062,104 +2060,103 @@
 
 
     <!-- =================== 상품 상세 제원 및 결제 진입 모달 ============================================================-->
-<!-- 상품 상세 제원 모달 (전체 껍데기 추가) (HTML 맨 하단 </body> 직전에 추가) -->
-<div id="product-detail-modal" class="modal"> 
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeDetail()">&times;</span>
+    <!-- 상품 상세 제원 모달 (전체 껍데기 추가) (HTML 맨 하단 </body> 직전에 추가) -->
+    <div id="product-detail-modal" class="modal"> 
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeDetail()">&times;</span>
         
-        <!-- 상세 제원 내용 -->
-        <div class="modal-body">
-            <h2 id="modal-title">상품명</h2>
-            <p id="modal-desc" style="color: #666;"></p>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-            <div class="spec-box">
-                <h4 style="color: #28a745; margin-bottom: 10px;">📋 상세 제원</h4>
-                <p id="modal-spec" style="line-height: 1.6;"></p>
+            <!-- 상세 제원 내용 -->
+            <div class="modal-body">
+                <h2 id="modal-title">상품명</h2>
+                <p id="modal-desc" style="color: #666;"></p>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                <div class="spec-box">
+                    <h4 style="color: #28a745; margin-bottom: 10px;">📋 상세 제원</h4>
+                    <p id="modal-spec" style="line-height: 1.6;"></p>
+                </div>
+            </div>
+
+            <!-- 결제 바 (항상 하단 고정) -->
+            <div class="floating-payment-bar">
+                <div>판매가: <strong id="modal-price">0</strong>원</div>
+                <button class="pay-btn" 
+                    onclick="goToLogin()" 
+                    style="background:#28a745; 
+                    color:white; 
+                    border:none; 
+                    font-size: 1.3rem;
+                    padding:10px 25px; 
+                    border-radius:25px; 
+                    cursor:pointer; 
+                    font-weight:bold;">구매하기</button>
             </div>
         </div>
-
-        <!-- 결제 바 (항상 하단 고정) -->
-        <div class="floating-payment-bar">
-            <div>판매가: <strong id="modal-price">0</strong>원</div>
-            <button class="pay-btn" 
-                onclick="goToLogin()" 
-                style="background:#28a745; 
-                color:white; 
-                border:none; 
-                font-size: 1.3rem;
-                padding:10px 25px; 
-                border-radius:25px; 
-                cursor:pointer; 
-                font-weight:bold;">구매하기</button>
-        </div>
     </div>
-</div>
     
 
-<!-- =================== JV-Script ========================================================= -->
+    <!-- =================== JV-Script ========================================================= -->
+    <!-- =================== 실제 기기 IP 주소 설정 ============================================= -->
 
-<!-- =================== 실제 기기 IP 주소 설정 ============================================= -->
+    <!-- HTML의 <script> 태그 시작 부분에 넣으세요 -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
 
+    <script>
+        // 1. Firebase 설정 (구글 파이어베이스 콘솔에서 발급받은 본인의 키로 교체하세요)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-<!-- HTML의 <script> 태그 시작 부분에 넣으세요 -->
-<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+        // Firebase 초기화
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-<script>
-    // 1. Firebase 설정 (구글 파이어베이스 콘솔에서 발급받은 본인의 키로 교체하세요)
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
+        // 2. [회원가입] localStorage 대신 Firebase Auth & Firestore 사용
+        async function handleJoin() {
+            const email = document.getElementById('join-email').value.trim();
+            const pw = document.getElementById('join-pw').value.trim();
+            const name = document.getElementById('join-name').value.trim();
 
-    // Firebase 초기화
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+            try {
+                // 구글 서버에 사용자 생성
+                const userCredential = await auth.createUserWithEmailAndPassword(email, pw);
+                const user = userCredential.user;
 
-    // 2. [회원가입] localStorage 대신 Firebase Auth & Firestore 사용
-    async function handleJoin() {
-        const email = document.getElementById('join-email').value.trim();
-        const pw = document.getElementById('join-pw').value.trim();
-        const name = document.getElementById('join-name').value.trim();
+                // 추가 정보(성함 등)를 Firestore 클라우드 데이터베이스에 저장
+                await db.collection("users").doc(user.uid).set({
+                    email: email,
+                    name: name,
+                    joinDate: new Date()
+                });
 
-        try {
-            // 구글 서버에 사용자 생성
-            const userCredential = await auth.createUserWithEmailAndPassword(email, pw);
-            const user = userCredential.user;
-
-            // 추가 정보(성함 등)를 Firestore 클라우드 데이터베이스에 저장
-            await db.collection("users").doc(user.uid).set({
-                email: email,
-                name: name,
-                joinDate: new Date()
-            });
-
-            alert(name + "님, 클라우드 회원가입이 완료되었습니다!");
-            toggleForm('login');
-        } catch (error) {
-            alert("가입 실패: " + error.message);
+                alert(name + "님, 클라우드 회원가입이 완료되었습니다!");
+                toggleForm('login');
+            } catch (error) {
+                alert("가입 실패: " + error.message);
+            }
         }
-    }
 
-    // 3. [로그인] 클라우드 서버와 대조
-    async function handleLogin() {
-        const email = document.getElementById('login-email').value.trim();
-        const pw = document.getElementById('login-pw').value.trim();
+        // 3. [로그인] 클라우드 서버와 대조
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const pw = document.getElementById('login-pw').value.trim();
 
-        try {
-            await auth.signInWithEmailAndPassword(email, pw);
-            alert("로그인 성공! 이제 어디서든 접속 가능합니다.");
-            location.href = 'payment.html';
-        } catch (error) {
-            alert("로그인 실패: 아이디 또는 비밀번호를 확인하세요.");
+            try {
+                await auth.signInWithEmailAndPassword(email, pw);
+                alert("로그인 성공! 이제 어디서든 접속 가능합니다.");
+                location.href = 'payment.html';
+            } catch (error) {
+                alert("로그인 실패: 아이디 또는 비밀번호를 확인하세요.");
+            }
         }
-    }
+    </script>
 
 
     <!--- 스마트어시팜 스위치 레이아웃-->

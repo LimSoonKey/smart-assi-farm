@@ -26,6 +26,7 @@
     <link rel="apple-touch-icon" href="icon_512.jpg">
     <link rel="apple-touch-icon" href="./icon-192.jpg">
     <title>스마트어시팜</title>
+    <title>스마트 어시팜 - 로그인/가입</title>
 
     <style>
         /* 기본 설정 */
@@ -1378,57 +1379,91 @@
 
 
         /* ============= 상품 카드를 눌렀을 때 상품 제원과 결제 버튼, 로그인/회원가입 및 결제로 이어짐 ============= */
-/* 모달 배경 */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 10000; /* 다른 요소보다 위에 띄움 */
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.7); /* 배경 어둡게 */
-}
+        /* 모달 배경 */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 10000; /* 다른 요소보다 위에 띄움 */
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7); /* 배경 어둡게 */
+        }
 
-/* 모달 몸체 */
-.modal-content {
-    background-color: #fff;
-    margin: 5% auto;
-    padding: 0;
-    width: 90%;
-    max-width: 550px;
-    border-radius: 20px;
-    position: relative;
-    overflow: hidden; /* 내부 결제바 고정을 위해 */
-}
+        /* 모달 몸체 */
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 550px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden; /* 내부 결제바 고정을 위해 */
+        }
 
-.modal-body {
-    padding: 30px;
-    padding-bottom: 100px; /* 결제바 공간 확보 */
-}
+        .modal-body {
+            padding: 30px;
+            padding-bottom: 100px; /* 결제바 공간 확보 */
+        }
 
-/* 닫기 버튼 */
-.close-btn {
-    position: absolute;
-    right: 20px; top: 15px;
-    font-size: 35px;
-    color: #aaa;
-    cursor: pointer;
-    z-index: 10;
-}
+        /* 닫기 버튼 */
+        .close-btn {
+            position: absolute;
+            right: 20px; top: 15px;
+            font-size: 35px;
+            color: #aaa;
+            cursor: pointer;
+            z-index: 10;
+        }
 
-/* 동동 뜨는 결제 바 */
-.floating-payment-bar {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: #fff;
-    padding: 15px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #eee;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-}
+        /* 동동 뜨는 결제 바 */
+        /* 결제 바가 모달창 하단에 딱 붙어 있게 수정 */
+        .floating-payment-bar {
+            position: absolute;  /* 부모 요소(modal-content) 기준으로 고정 */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eeeeee;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            z-index: 101; /* 제원 텍스트보다 항상 위에 표시 */
+            box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
+        }
 
+        /* 제원 내용이 버튼 뒤로 숨지 않게 여백 추가 */
+        .modal-body {
+            padding: 20px;
+            padding-bottom: 100px; /* 버튼 높이만큼 여백을 주어 텍스트가 끝까지 보이게 함 */
+            overflow-y: auto;
+            max-height: 70vh; /* 화면 높이에 맞춰 조절 */
+        }
+
+        /* 모달 배경 (검은 부분) */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 10000; 
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+
+        /* 모달 하얀 상자 */
+        .modal-content {
+            position: relative; /* 중요: 결제바의 기준점이 됩니다 */
+            background-color: #fff;
+            margin: 5% auto;
+            width: 90%;
+            max-width: 550px;
+            border-radius: 20px;
+            overflow: hidden; /* 내용이 삐져나오지 않게 함 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+       
     </style>
 </head>
 
@@ -2026,6 +2061,41 @@
     </div> 
 
 
+    <!-- =================== 상품 상세 제원 및 결제 진입 모달 ============================================================-->
+<!-- 상품 상세 제원 모달 (전체 껍데기 추가) (HTML 맨 하단 </body> 직전에 추가) -->
+<div id="product-detail-modal" class="modal"> 
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeDetail()">&times;</span>
+        
+        <!-- 상세 제원 내용 -->
+        <div class="modal-body">
+            <h2 id="modal-title">상품명</h2>
+            <p id="modal-desc" style="color: #666;"></p>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            <div class="spec-box">
+                <h4 style="color: #28a745; margin-bottom: 10px;">📋 상세 제원</h4>
+                <p id="modal-spec" style="line-height: 1.6;"></p>
+            </div>
+        </div>
+
+        <!-- 결제 바 (항상 하단 고정) -->
+        <div class="floating-payment-bar">
+            <div>판매가: <strong id="modal-price">0</strong>원</div>
+            <button class="pay-btn" 
+                onclick="goToLogin()" 
+                style="background:#28a745; 
+                color:white; 
+                border:none; 
+                font-size: 1.3rem;
+                padding:10px 25px; 
+                border-radius:25px; 
+                cursor:pointer; 
+                font-weight:bold;">구매하기</button>
+        </div>
+    </div>
+</div>
+    
+
 <!-- =================== JV-Script ========================================================= -->
 
 <!-- =================== 실제 기기 IP 주소 설정 ============================================= -->
@@ -2214,16 +2284,6 @@
                 handleControl(card.querySelector('h4').innerText);
                 }, 300); // 0.3초 이내의 클릭은 무시
         });
-
-
-        // ===================== 시각적 피드백 함수 (실제 제어 로직과 연동) =========================== //
-
-        // 3. 시각적 피드백 함수
-        function handleControl(productName) {
-            console.log(productName + " 제어 시작...");
-            // 여기에 실제 제어 API나 Formspree 연결 로직을 넣습니다.
-            alert(productName + " 시스템에 연결 중입니다. 잠시만 기다려 주세요.");
-        }
 
 
         // ==================================================================================
@@ -2554,6 +2614,9 @@
                 document.getElementById('modal-price').innerText = price;
                 document.getElementById('modal-desc').innerText = desc;
                 document.getElementById('modal-spec').innerText = spec;
+
+                document.getElementById('product-detail-modal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
         
                 // 2. 창 보이기
                 const modal = document.getElementById('product-detail-modal');
@@ -2567,6 +2630,10 @@
             } catch (err) {
                 console.error("실행 오류 발생:", err);
             }
+
+            // [추가] 금고에 선택한 상품명과 가격 저장
+            localStorage.setItem('selectedProductName', name);
+            localStorage.setItem('selectedProductPrice', price);
         }
 
         // 상세창 닫기 함수
@@ -2581,7 +2648,11 @@
         // 결제 버튼 -> 로그인 화면 이동
         function goToLogin() {
             // login.html 파일이 같은 폴더에 있어야 합니다.
-            window.location.href = 'login.html';
+            // 파일이 아직 준비되지 않았다면 경고창만 띄우고 이동하지 않게 설정 (테스트용)
+            // 실제 파일을 만드신 후에는 아래 주석을 풀고 사용하세요.
+            // window.location.href = 'login.html';
+            alert("회원가입 및 로그인 화면으로 이동합니다. (login.html 파일 필요)");
+            location.href = 'login.html';
         }
 
         // 배경(검은 부분) 클릭 시 닫기 기능
@@ -2593,38 +2664,6 @@
         }
 
     </script>
-
-
-    <!-- =================== 상품 상세 제원 및 결제 진입 모달 ============================================================-->
-    <!-- 상품 상세 제원 모달 (HTML 맨 하단 </body> 직전에 추가) -->
-    <div id="product-detail-modal" class="modal">
-        <div class="modal-content">
-            <!-- 닫기 버튼 -->
-            <span class="close-btn" onclick="closeDetail()">&times;</span>
-        
-            <div class="modal-body">
-                <h2 id="modal-title">상품명</h2>
-                <p id="modal-desc" style="color: #666; margin-top: 10px;">상품 설명</p>
-            
-                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-            
-                <div class="spec-box">
-                    <h4 style="color: #28a745; margin-bottom: 10px;">📋 상세 제원</h4>
-                    <p id="modal-spec" style="line-height: 1.6; background: #f9f9f9; padding: 15px; border-radius: 8px;"></p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 동동 뜨는 결제 바 -->
-        <div class="floating-payment-bar">
-            <div class="modal-price-info">
-                <span style="font-size: 0.9rem; color: #888;">판매가</span><br>
-                <strong id="modal-price" style="font-size: 1.4rem; color: #333;">0</strong>원
-            </div>
-            <button class="pay-btn" onclick="goToLogin()">구매하기 (로그인 필요)</button>
-        </div>
-    </div>
-
 
 </body>
 </html>

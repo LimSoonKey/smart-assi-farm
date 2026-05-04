@@ -1735,7 +1735,7 @@
                     </div>
                 </div>
 
-                <div class="product-card" onclick="openDetail('보호막 제어기', '800,000', '우박·서리·과도 햇빛 대비 보호막/차광막 지능 개폐', '구동방식: DC 모터 제어 / 센서: 조도, 온도 감지 / 특징: 자동 개폐 로직 탑재')">
+                <div class="product-card" onclick="openDetail('보호막 제어기', '800,000', '우박, 과도한 햇빛 대비 보호막/차광막 지능 개폐', '구동방식: DC 모터 제어 / 센서: 조도, 온도 감지 / 특징: 자동 개폐 로직 탑재')">
                     <div class="product-portfolio-img">
                         <img src="shield-controller.jpg" alt="보호막 제어기" class="product-portfolio-img">
                     </div>
@@ -2099,6 +2099,69 @@
 <!-- =================== JV-Script ========================================================= -->
 
 <!-- =================== 실제 기기 IP 주소 설정 ============================================= -->
+
+
+<!-- HTML의 <script> 태그 시작 부분에 넣으세요 -->
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+
+<script>
+    // 1. Firebase 설정 (구글 파이어베이스 콘솔에서 발급받은 본인의 키로 교체하세요)
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+
+    // Firebase 초기화
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // 2. [회원가입] localStorage 대신 Firebase Auth & Firestore 사용
+    async function handleJoin() {
+        const email = document.getElementById('join-email').value.trim();
+        const pw = document.getElementById('join-pw').value.trim();
+        const name = document.getElementById('join-name').value.trim();
+
+        try {
+            // 구글 서버에 사용자 생성
+            const userCredential = await auth.createUserWithEmailAndPassword(email, pw);
+            const user = userCredential.user;
+
+            // 추가 정보(성함 등)를 Firestore 클라우드 데이터베이스에 저장
+            await db.collection("users").doc(user.uid).set({
+                email: email,
+                name: name,
+                joinDate: new Date()
+            });
+
+            alert(name + "님, 클라우드 회원가입이 완료되었습니다!");
+            toggleForm('login');
+        } catch (error) {
+            alert("가입 실패: " + error.message);
+        }
+    }
+
+    // 3. [로그인] 클라우드 서버와 대조
+    async function handleLogin() {
+        const email = document.getElementById('login-email').value.trim();
+        const pw = document.getElementById('login-pw').value.trim();
+
+        try {
+            await auth.signInWithEmailAndPassword(email, pw);
+            alert("로그인 성공! 이제 어디서든 접속 가능합니다.");
+            location.href = 'payment.html';
+        } catch (error) {
+            alert("로그인 실패: 아이디 또는 비밀번호를 확인하세요.");
+        }
+    }
+
+
     <!--- 스마트어시팜 스위치 레이아웃-->
     <script>
         // === [실제 기기 IP 주소 설정] ===

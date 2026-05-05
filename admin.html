@@ -3,17 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>어시팜 - 통합 관리자 시스템</title>
+
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        body { font-family: 'Pretendard', sans-serif; background: #f4f7f6; padding: 30px; }
-        .admin-container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        h1 { color: #1a5c2a; border-bottom: 3px solid #28a745; padding-bottom: 10px; }
-        .order-card { border: 1px solid #eee; padding: 20px; margin-bottom: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        /* 전체 글꼴 및 배경 */
+body { 
+    font-family: 'Pretendard', sans-serif; 
+    background: #f4f7f6; 
+    padding: 30px; 
+    margin: 0;
+}
+
+        /* 관리자 컨테이너 */
+.admin-container { 
+    max-width: 900px; 
+    margin: 0 auto; 
+    background: white; 
+    padding: 30px; 
+    border-radius: 15px; 
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1); 
+}
+
+        /* 제목 스타일 */
+h1 { 
+    color: #1a5c2a; 
+    border-bottom: 3px solid #28a745; 
+    padding-bottom: 10px; 
+}
+
+        /* 주문 카드 스타일 */
+.order-card { 
+    border: 1px solid #eee; 
+    padding: 20px; 
+    margin-bottom: 15px; 
+    border-radius: 10px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+        /* 상태 배지 */
+.status-badge { 
+    padding: 5px 12px; 
+    border-radius: 20px; 
+    font-size: 0.85rem; 
+    font-weight: bold; 
+}
+
         .status-ready { background: #fff3cd; color: #856404; } /* 출고대기 */
         .status-shipped { background: #d1ecf1; color: #0c5460; } /* 배송중 */
-        .scan-input { padding: 10px; border: 1px solid #28a745; border-radius: 5px; width: 200px; }
-        .btn-scan { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        #admin-auth { text-align: center; padding: 50px; }
+
+        /* 입력창 및 버튼 */
+.scan-input { 
+    padding: 10px; 
+    border: 1px solid #28a745; 
+    border-radius: 5px; 
+    width: 200px; 
+}
+
+        .btn-scan { 
+    background: #28a745; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background 0.3s;
+}
+        .btn-scan:hover { background: #218838; }
+
+        /* 인증 화면 */
+#admin-auth { 
+    text-align: center; 
+    padding: 100px 50px; 
+}
     </style>
 </head>
 

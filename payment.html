@@ -93,75 +93,75 @@
         <button class="btn-pay" onclick="handlePayment()">결제하기</button>
     </div>
 
-    <script>
-        // 기존 스크립트 내용과 동일 (수정 불필요)
-        const savedName = localStorage.getItem('savedName') || "고객";
-        const productName = localStorage.getItem('selectedProductName') || "상품";
-        const productPrice = localStorage.getItem('selectedProductPrice') || "가격문의";
-        let currentMethod = "";
+<script>
+    const savedName = localStorage.getItem('savedName') || "고객";
+    const productName = localStorage.getItem('selectedProductName') || "상품";
+    const productPrice = localStorage.getItem('selectedProductPrice') || "가격문의";
+    let currentMethod = "";
 
-        document.getElementById('user-info').innerText = "주문자: " + savedName + " 님";
-        document.getElementById('prod-info').innerText = productName;
-        document.getElementById('total-price').innerText = productPrice;
+    document.getElementById('user-info').innerText = "주문자: " + savedName + " 님";
+    document.getElementById('prod-info').innerText = productName;
+    document.getElementById('total-price').innerText = productPrice;
 
-        function selectMethod(method, element) {
-            currentMethod = method;
-            document.querySelectorAll('.method-item').forEach(item => item.classList.remove('active'));
-            element.classList.add('active');
-            
-            const details = document.getElementById('payment-details');
-            const card = document.getElementById('card-form');
-            const transfer = document.getElementById('transfer-info');
-            const vbank = document.getElementById('bank-guide');
-            
-            // 상세 정보 표시 로직
-            if (method === 'vbank') {
-                details.style.display = "none";
-                vbank.style.display = "block";
-            } else {
-                details.style.display = "block";
-                vbank.style.display = "none";
-                card.style.display = (method === 'card') ? "block" : "none";
-                transfer.style.display = (method === 'transfer') ? "block" : "none";
-            }
+    // [중요] 함수 밖으로 꺼내기: 페이지 로드 시 실시간 입력 감시 시작
+    document.querySelector('#card-form input[type="text"]').addEventListener('input', function (e) {
+        let value = e.target.value.replace(/[^\d]/g, '');
+        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
+        e.target.value = formattedValue.substring(0, 19);
+    });
 
-            document.getElementById('check-price').innerText = productPrice;
+    function selectMethod(method, element) {
+        currentMethod = method;
+        document.querySelectorAll('.method-item').forEach(item => item.classList.remove('active'));
+        element.classList.add('active');
+        
+        const details = document.getElementById('payment-details');
+        const card = document.getElementById('card-form');
+        const transfer = document.getElementById('transfer-info');
+        const vbank = document.getElementById('bank-guide');
+        
+        if (method === 'vbank') {
+            details.style.display = "none";
+            vbank.style.display = "block";
+        } else {
+            details.style.display = "block";
+            vbank.style.display = "none";
+            card.style.display = (method === 'card') ? "block" : "none";
+            transfer.style.display = (method === 'transfer') ? "block" : "none";
         }
+        document.getElementById('check-price').innerText = productPrice;
+    }
 
     function handlePayment() {
         if(!currentMethod) { 
             alert("결제 수단을 선택해주세요."); 
             return; 
         }
-
-        // 1. 카드 결제 시 입력값 검증
+        
         if(currentMethod === 'card') {
             const cardNum = document.querySelector('#card-form input[type="text"]').value;
             const cardPw = document.querySelector('#card-form input[type="password"]').value;
 
-            if(cardNum.length < 16) {
+            // 공백을 제외한 순수 숫자가 16자리인지 확인
+            if(cardNum.replace(/\s/g, '').length < 16) {
                 alert("카드번호 16자리를 모두 입력해주세요.");
                 return;
             }
+
             if(cardPw.length < 2) {
                 alert("비밀번호 앞 2자리를 입력해주세요.");
                 return;
             }
 
-            // 카드 결제 성공 메시지
             alert("결제가 완료되었습니다. 감사합니다.");
         } 
-        
-        // 2. 계좌이체 및 무통장입금 시
         else if(currentMethod === 'transfer' || currentMethod === 'vbank') {
-            // 입금 안내 후 최종 감사 메시지
             alert("주문 접수가 완료되었습니다. 입금 확인 후 배송이 시작됩니다. 감사합니다.");
         }
         
-        // 확인을 누르면 인덱스 페이지로 이동
         location.href = 'index.html';
     }
+</script>
 
-    </script>
 </body>
 </html>

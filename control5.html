@@ -72,10 +72,11 @@
             font-size: 1.4rem; 
             padding: 10px;
             text-decoration: none;
-            line-height: 2px;
+            line-height: 2px; /* 이 부분이 범인입니다! */
             display: block; 
-            margin-bottom: 15px; 
+            margin-bottom: 18px; 
             color: #333; 
+            transition: color 0.2s ease;
         }
 
         /* 스위치와 글자를 감싸는 컨테이너 */
@@ -197,9 +198,9 @@
         }
 
         .timer-text {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #f8f8f5; /* 작동 중일 때 눈에 띄는 빨간색 */
-            margin-left: 10px;
+            margin-left: 8px;
             font-weight: normal;
         }
 
@@ -291,7 +292,7 @@
 
     <div class="control-grid">
         <div class="control-card" id="card-water">
-            <span class="label" onclick="editItemLabel(this)">급 수</span>
+            <span class="label" onclick="editItemLabel(this)">🚰 급수</span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -303,7 +304,7 @@
         </div>
 
         <div class="control-card" id="card-irrigation">
-            <span class="label" onclick="editItemLabel(this)">관 수 <span id="timer-irrigation" class="timer-text"></span></span>
+            <span class="label" onclick="editItemLabel(this)">🚿 관수 <span id="timer-irrigation" class="timer-text"></span></span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -315,7 +316,7 @@
         </div>
         
         <div class="control-card" id="card-shield">
-            <span class="label" onclick="editItemLabel(this)">농 약 <span id="timer-shield" class="timer-text"></span></span>
+            <span class="label" onclick="editItemLabel(this)">🧪 농약 <span id="timer-shield" class="timer-text"></span></span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -327,7 +328,7 @@
         </div>
 
         <div class="control-card" id="card-pesticide">
-            <span class="label" onclick="editItemLabel(this)">액 비 <span id="timer-pesticide" class="timer-text"></span></span>
+            <span class="label" onclick="editItemLabel(this)">💊 액비 <span id="timer-pesticide" class="timer-text"></span></span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -339,7 +340,7 @@
         </div>
 
         <div class="control-card" id="card-frost">
-            <span class="label" onclick="editItemLabel(this)">서 리</span>
+            <span class="label" onclick="editItemLabel(this)">❄️ 서리</span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -351,7 +352,7 @@
         </div>
 
         <div class="control-card" id="card-fertilizer">
-            <span class="label" onclick="editItemLabel(this)">보호막</span>
+            <span class="label" onclick="editItemLabel(this)">☀️ 보호막</span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -363,7 +364,7 @@
         </div>
 
         <div class="control-card" id="card-light">
-            <span class="label" onclick="editItemLabel(this)">전 등</span>
+            <span class="label" onclick="editItemLabel(this)">💡 전등</span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -375,7 +376,7 @@
         </div>
 
         <div class="control-card" id="card-power">
-            <span class="label" style="color: #d32f2f;">주 전원</span>
+            <span class="label" style="color: #d32f2f;">⚡주 전원</span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">

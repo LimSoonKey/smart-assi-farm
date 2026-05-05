@@ -128,15 +128,39 @@
             document.getElementById('check-price').innerText = productPrice;
         }
 
-        function handlePayment() {
-            if(!currentMethod) { alert("결제 수단을 선택해주세요."); return; }
-            if(currentMethod === 'transfer') {
-                alert("입금 대기 중입니다. 금액이 일치하면 자동으로 완료 처리가 됩니다.");
-            } else if(currentMethod === 'card') {
-                alert("카드사 보안 인증 중입니다... 결제가 완료되었습니다!");
-            }
-            location.href = 'index.html';
+    function handlePayment() {
+        if(!currentMethod) { 
+            alert("결제 수단을 선택해주세요."); 
+            return; 
         }
+
+        // 1. 카드 결제 시 입력값 체크
+        if(currentMethod === 'card') {
+            const cardNum = document.querySelector('#card-form input[type="text"]').value;
+            const cardPw = document.querySelector('#card-form input[type="password"]').value;
+
+            if(cardNum.length < 16) {
+                alert("카드번호 16자리를 모두 입력해주세요.");
+                return;
+            }
+            if(cardPw.length < 2) {
+                alert("비밀번호 앞 2자리를 입력해주세요.");
+                return;
+            }
+
+            // 메시지 수정: 실제 결제 완료가 아닌 '요청'임을 알림
+            alert("카드 결제 요청이 전송되었습니다. 관리자 확인 후 승인됩니다.");
+        } 
+        
+        // 2. 계좌 관련 안내
+        else if(currentMethod === 'transfer' || currentMethod === 'vbank') {
+            alert("주문이 접수되었습니다. 안내된 계좌로 입금이 확인되면 배송이 시작됩니다.");
+        }
+        
+        // 인덱스 페이지로 이동 (실제 서비스 시에는 주문 DB 저장 로직 필요)
+        location.href = 'index.html';
+    }
+
     </script>
 </body>
 </html>

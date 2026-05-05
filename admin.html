@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>어시팜 - 통합 관리자 시스템</title>
     <style>
-        body { font-family: 'Pretendard', sans-serif; background: #f4f7f6; padding: 30 shadow; }
+        body { font-family: 'Pretendard', sans-serif; background: #f4f7f6; padding: 30px; }
         .admin-container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
         h1 { color: #1a5c2a; border-bottom: 3px solid #28a745; padding-bottom: 10px; }
         .order-card { border: 1px solid #eee; padding: 20px; margin-bottom: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
@@ -16,82 +16,115 @@
         #admin-auth { text-align: center; padding: 50px; }
     </style>
 </head>
+
 <body>
 
     <!-- 1. 보안 인증 화면 -->
     <div id="admin-auth">
         <h2>관리자 인증</h2>
         <input type="password" id="admin-pw" placeholder="관리자 비밀번호 입력">
-        <button onclick="checkAdmin()">접속하기</button>
+        <button id="auth-btn">접속하기</button>
     </div>
 
     <!-- 2. 실제 관리 화면 (인증 후 보임) -->
     <div id="admin-main" class="admin-container" style="display:none;">
         <h1>📦 실시간 주문 배송 관리</h1>
         <div id="order-list">
-            <!-- 주문 내역이 여기에 나타납니다 -->
+            <p>데이터를 불러오는 중...</p>
         </div>
     </div>
 
-    <script>
-        // 관리자 비번 (임시: 7777)
-        function checkAdmin() {
+    <!-- Firebase SDK 로드 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.x/firebase-firestore.js";
+
+        // [주의] 여기에 본인의 파이어베이스 설정값을 꼭 넣으세요!
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 1. 비밀번호 체크 (기존 로직 유지)
+        document.getElementById('auth-btn').addEventListener('click', () => {
             const pw = document.getElementById('admin-pw').value;
             if(pw === "7777") {
                 document.getElementById('admin-auth').style.display = 'none';
                 document.getElementById('admin-main').style.display = 'block';
-                loadOrders();
+                startRealtimeUpdates(); // 인증 성공 시 실시간 데이터 감시 시작
             } else {
                 alert("비밀번호가 틀렸습니다.");
             }
+        });
+
+        // 2. 실시간 주문 목록 불러오기 (파이어베이스 연결)
+        function startRealtimeUpdates() {
+            const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
+            
+            onSnapshot(q, (querySnapshot) => {
+                const orderList = document.getElementById('order-list');
+                orderList.innerHTML = ""; // 기존 목록 초기화
+
+                if (querySnapshot.empty) {
+                    orderList.innerHTML = "<p>접수된 주문이 없습니다.</p>";
+                    return;
+                }
+
+                querySnapshot.forEach((orderDoc) => {
+                    const order = orderDoc.data();
+                    const orderId = orderDoc.id;
+                    const statusClass = order.status === "배송중" ? "status-shipped" : "status-ready";
+
+                    const card = document.createElement('div');
+                    card.className = 'order-card';
+                    card.innerHTML = `
+                        <div>
+                            <span class="status-badge ${statusClass}" id="status-${orderId}">${order.status || '출고대기'}</span>
+                            <h3>${order.product} (${order.price || '0'}원)</h3>
+                            <p>주문자: ${order.customerName} (${order.email || '이메일 없음'})</p>
+                        </div>
+                        <div>
+                            <input type="text" class="scan-input" id="tracking-${orderId}" placeholder="운송장 번호" value="${order.trackingNo || ''}">
+                            <button class="btn-scan" data-id="${orderId}">출고 알림 전송</button>
+                        </div>
+                    `;
+                    orderList.appendChild(card);
+
+                    // 버튼 클릭 이벤트 연결 (운송장 업데이트)
+                    card.querySelector('.btn-scan').addEventListener('click', (e) => {
+                        const id = e.target.getAttribute('data-id');
+                        handleShipping(id);
+                    });
+                });
+            });
         }
 
-        // 주문 내역 불러오기 (금고에서 데이터 추출)
-        function loadOrders() {
-            const orderList = document.getElementById('order-list');
-            const savedEmail = localStorage.getItem('savedEmail');
-            const savedName = localStorage.getItem('savedName');
-            const product = localStorage.getItem('selectedProductName');
-            const price = localStorage.getItem('selectedProductPrice');
-
-            if(!savedEmail) {
-                orderList.innerHTML = "<p>접수된 주문이 없습니다.</p>";
-                return;
-            }
-
-            // 주문 카드 생성
-            orderList.innerHTML = `
-                <div class="order-card">
-                    <div>
-                        <span class="status-badge status-ready" id="status-text">출고대기</span>
-                        <h3>${product} (${price}원)</h3>
-                        <p>주문자: ${savedName} (${savedEmail})</p>
-                    </div>
-                    <div>
-                        <input type="text" class="scan-input" id="tracking-no" placeholder="운송장 번호 스캔/입력">
-                        <button class="btn-scan" onclick="handleShipping()">출고 알림 전송</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // 출고 스캔 처리 함수
-        function handleShipping() {
-            const trackingNo = document.getElementById('tracking-no').value;
+        // 3. 출고 처리 및 파이어베이스 데이터 업데이트
+        async function handleShipping(orderId) {
+            const trackingNo = document.getElementById(`tracking-${orderId}`).value;
             if(!trackingNo) {
                 alert("운송장 번호를 입력해주세요.");
                 return;
             }
 
-            // 1. 상태 변경
-            document.getElementById('status-text').innerText = "배송중";
-            document.getElementById('status-text').className = "status-badge status-shipped";
-
-            // 2. 알림 전송 시뮬레이션 (네이버 톡톡 API 연동 지점)
-            alert("입력하신 운송장[" + trackingNo + "]으로 고객님께 출고 알림톡이 전송되었습니다.");
-            
-            // 3. 배송 조회 링크 생성 (예: 우체국택배 기준)
-            console.log("배송 추적 시작: https://service.epost.go.kr/trace.RetrieveDomRBPk_Detail.comm?sid1=" + trackingNo);
+            try {
+                const orderRef = doc(db, "orders", orderId);
+                await updateDoc(orderRef, {
+                    status: "배송중",
+                    trackingNo: trackingNo
+                });
+                alert("상태가 '배송중'으로 업데이트되었습니다.");
+            } catch (error) {
+                console.error("업데이트 오류:", error);
+                alert("데이터 저장 중 오류가 발생했습니다.");
+            }
         }
     </script>
 </body>

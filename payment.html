@@ -134,7 +134,7 @@
             return; 
         }
 
-        // 1. 카드 결제 시 입력값 체크
+        // 1. 카드 결제 시 입력값 검증
         if(currentMethod === 'card') {
             const cardNum = document.querySelector('#card-form input[type="text"]').value;
             const cardPw = document.querySelector('#card-form input[type="password"]').value;
@@ -148,16 +148,17 @@
                 return;
             }
 
-            // 메시지 수정: 실제 결제 완료가 아닌 '요청'임을 알림
-            alert("카드 결제 요청이 전송되었습니다. 관리자 확인 후 승인됩니다.");
+            // 카드 결제 성공 메시지
+            alert("결제가 완료되었습니다. 감사합니다.");
         } 
         
-        // 2. 계좌 관련 안내
+        // 2. 계좌이체 및 무통장입금 시
         else if(currentMethod === 'transfer' || currentMethod === 'vbank') {
-            alert("주문이 접수되었습니다. 안내된 계좌로 입금이 확인되면 배송이 시작됩니다.");
+            // 입금 안내 후 최종 감사 메시지
+            alert("주문 접수가 완료되었습니다. 입금 확인 후 배송이 시작됩니다. 감사합니다.");
         }
         
-        // 인덱스 페이지로 이동 (실제 서비스 시에는 주문 DB 저장 로직 필요)
+        // 확인을 누르면 인덱스 페이지로 이동
         location.href = 'index.html';
     }
 

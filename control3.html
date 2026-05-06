@@ -596,67 +596,68 @@
             }
         }
 
-        // [1] 모든 이름을 불러오는 함수 (페이지 로드 시 실행)
-        function loadSavedNames() {
-            // 스위치 이름 복구
-            const cards = document.querySelectorAll('.control-card');
-            cards.forEach(card => {
-                const savedName = localStorage.getItem(card.id + '-name');
-                if (savedName) {
-                    const nameElement = card.querySelector('.item-name');
-                    if (nameElement) nameElement.innerText = savedName;
-                }
-            });
+// [1] 현재 농장을 식별하는 고유 키 생성 (파일명 기준)
+// 예: farm1.html 이면 'farm1'이 키가 됩니다.
+const farmId = window.location.pathname.split("/").pop().replace(".html", "") || "default-farm";
+
+// [2] 모든 이름을 불러오는 함수
+function loadSavedNames() {
+    // 스위치 이름 복구
+    const cards = document.querySelectorAll('.control-card');
+    cards.forEach(card => {
+        // 저장 키에 농장 아이디를 조합 (예: farm1-card-water-name)
+        const savedName = localStorage.getItem(`${farmId}-${card.id}-name`);
+        if (savedName) {
+            const nameElement = card.querySelector('.item-name');
+            if (nameElement) nameElement.innerText = savedName;
+        }
+    });
     
-            // 농장 제목 복구
-            const savedFarmTitle = localStorage.getItem('farm-title');
-            const farmTitleElement = document.getElementById('farm-title');
-            if (savedFarmTitle && farmTitleElement) {
-                // 첫 번째 텍스트 노드만 변경하여 아이콘 보존
-                farmTitleElement.firstChild.textContent = savedFarmTitle;
-            }
-        }
+    // 농장 제목 복구
+    const savedFarmTitle = localStorage.getItem(`${farmId}-farm-title`);
+    const farmTitleElement = document.getElementById('farm-title');
+    if (savedFarmTitle && farmTitleElement) {
+        farmTitleElement.firstChild.textContent = savedFarmTitle;
+    }
+}
 
-        // [2] 스위치 이름 수정 함수
-        function editItemLabel(element) {
-            if (!isUnlocked) return; 
-        
-            // 구조 내에서 .item-name 클래스만 정확히 타겟팅
-            const nameElement = element.querySelector('.item-name');
-            if (!nameElement) return;
-        
-            const cardId = element.closest('.control-card').id;
-            const currentName = nameElement.innerText.trim();
-            const newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
-            
-            if (newName && newName.trim() !== "") {
-                // 이모지(emoji-icon)나 타이머(timer-text)는 건드리지 않고 이름만 변경
-                nameElement.innerText = newName;
-                localStorage.setItem(cardId + '-name', newName); // 저장
-            }
-            forceLock();
-        }
+// [3] 스위치 이름 수정 함수
+function editItemLabel(element) {
+    if (!isUnlocked) return; 
 
-        // [3] 농장 이름 수정 함수
-        function editTitle() {
-            if (!isUnlocked) return;
-            const titleElement = document.getElementById('farm-title');
-            if (!titleElement) return;
+    const nameElement = element.querySelector('.item-name');
+    if (!nameElement) return;
 
-            const currentTitle = titleElement.firstChild.textContent.trim();
-            const newTitle = prompt("새로운 농장 이름을 입력하세요:", currentTitle);
+    const cardId = element.closest('.control-card').id;
+    const currentName = nameElement.innerText.trim();
+    const newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
     
-            if (newTitle && newTitle.trim() !== "") {
-                // 제목 옆의 ✏️ 아이콘을 건드리지 않기 위해 첫 번째 자식(텍스트)만 수정
-                titleElement.firstChild.textContent = newTitle;
-                localStorage.setItem('farm-title', newTitle); // 저장
-            }
-            forceLock();
-        }
+    if (newName && newName.trim() !== "") {
+        nameElement.innerText = newName;
+        // 농장별로 구분하여 저장
+        localStorage.setItem(`${farmId}-${cardId}-name`, newName);
+    }
+    forceLock();
+}
 
-        // [4] 페이지 시작 시 실행
-        window.addEventListener('load', loadSavedNames);
+// [4] 농장 이름 수정 함수
+function editTitle() {
+    if (!isUnlocked) return;
+    const titleElement = document.getElementById('farm-title');
+    if (!titleElement) return;
 
+    const currentTitle = titleElement.firstChild.textContent.trim();
+    const newTitle = prompt("새로운 농장 이름을 입력하세요:", currentTitle);
+    
+    if (newTitle && newTitle.trim() !== "") {
+        titleElement.firstChild.textContent = newTitle;
+        // 농장별로 구분하여 저장
+        localStorage.setItem(`${farmId}-farm-title`, newTitle);
+    }
+    forceLock();
+}
+
+window.addEventListener('load', loadSavedNames);
         window.addEventListener('load', function() {
             loadSavedNames();
             // 만약 다른 초기화 함수가 더 있었다면 여기에 추가

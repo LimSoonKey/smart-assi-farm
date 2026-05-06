@@ -31,6 +31,294 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 12px; 
+            margin: 0 auto;
+        }
+
+        /* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
+        .control-card { 
+            background: #ccf9d0; /* 연한 녹색 배경 */
+            height: 85px;
+            padding: 10px 0; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            border: 2px solid #4e7c3f;
+            transition: all 0.2s ease;
+            
+            /* 추가: 기본 글자색 (어두운 녹색 계열) */
+            color: #2e4d25; 
+        }
+
+        /* [켜짐 상태] .on 클래스가 추가되었을 때 */
+        .control-card.on { 
+            border-color: var(--main-green); 
+            background-color: #32943a; /* 진한 녹색 배경 */
+            box-shadow: 0 4px 15px #246927; 
+
+            /* 핵심 추가: 배경이 진해지므로 글자색을 백색으로 변경 */
+            color: #ffffff !important; 
+        }
+
+        /* 추가 팁: 카드 내의 작은 설명글이나 아이콘이 있다면 함께 색상을 바꿔줍니다 */
+        .control-card.on p, 
+        .control-card.on span,
+        .control-card.on label {
+            color: #ffffff;
+        }
+
+        /* 카드 내부 레이아웃 */
+        .label { 
+            font-weight: bold; 
+            font-size: 1.2rem; 
+            padding: 10px;
+            text-decoration: none;
+            line-height: 2px; /* 이 부분이 범인입니다! */
+            display: block; 
+            margin-bottom: 18px; 
+            color: #333; 
+            transition: color 0.2s ease;   
+        }
+
+        /* 스위치와 글자를 감싸는 컨테이너 */
+        .switch-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+
+        /* ON/OFF 글자 스타일 */
+        .status-label { 
+            font-size: 1rem; 
+            font-weight: 900; 
+            color: #4d9554; 
+        }
+
+        /* 스위치 상태에 따른 글자 색상 변화 */
+        input:not(:checked) ~ .off-label { color: var(--error-red); }
+        input:checked ~ .on-label { color: var(--main-green); }
+
+        /* 스위치 크기를 조금 더 키워 조작이 편하게 함 */
+        .switch { 
+            position: relative; 
+            display: inline-block; 
+            width: 85px; 
+            height: 40px; 
+        }
+
+        .switch input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+        }
+
+        .slider { 
+            position: absolute; 
+            cursor: pointer; 
+            top: 0; 
+            text-align: center !important;
+            width: 80px;
+            left: 0px; 
+            right: 0; 
+            bottom: 0; 
+            background-color: #8b8888; 
+            transition: .4s; 
+            border-radius: 34px; 
+        }
+
+        .slider:before { 
+            position: absolute; 
+            content: ""; 
+            height: 32px; 
+            width: 32px; 
+            left: 2px; 
+            bottom: 4px; 
+            background-color: white; 
+            transition: .4s; 
+            border-radius: 50%; 
+        }
+        
+        input:checked + .slider { background-color: var(--main-green); }
+        input:checked + .slider:before { transform: translateX(45px); } /* 스위치 왕복 거리 */
+
+        #status-bar { 
+            margin-top: 30px; 
+            font-weight: bold; 
+            color: #444; 
+            font-size: 1.1rem; 
+            height: 25px; 
+        }
+
+
+        /* 이모지만 선명하게 만드는 전용 스타일 */
+        .emoji-icon {
+            display: inline-block;
+            margin-right: 0px;
+            /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
+            text-shadow: 
+                -1px -1px 0 #000080,  
+                 1px -1px 0 #000080,
+                -1px  1px 0 #000080,  
+                 1px  1px 0 #000080;
+        }
+        
+        /* 이름 글자는 깔끔하게 유지 */
+        .item-name {
+            text-shadow: none !important; 
+            font-weight: bold;
+        }
+
+
+        /* =============== 농장 전환 버튼 ============== */
+        
+        .change-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px; 
+            margin: 0 auto;
+        }
+
+        /* 전환버튼을 감싸는 개별 바구니 */
+        .switch-card { 
+            background: rgb(180, 228, 252); 
+            border: 2px solid #628aaf !important;
+            border-radius: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            transition: all 0.2s ease;
+            cursor: pointer;
+            flex-direction: column !important;
+            overflow: hidden;           /* 넘치는 내용은 숨겨서 벌컥거림 방지 */
+
+            /* 핵심 정렬 코드 */
+            display: flex !important;           /* 정렬 모드 강제 활성화 */
+            justify-content: center !important;  /* 가로 중앙 */
+            align-items: center !important;      /* 세로 중앙 */
+    
+            /* 패딩은 0으로 만들고 높이로만 조절합니다 */
+            padding: 0 !important;  
+            margin: 0 !important;
+            height: 64px !important;    /* 85픽셀로 높이를 딱 고정합니다 */
+        }
+
+        /* 버튼 안의 링크 글자들도 정렬합니다 */
+        .switch-card a {
+            text-decoration: none;
+            line-height: 1;           /* 줄 간격을 고정하여 흔들림 방지 */
+        }
+
+        .switch-card .label {
+            /* 글자 자체에 숨어있는 여백을 제거합니다 */
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+            line-height: 1;                     /* 줄 간격 때문에 치우치는 현상 방지 */
+            font-weight: 700;
+        }
+
+        .timer-text {
+            font-size: 1.1rem;
+            color: #f8f8f5; /* 작동 중일 때 눈에 띄는 빨간색 */
+            margin-left: 8px;
+            font-weight: normal;
+        }
+
+        /* 잠금이 풀렸을 때 제목에 줄 효과 */
+        .unlocked-title {
+            color: #1a73e8 !important;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* 잠금 해제 시 버튼 색상 변화 */
+        .unlocked-btn {
+            background: #FF1744 !important;
+            color: white !important;
+            border-color: #FF1744 !important;
+        }
+
+        /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
+        body.unlocked .label {
+            cursor: pointer;
+            text-decoration: underline dotted #4e7c3f; /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
+        }
+
+        /* 주 전원은 빨간색이므로 강조 유지 */
+        #card-power .label {
+            font-weight: bold;
+        }
+
+        /* 화면 크기에 따라서 폰트 사이즈가 유연하게 변함 */ 
+        @media (max-width: 320px) {
+            html { font-size: 14px; }
+        }
+        @media (min-width: 768px) {
+            html { font-size: 18px; }
+        }
+
+        /* --- 보안 알림 레이아웃 --- */
+        #emergency-msg {
+            display: none; /* 평소엔 숨김 */
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; padding: 20px;
+            background-color: white; border: 5px solid #FF1744; border-radius: 15px;
+            z-index: 10001; cursor: pointer; text-align: center;
+        }
+
+        /* 빨간 글자 깜박임 효과 */
+        .blink-red {
+            color: #FF1744; font-size: 1.8rem; font-weight: bold;
+            animation: alert-blink 0.6s infinite;
+        }
+        @keyframes alert-blink {
+            0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; }
+        }
+
+        /* CCTV 팝업 스타일 */
+        #cctv-popup {
+            display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+            width: 95%; max-width: 500px; background: #000; border-radius: 20px;
+            z-index: 10002; padding: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+
+/* ============================================================================ */        
+/* ===================== 모바일 블럭 =========================================== */        
+
+    /* 모바일 대응: 화면이 작아지면 제품 사진 숨기기 혹은 크기 조절 */
+    @media screen and (max-width: 768px) {
+
+            .product-image {
+                display: none; /* 사진 숨기기 */
+                /* 또는 크기를 줄이는 방법도 있습니다:
+                width: 100px; height: auto;
+                */
+            }
+        
+
+        :root { 
+            --main-green: #FF1744; 
+            --bg-light: #f1f8e9; 
+            --error-red: #d3d32f; 
+        }
+
+        body { 
+            font-family: sans-serif; 
+            background: var(--bg-light); 
+            margin: 0; 
+            padding: 15px; 
+            text-align: center; 
+        }
+
+        h2 { 
+            color: var(--main-green); 
+            margin-bottom: 20px; 
+            font-size: 1.8rem; 
+        }
+        
+        /* 화면이 스마트폰 사이즈에 자동으로 마춰지기 */
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px; 
             max-width: 400px; /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
             margin: 0 auto;
         }
@@ -151,22 +439,22 @@
 
 
         /* 이모지만 선명하게 만드는 전용 스타일 */
-.emoji-icon {
-    display: inline-block;
-    margin-right: 0px;
-    /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
-    text-shadow: 
-        -1px -1px 0 #000080,  
-         1px -1px 0 #000080,
-        -1px  1px 0 #000080,  
-         1px  1px 0 #000080;
-}
+        .emoji-icon {
+            display: inline-block;
+            margin-right: 0px;
+            /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
+            text-shadow: 
+                -1px -1px 0 #000080,  
+                 1px -1px 0 #000080,
+                -1px  1px 0 #000080,  
+                 1px  1px 0 #000080;
+        }
 
-/* 이름 글자는 깔끔하게 유지 */
-.item-name {
-    text-shadow: none !important; 
-    font-weight: bold;
-}
+        /* 이름 글자는 깔끔하게 유지 */
+        .item-name {
+            text-shadow: none !important; 
+            font-weight: bold;
+        }
 
 
         /* =============== 농장 전환 버튼 ============== */
@@ -256,31 +544,31 @@
             html { font-size: 18px; }
         }
 
-/* --- 보안 알림 레이아웃 --- */
-#emergency-msg {
-    display: none; /* 평소엔 숨김 */
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-    width: 90%; max-width: 400px; padding: 20px;
-    background-color: white; border: 5px solid #FF1744; border-radius: 15px;
-    z-index: 10001; cursor: pointer; text-align: center;
-}
+        /* --- 보안 알림 레이아웃 --- */
+        #emergency-msg {
+            display: none; /* 평소엔 숨김 */
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; padding: 20px;
+            background-color: white; border: 5px solid #FF1744; border-radius: 15px;
+            z-index: 10001; cursor: pointer; text-align: center;
+        }
 
-/* 빨간 글자 깜박임 효과 */
-.blink-red {
-    color: #FF1744; font-size: 1.8rem; font-weight: bold;
-    animation: alert-blink 0.6s infinite;
-}
-@keyframes alert-blink {
-    0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; }
-}
+        /* 빨간 글자 깜박임 효과 */
+        .blink-red {
+            color: #FF1744; font-size: 1.8rem; font-weight: bold;
+            animation: alert-blink 0.6s infinite;
+        }
+        @keyframes alert-blink {
+            0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; }
+        }
 
-/* CCTV 팝업 스타일 */
-#cctv-popup {
-    display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
-    width: 95%; max-width: 500px; background: #000; border-radius: 20px;
-    z-index: 10002; padding: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
-}
-
+        /* CCTV 팝업 스타일 */
+        #cctv-popup {
+            display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+            width: 95%; max-width: 500px; background: #000; border-radius: 20px;
+            z-index: 10002; padding: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+    }
 
     </style>
 </head>
@@ -296,7 +584,6 @@
         padding: 5px !important; 
         margin-bottom: 10px; 
         box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-        max-width: 370px; 
         margin-left: auto; 
         margin-right: auto;">
         

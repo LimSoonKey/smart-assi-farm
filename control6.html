@@ -69,7 +69,7 @@
         /* 카드 내부 레이아웃 */
         .label { 
             font-weight: bold; 
-            font-size: 1.2rem; 
+            font-size: 1.3rem; 
             padding: 10px;
             text-decoration: none;
             line-height: 2px; /* 이 부분이 범인입니다! */
@@ -148,6 +148,25 @@
             font-size: 1.1rem; 
             height: 25px; 
         }
+
+
+        /* 이모지만 선명하게 만드는 전용 스타일 */
+.emoji-icon {
+    display: inline-block;
+    margin-right: 0px;
+    /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
+    text-shadow: 
+        -1px -1px 0 #000080,  
+         1px -1px 0 #000080,
+        -1px  1px 0 #000080,  
+         1px  1px 0 #000080;
+}
+
+/* 이름 글자는 깔끔하게 유지 */
+.item-name {
+    text-shadow: none !important; 
+    font-weight: bold;
+}
 
 
         /* =============== 농장 전환 버튼 ============== */
@@ -292,7 +311,12 @@
 
     <div class="control-grid">
         <div class="control-card" id="card-water">
-            <span class="label" onclick="editItemLabel(this)">🚰 급수</span>
+            <span class="label" onclick="editItemLabel(this)">
+                <span class="emoji-icon">🚰</span> 
+                <span class="item-name">급수</span>
+                <span id="timer-water" class="timer-text"></span>
+            </span>
+
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -305,8 +329,11 @@
 
         <div class="control-card" id="card-irrigation">
             <span class="label" onclick="editItemLabel(this)">
-                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">🚿</span> 
-                관수 <span id="timer-irrigation" class="timer-text"></span></span>
+                <span class="emoji-icon">🚿</span> 
+                <span class="item-name">관수</span>
+                <span id="timer-irrigation" class="timer-text"></span>
+            </span>
+
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -319,8 +346,11 @@
         
         <div class="control-card" id="card-pesticide">
             <span class="label" onclick="editItemLabel(this)">
-                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">🧪</span> 
-                농약 <span id="timer-pesticide" class="timer-text"></span></span>
+                <span class="emoji-icon">🧪</span> 
+                <span class="item-name">농약</span>
+                <span id="timer-pesticide" class="timer-text"></span>
+            </span>
+
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -333,8 +363,11 @@
 
         <div class="control-card" id="card-fertilizer">
             <span class="label" onclick="editItemLabel(this)">
-                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">💊</span> 
-                액비 <span id="timer-fertilizer" class="timer-text"></span></span>
+                <span class="emoji-icon">💊</span> 
+                <span class="item-name">액비</span>
+                <span id="timer-fertilizer" class="timer-text"></span>
+            </span>
+
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -347,8 +380,11 @@
 
         <div class="control-card" id="card-shield">
             <span class="label" onclick="editItemLabel(this)">
-                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">☀️</span> 
-                천막</span>
+                <span class="emoji-icon">☀️</span> 
+                <span class="item-name">천막</span>
+                <span id="timer-shield" class="timer-text"></span>
+            </span>
+            
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -361,8 +397,11 @@
 
         <div class="control-card" id="card-frost">
             <span class="label" onclick="editItemLabel(this)">
-                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">❄️</span> 
-                서리</span>
+                <span class="emoji-icon">❄️</span> 
+                <span class="item-name">서리</span>
+                <span id="timer-frost" class="timer-text"></span>
+            </span>
+
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -374,8 +413,12 @@
         </div>
 
         <div class="control-card" id="card-light">
-            <span class="label" onclick="editItemLabel(this)"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">💡</span> 
-            전등</span>
+            <span class="label" onclick="editItemLabel(this)">
+                <span class="emoji-icon">💡</span> 
+                <span class="item-name">전등</span>
+                <span id="timer-light" class="timer-text"></span>
+            </span>
+
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -387,9 +430,12 @@
         </div>
 
         <div class="control-card" id="card-power">
-            <span class="label" style="color: #d32f2f;">
-                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">⚡</span>
-                주 전원</span>
+            <span class="label" onclick="editItemLabel(this)" style="color: #d32f2f;">
+                <span class="emoji-icon">⚡</span>
+                <span class="item-name">주 전원</span>
+                <span id="timer-power" class="timer-text"></span>
+            </span>
+
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -550,29 +596,73 @@
             }
         }
 
-        function editTitle() {
+        // [1] 모든 이름을 불러오는 함수 (페이지 로드 시 실행)
+        function loadSavedNames() {
+            // 스위치 이름 복구
+            const cards = document.querySelectorAll('.control-card');
+            cards.forEach(card => {
+                const savedName = localStorage.getItem(card.id + '-name');
+                if (savedName) {
+                    const nameElement = card.querySelector('.item-name');
+                    if (nameElement) nameElement.innerText = savedName;
+                }
+            });
+    
+            // 농장 제목 복구
+            const savedFarmTitle = localStorage.getItem('farm-title');
+            const farmTitleElement = document.getElementById('farm-title');
+            if (savedFarmTitle && farmTitleElement) {
+                // 첫 번째 텍스트 노드만 변경하여 아이콘 보존
+                farmTitleElement.firstChild.textContent = savedFarmTitle;
+            }
+        }
+
+        // [2] 스위치 이름 수정 함수
+        function editItemLabel(element) {
             if (!isUnlocked) return; 
-            const titleElement = document.getElementById('farm-title');
-            const currentName = titleElement.childNodes[0].textContent.trim();
-            const newName = prompt("새로운 농장 이름을 입력하세요:", currentName);
+        
+            // 구조 내에서 .item-name 클래스만 정확히 타겟팅
+            const nameElement = element.querySelector('.item-name');
+            if (!nameElement) return;
+        
+            const cardId = element.closest('.control-card').id;
+            const currentName = nameElement.innerText.trim();
+            const newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
+            
             if (newName && newName.trim() !== "") {
-                const finalName = newName.trim();
-                titleElement.innerHTML = `${finalName} <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>`;
-                updateBottomButton(finalName);
-                localStorage.setItem(window.location.pathname, finalName);
+                // 이모지(emoji-icon)나 타이머(timer-text)는 건드리지 않고 이름만 변경
+                nameElement.innerText = newName;
+                localStorage.setItem(cardId + '-name', newName); // 저장
             }
             forceLock();
         }
 
-        function editItemLabel(element) {
-            if (!isUnlocked) return; 
-            let currentName = element.childNodes[0].textContent.trim();
-            let newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
-            if (newName && newName.trim() !== "") {
-                element.childNodes[0].textContent = newName + " ";
+        // [3] 농장 이름 수정 함수
+        function editTitle() {
+            if (!isUnlocked) return;
+            const titleElement = document.getElementById('farm-title');
+            if (!titleElement) return;
+
+            const currentTitle = titleElement.firstChild.textContent.trim();
+            const newTitle = prompt("새로운 농장 이름을 입력하세요:", currentTitle);
+    
+            if (newTitle && newTitle.trim() !== "") {
+                // 제목 옆의 ✏️ 아이콘을 건드리지 않기 위해 첫 번째 자식(텍스트)만 수정
+                titleElement.firstChild.textContent = newTitle;
+                localStorage.setItem('farm-title', newTitle); // 저장
             }
             forceLock();
         }
+
+        // [4] 페이지 시작 시 실행
+        window.addEventListener('load', loadSavedNames);
+
+        window.addEventListener('load', function() {
+            loadSavedNames();
+            // 만약 다른 초기화 함수가 더 있었다면 여기에 추가
+            // 예: initOtherSettings();
+        });
+
 
         function forceLock() {
             isUnlocked = false;
@@ -680,47 +770,47 @@
         }, false);
 
         
-// --- 보안 시스템 동작 로직 ---
+        // --- 보안 시스템 동작 로직 ---
+        
+        // 1. 침입 감지 시 실행 (Blynk V10 핀이 1이 되면 이 함수를 호출하게 설정)
+        function triggerSecurityAlert(farmName) {
+            const msgBox = document.getElementById('emergency-msg');
+            msgBox.style.display = 'block';
+            msgBox.innerHTML = `<div class="blink-red">${farmName} 침입자 감지!</div><p style="margin:5px 0; color:#333;">(여기를 터치하면 상황 확인)</p>`;
 
-// 1. 침입 감지 시 실행 (Blynk V10 핀이 1이 되면 이 함수를 호출하게 설정)
-function triggerSecurityAlert(farmName) {
-    const msgBox = document.getElementById('emergency-msg');
-    msgBox.style.display = 'block';
-    msgBox.innerHTML = `<div class="blink-red">${farmName} 침입자 감지!</div><p style="margin:5px 0; color:#333;">(여기를 터치하면 상황 확인)</p>`;
+            // 음성 알림 반복 시작
+            if (!window.alertInterval) {
+                window.alertInterval = setInterval(() => {
+                    const utterance = new SpeechSynthesisUtterance(`${farmName}에 침입자가 감지되었습니다.`);
+                    utterance.lang = 'ko-KR';
+                    window.speechSynthesis.speak(utterance);
+                }, 3000);
+            }
 
-    // 음성 알림 반복 시작
-    if (!window.alertInterval) {
-        window.alertInterval = setInterval(() => {
-            const utterance = new SpeechSynthesisUtterance(`${farmName}에 침입자가 감지되었습니다.`);
-            utterance.lang = 'ko-KR';
-            window.speechSynthesis.speak(utterance);
-        }, 3000);
-    }
+            // 현장 장비 작동 (서치라이트 V5, 싸이렌 V6)
+            fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V5=1`);
+            fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V6=1`);
+        }
 
-    // 현장 장비 작동 (서치라이트 V5, 싸이렌 V6)
-    fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V5=1`);
-    fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V6=1`);
-}
-
-// 2. 알림 글자 터치 시 실행되는 함수
-async function handleAlertClick() {
-    // 음성 알림 및 현장 싸이렌 정지
-    clearInterval(window.alertInterval);
-    window.alertInterval = null;
-    window.speechSynthesis.cancel();
-    
-    // 현장 싸이렌 OFF (V6)
-    fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V6=0`);
-
-    // CCTV 팝업 띄우기
-    document.getElementById('cctv-popup').style.display = 'block';
-    
-    // 알림 메시지 숨기기
-    document.getElementById('emergency-msg').style.display = 'none';
-
-    // 센서 상태 초기화 (Blynk V10을 다시 0으로)
-    fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V10=0`);
-}
+        // 2. 알림 글자 터치 시 실행되는 함수
+        async function handleAlertClick() {
+            // 음성 알림 및 현장 싸이렌 정지
+            clearInterval(window.alertInterval);
+            window.alertInterval = null;
+            window.speechSynthesis.cancel();
+            
+            // 현장 싸이렌 OFF (V6)
+            fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V6=0`);
+        
+            // CCTV 팝업 띄우기
+            document.getElementById('cctv-popup').style.display = 'block';
+            
+            // 알림 메시지 숨기기
+            document.getElementById('emergency-msg').style.display = 'none';
+        
+            // 센서 상태 초기화 (Blynk V10을 다시 0으로)
+            fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V10=0`);
+        }
 
     </script>
 </body>

@@ -239,7 +239,8 @@
         /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
         body.unlocked .label {
             cursor: pointer;
-            text-decoration: underline dotted #4e7c3f; /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
+    background: #FF1744 !important; /* 수정 가능함을 알리는 빨간색 */
+    text-decoration: underline dotted white; /* 아래에 흰색 점선을 그어 수정 가능함을 표시 */
         }
 
         /* 주 전원은 빨간색이므로 강조 유지 */
@@ -529,7 +530,8 @@
         /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
         body.unlocked .label {
             cursor: pointer;
-            text-decoration: underline dotted #4e7c3f; /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
+            background: #FF1744 !important; /* 수정 가능함을 알리는 빨간색 */
+            text-decoration: underline dotted white; /* 아래에 흰색 점선을 그어 수정 가능함을 표시 */
         }
 
         /* 주 전원은 빨간색이므로 강조 유지 */
@@ -604,15 +606,47 @@
             position: absolute;
             top: 4px;
             left: 4px;
-            background: rgba(0, 0, 0, 0.7);
             color: #00ff00; /* 터미널 느낌의 녹색 글자 */
             padding: 1px 5px;
             font-size: 0.65rem;
             border-radius: 3px;
             z-index: 1;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #FF1744 !important; /* 수정 가능함을 알리는 빨간색 */
+    text-decoration: underline dotted white;
         }
 
-    
+    /* 확대용 전체화면 레이어 */
+#cctv-zoom-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 20000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#cctv-zoom-overlay img, #cctv-zoom-overlay iframe {
+    width: 95%;
+    max-height: 80%;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+#zoom-close-btn {
+    margin-top: 20px;
+    padding: 15px 40px;
+    background: white;
+    color: black;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
     </style>
 </head>
 
@@ -817,23 +851,28 @@
 <!-- CCTV 모니터 섹션 추가 -->
     <br><br>
 <div class="cctv-grid">
-    <div class="cctv-item">
-        <span class="cctv-label">CAM 01</span>
-        <!-- 실제 카메라 스트리밍 주소(예: RTSP to Web 등)를 src에 넣으세요 -->
-        <img src="https://via.placeholder.com/160x90?text=Camera+01" alt="CCTV 1">
+    <div class="cctv-item" id="cctv-item-1">
+        <span class="cctv-label" onclick="editCctvName(1, event)">CAM 01</span>
+        <img src="https://via.placeholder.com/160x90?text=CAM+01" onclick="zoomCctv(this.src, 1)">
     </div>
-    <div class="cctv-item">
-        <span class="cctv-label">CAM 02</span>
-        <img src="https://via.placeholder.com/160x90?text=Camera+02" alt="CCTV 2">
+    <div class="cctv-item" id="cctv-item-2">
+        <span class="cctv-label" onclick="editCctvName(2, event)">CAM 02</span>
+        <img src="https://via.placeholder.com/160x90?text=CAM+02" onclick="zoomCctv(this.src, 2)">
     </div>
-    <div class="cctv-item">
-        <span class="cctv-label">CAM 03</span>
-        <img src="https://via.placeholder.com/160x90?text=Camera+03" alt="CCTV 3">
+    <div class="cctv-item" id="cctv-item-3">
+        <span class="cctv-label" onclick="editCctvName(3, event)">CAM 03</span>
+        <img src="https://via.placeholder.com/160x90?text=CAM+03" onclick="zoomCctv(this.src, 3)">
     </div>
-    <div class="cctv-item">
-        <span class="cctv-label">CAM 04</span>
-        <img src="https://via.placeholder.com/160x90?text=Camera+04" alt="CCTV 4">
+    <div class="cctv-item" id="cctv-item-4">
+        <span class="cctv-label" onclick="editCctvName(4, event)">CAM 04</span>
+        <img src="https://via.placeholder.com/160x90?text=CAM+04" onclick="zoomCctv(this.src, 4)">
     </div>
+</div>
+
+<div id="cctv-zoom-overlay" onclick="closeZoom()">
+    <h3 id="zoom-title" style="color:white; margin-bottom:15px;">카메라 확대</h3>
+    <img id="zoomed-img" src="">
+    <div id="zoom-close-btn">닫기</div>
 </div>
 
 
@@ -1166,6 +1205,60 @@ window.addEventListener('load', loadSavedNames);
             fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V10=0`);
         }
 
+        // 1. CCTV 확대 보기 기능
+function zoomCctv(src, num) {
+    const overlay = document.getElementById('cctv-zoom-overlay');
+    const zoomedImg = document.getElementById('zoomed-img');
+    const zoomTitle = document.getElementById('zoom-title');
+    
+    // 현재 저장된 카메라 이름을 가져와서 제목으로 표시
+    const savedName = localStorage.getItem(`${farmId}-cctv-${num}-name`) || `CAM 0${num}`;
+    
+    zoomedImg.src = src;
+    zoomTitle.innerText = savedName;
+    overlay.style.display = 'flex';
+}
+
+function closeZoom() {
+    document.getElementById('cctv-zoom-overlay').style.display = 'none';
+}
+
+// 2. CCTV 이름 수정 기능 (잠금 해제 상태에서만 작동)
+function editCctvName(num, event) {
+    if (!isUnlocked) {
+        // 잠겨있을 때는 확대를 유도하거나 무시
+        return; 
+    }
+    
+    // 이벤트 전파 방지 (이름 클릭 시 사진 클릭 효과 방지)
+    event.stopPropagation();
+
+    const labelElement = event.target;
+    const currentName = labelElement.innerText;
+    const newName = prompt("카메라 이름을 입력하세요:", currentName);
+    
+    if (newName && newName.trim() !== "") {
+        labelElement.innerText = newName;
+        // 로컬 스토리지에 저장 (농장별로 구분)
+        localStorage.setItem(`${farmId}-cctv-${num}-name`, newName);
+    }
+    forceLock(); // 수정 후 다시 잠금
+}
+
+// 3. 페이지 로드 시 저장된 CCTV 이름 불러오기
+// 기존 loadSavedNames 함수 안에 아래 코드를 추가하거나 따로 실행하세요.
+function loadCctvNames() {
+    for (let i = 1; i <= 4; i++) {
+        const savedName = localStorage.getItem(`${farmId}-cctv-${i}-name`);
+        if (savedName) {
+            const item = document.querySelector(`#cctv-item-${i} .cctv-label`);
+            if (item) item.innerText = savedName;
+        }
+    }
+}
+
+// 초기화 시 호출
+window.addEventListener('load', loadCctvNames);
     </script>
 </body>
 </html>

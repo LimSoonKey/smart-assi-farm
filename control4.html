@@ -304,7 +304,9 @@
         </div>
 
         <div class="control-card" id="card-irrigation">
-            <span class="label" onclick="editItemLabel(this)"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">🚿</span> 관수 <span id="timer-irrigation" class="timer-text"></span></span>
+            <span class="label" onclick="editItemLabel(this)">
+                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">🚿</span> 
+                관수 <span id="timer-irrigation" class="timer-text"></span></span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -315,20 +317,10 @@
             </div>
         </div>
         
-        <div class="control-card" id="card-shield">
-            <span class="label" onclick="editItemLabel(this)"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">🧪</span> 농약 <span id="timer-shield" class="timer-text"></span></span>
-            <div class="switch-container">
-                <span class="status-label off-label">꺼짐</span>
-                <label class="switch">
-                    <input type="checkbox" onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
-                    <span class="slider"></span>
-                </label>
-                <span class="status-label on-label">켜짐</span>
-            </div>
-        </div>
-
         <div class="control-card" id="card-pesticide">
-            <span class="label" onclick="editItemLabel(this)"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">💊</span> 액비 <span id="timer-pesticide" class="timer-text"></span></span>
+            <span class="label" onclick="editItemLabel(this)">
+                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">🧪</span> 
+                농약 <span id="timer-pesticide" class="timer-text"></span></span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -339,20 +331,10 @@
             </div>
         </div>
 
-        <div class="control-card" id="card-frost">
-            <span class="label" onclick="editItemLabel(this)"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">❄️</span> 서리</span>
-            <div class="switch-container">
-                <span class="status-label off-label">꺼짐</span>
-                <label class="switch">
-                    <input type="checkbox" onchange="toggleDevice('frost', this, 0, IP_PLUS_1PM)">
-                    <span class="slider"></span>
-                </label>
-                <span class="status-label on-label">켜짐</span>
-            </div>
-        </div>
-
         <div class="control-card" id="card-fertilizer">
-            <span class="label" onclick="editItemLabel(this)"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">☀️</span> 보호막</span>
+            <span class="label" onclick="editItemLabel(this)">
+                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">💊</span> 
+                액비</span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -363,8 +345,37 @@
             </div>
         </div>
 
+        <div class="control-card" id="card-shield">
+            <span class="label" onclick="editItemLabel(this)">
+                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">☀️</span> 
+                보호막 <span id="timer-shield" class="timer-text"></span></span>
+            <div class="switch-container">
+                <span class="status-label off-label">꺼짐</span>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
+                    <span class="slider"></span>
+                </label>
+                <span class="status-label on-label">켜짐</span>
+            </div>
+        </div>
+
+        <div class="control-card" id="card-frost">
+            <span class="label" onclick="editItemLabel(this)">
+                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">❄️</span> 
+                서리</span>
+            <div class="switch-container">
+                <span class="status-label off-label">꺼짐</span>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleDevice('frost', this, 0, IP_PLUS_1PM)">
+                    <span class="slider"></span>
+                </label>
+                <span class="status-label on-label">켜짐</span>
+            </div>
+        </div>
+
         <div class="control-card" id="card-light">
-            <span class="label" onclick="editItemLabel(this)"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">💡</span> 전등</span>
+            <span class="label" onclick="editItemLabel(this)"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">💡</span> 
+            전등</span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -376,7 +387,9 @@
         </div>
 
         <div class="control-card" id="card-power">
-            <span class="label" style="color: #d32f2f;"><span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">⚡</span>주 전원</span>
+            <span class="label" style="color: #d32f2f;">
+                <span style="text-shadow: -1px -1px 0 #000080, 1px -1px 0 #000080, -1px  1px 0 #000080, 1px  1px 0 #000080;">⚡</span>
+                주 전원</span>
             <div class="switch-container">
                 <span class="status-label off-label">꺼짐</span>
                 <label class="switch">
@@ -485,7 +498,7 @@
                 errorAudio.play();
             
                 // 연결 실패 시 원상복구
-                statusText.innerText = error.name === 'AbortError' ? `❌ ${device} 응답 초과 (5초)` : `❌ ${device} 연결 실패`;
+                statusText.innerText = error.name === 'AbortError' ? `❌ ${device} 기기 연결을 확인해주세요.` : `❌ ${device} 연결 실패`;
                 element.checked = !isOn; 
                 card.classList.remove('on');
                 if (timerDisplay) stopTimer(device, timerDisplay);

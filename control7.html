@@ -432,8 +432,7 @@
         <div class="control-card" id="card-power">
             <span class="label" onclick="editItemLabel(this)" style="color: #d32f2f;">
                 <span class="emoji-icon">⚡</span>
-                <span class="item-name">전원</span>
-                <span id="timer-power" class="timer-text"></span>
+                <span class="item-name">주 전원</span>
             </span>
 
             <div class="switch-container">
@@ -503,8 +502,8 @@
 
             // 주 전원 안전장치
             if (device === 'power') {
-                const action = isOn ? "켜시겠습니까?" : "끄시겠습니까? 모든 기능이 중단될 수 있습니다.";
-                if (!confirm(`[주 전원 설정] 정말 전원을 ${action}`)) {
+                const action = isOn ? "켜시겠습니까?" : "끄시겠습니까? 모든 기능이 중단됩니다.";
+                if (!confirm(`정말 전원을 ${action}`)) {
                     element.checked = !isOn;
                     return;
                 }

@@ -22,9 +22,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="./manifest.json">
-    <link rel="icon" href="icon_512.jpg">
-    <link rel="apple-touch-icon" href="icon_512.jpg">
-    <link rel="apple-touch-icon" href="./icon-192.jpg">
+    <link rel="icon" href="icon_512.png">
+    <link rel="apple-touch-icon" href="icon_512.png">
+    <link rel="apple-touch-icon" href="./icon-192.png">
     <title>스마트어시팜</title>
     <title>스마트 어시팜 - 로그인/가입</title>
 
@@ -2735,6 +2735,29 @@
             }
         }
 
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.x/firebase-firestore.js";
+        import { firebaseConfig } from "./firebase-config.js";
+
+        // 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // [이곳에 이전에 드린 'submitOrder' 함수를 붙여넣으세요]
+        async function submitOrder(orderData) { ... }
+
+        // 예: 주문 버튼 클릭 이벤트 연결
+        document.getElementById("order-button").addEventListener("click", () => {
+            const data = { 
+                name: document.getElementById("name").value,
+                product: "아오리 사과", // 예시
+                quantity: 5 
+            };
+            submitOrder(data);
+        });
     </script>
 
 </body>

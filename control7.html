@@ -248,14 +248,6 @@
             font-weight: bold;
         }
 
-        /* 화면 크기에 따라서 폰트 사이즈가 유연하게 변함 */ 
-        @media (max-width: 320px) {
-            html { font-size: 14px; }
-        }
-        @media (min-width: 768px) {
-            html { font-size: 18px; }
-        }
-
 /* --- 보안 알림 레이아웃 --- */
 #emergency-msg {
     display: none; /* 평소엔 숨김 */
@@ -361,8 +353,49 @@ body.unlocked .cctv-label {
     cursor: pointer;
 }
 
+
+/* 반응형 디자인: 화면 크기에 따라 그리드 레이아웃 조정 */
+
+/* 1. 아주 좁은 모바일 폰 (너비 350px 이하) */
+@media (max-width: 350px) {
+    .control-grid { grid-template-columns: repeat(2, 1fr); } /* 그래도 2열 유지 */
+    .label { font-size: 1rem; } /* 글자 크기 살짝 축소 */
+}
+
+/* 2. 일반 모바일 폰 (351px ~ 767px) */
+@media (min-width: 351px) and (max-width: 767px) {
+    .control-grid { grid-template-columns: repeat(2, 1fr); } /* 2열 4행 */
+    .change-grid { grid-template-columns: repeat(2, 1fr); }  /* 2열 3행 */
+}
+
+/* 3. 태블릿 및 패드 (768px ~ 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .control-grid { grid-template-columns: repeat(3, 1fr); } /* 패드는 넓으니까 3열 */
+    .change-grid { grid-template-columns: repeat(3, 1fr); }  
+    body { padding: 30px; }
+}
+
+/* 모바일 대응 (화면이 작아지면 다시 2개씩 나오게) */
+@media (max-width: 1023px) {
+    /* 스위치 카드: 2열 배치 (약 48%씩 차지) */
+    .control-card {
+        flex: 0 1 calc(50% - 15px) !important; 
+        height: 85px !important;
+        margin: 0 !important;
+    }
+    
+    /* 농장 전환 버튼: 2열 배치 */
+    .switch-card {
+        flex: 0 1 calc(50% - 15px) !important;
+        height: 64px !important;
+        margin: 0 !important;
+    }
+}
+
 /* PC용 메인 레이아웃: 좌우 분할 */
 @media (min-width: 1024px) {
+    .main-container { display: flex !important; height: 100vh; overflow: hidden; }
+
     body {
         display: flex;
         flex-direction: row;
@@ -381,7 +414,34 @@ body.unlocked .cctv-label {
         border-right: 2px solid #ddd;
     }
 
-    /* 오른쪽 CCTV 구역 */
+    /* 스위치 그리드 최적화 */
+    .control-grid {
+        max-width: 100% !important;
+        grid-template-columns: repeat(4, 1fr) !important; /* 4열 배치 */
+    }
+
+    .change-grid { grid-template-columns: repeat(3, 1fr); }  /* 3열 배치 */
+
+    /* 스위치 카드: 4열 배치 */
+    .control-card {
+        flex: 0 1 calc(25% - 15px) !important;
+        height: 100px !important;
+    }
+    
+    /* 농장 전환 버튼: 3열 배치 */
+    .switch-card {
+        flex: 0 1 calc(33.33% - 15px) !important;
+        height: 80px !important;
+    }
+
+    /* 카드 공통 스타일 보정 */
+    .control-card, .switch-card {
+        width: 100% !important; /* 그리드 칸에 꽉 채우기 */
+        margin: 0 !important;
+        box-sizing: border-box;
+    }
+
+        /* 오른쪽 CCTV 구역 */
     .right-panel {
         flex: 1;
         height: 100%;
@@ -400,23 +460,6 @@ body.unlocked .cctv-label {
         gap: 15px;
     }
 
-    /* 스위치 그리드 최적화 */
-    .control-grid {
-        max-width: 100% !important;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
-    }
-
-    /* 스위치 카드: 4열 배치 */
-    .control-card {
-        flex: 0 1 calc(25% - 15px) !important;
-        height: 100px !important;
-    }
-    
-    /* 농장 전환 버튼: 3열 배치 */
-    .switch-card {
-        flex: 0 1 calc(33.33% - 15px) !important;
-        height: 80px !important;
-    }
 }
 
 /* 기존 CCTV 레이아웃 보강 */
@@ -429,12 +472,13 @@ body.unlocked .cctv-label {
 
 /* 바구니는 그대로 두되, 성격만 바꿉니다 */
 .control-grid, .change-grid {
-    display: flex !important;      /* 칸을 나누지 않고, 유연하게 배치 */
+    display: grid !important;      /* 칸을 나누지 않고, 유연하게 배치 */
     flex-wrap: wrap !important;    /* 자리가 좁으면 알아서 다음 줄로! */
     justify-content: center;       /* 항상 가운데 정렬 */
     gap: 10px;                     /* 카드끼리 시원하게 떨어뜨리기 */
-    max-width: 100%;               /* 부모 패널(좌측 패널) 안에서 꽉 차게 */
+    width: 100%;               /* 부모 패널(좌측 패널) 안에서 꽉 차게 */
     margin: 0 auto !important;
+    box-sizing: border-box;
 }
 
 /* 카드들에게 '스스로 자리 잡는 능력'을 줍니다 */
@@ -458,7 +502,7 @@ body.unlocked .cctv-label {
 .control-card {
     /* PC 분할 화면에서 4개가 한 줄에 나오도록 계산 (약 23%) */
     flex: 0 1 calc(24% - 15px); 
-    min-width: 160px; /* 모바일에서도 보기 적당한 최소 크기 */
+    min-width: 150px !important; /* 모바일에서도 보기 적당한 최소 크기 */
     height: 100px !important; /* 터치하기 편하게 높이를 조금 더 키웠습니다 */
 }
 
@@ -478,23 +522,6 @@ body.unlocked .cctv-label {
     flex: 0 1 calc(32% - 15px);
     min-width: 140px;
     height: 80px !important; /* 글자가 잘 보이도록 높이 상향 */
-}
-
-/* 모바일 대응 (화면이 작아지면 다시 2개씩 나오게) */
-@media (max-width: 1023px) {
-    /* 스위치 카드: 2열 배치 (약 48%씩 차지) */
-    .control-card {
-        flex: 0 1 calc(50% - 15px) !important; 
-        height: 85px !important;
-        margin: 0 !important;
-    }
-    
-    /* 농장 전환 버튼: 2열 배치 */
-    .switch-card {
-        flex: 0 1 calc(50% - 15px) !important;
-        height: 64px !important;
-        margin: 0 !important;
-    }
 }
 
     </style>

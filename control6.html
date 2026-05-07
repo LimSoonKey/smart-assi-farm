@@ -776,7 +776,7 @@ body.unlocked .cctv-label {
 <div class="right-panel">
     <div style="width: 100%; max-width: 800px;">
         <div style="text-align: center; margin-bottom: 15px;">
-            <span id="cctv-farm-badge" style="background: var(--main-green); color: white; padding: 8px 25px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+            <span id="cctv-farm-badge" style="background: var(--main-green); color: white; padding: 8px 25px; border-radius: 50px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
                 산법리 농장 카메라
             </span>
         </div>
@@ -927,27 +927,6 @@ body.unlocked .cctv-label {
 // 예: farm1.html 이면 'farm1'이 키가 됩니다.
 const farmId = window.location.pathname.split("/").pop().replace(".html", "") || "default-farm";
 
-// [2] 모든 이름을 불러오는 함수
-function loadSavedNames() {
-    // 스위치 이름 복구
-    const cards = document.querySelectorAll('.control-card');
-    cards.forEach(card => {
-        // 저장 키에 농장 아이디를 조합 (예: farm1-card-water-name)
-        const savedName = localStorage.getItem(`${farmId}-${card.id}-name`);
-        if (savedName) {
-            const nameElement = card.querySelector('.item-name');
-            if (nameElement) nameElement.innerText = savedName;
-        }
-    });
-    
-    // 농장 제목 복구
-    const savedFarmTitle = localStorage.getItem(`${farmId}-farm-title`);
-    const farmTitleElement = document.getElementById('farm-title');
-    if (savedFarmTitle && farmTitleElement) {
-        farmTitleElement.firstChild.textContent = savedFarmTitle;
-    }
-}
-
 // [3] 스위치 이름 수정 함수
 function editItemLabel(element) {
     if (!isUnlocked) return; 
@@ -1059,36 +1038,6 @@ window.addEventListener('load', loadSavedNames);
                 }
             } catch (e) { console.log("센서 연결 실패"); }
         }
-    
-        // 5. [초기화] 페이지 로드 시 실행
-        window.onload = function() {
-            const path = window.location.pathname;
-            // 1. 현재 파일명만 추출 (예: control3.html)
-            const fileName = path.split('/').pop(); 
-    
-            // 2. 저장된 이름 불러오기
-            const savedName = localStorage.getItem(fileName);
-    
-            // 3. 파일명에 따른 기본 농장 이름 설정
-            let defaultName = "유전리 농장";
-            if (fileName.includes('control3')) defaultName = "백신리 농장";
-            if (fileName.includes('control4')) defaultName = "안심리 농장";
-            if (fileName.includes('control5')) defaultName = "옹암리 농장";
-            if (fileName.includes('control6')) defaultName = "산법리 농장";
-            if (fileName.includes('control7')) defaultName = "단촌리 농장";
-
-            const farmName = savedName || defaultName;
-    
-            // 4. 화면에 농장 이름 표시
-            const titleElement = document.getElementById('farm-title');
-            if (titleElement) {
-                titleElement.innerHTML = `${farmName} <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>`;
-            }
-    
-            // 5. 하단 버튼들 및 센서 데이터 업데이트
-            updateAllBottomButtons();
-            updateSensorDisplay(32, 1.2, 24); // 테스트 데이터
-        };
 
         // 스와이프 뒤로가기
         let touchStartX = 0;
@@ -1099,7 +1048,6 @@ window.addEventListener('load', loadSavedNames);
 
         
         // --- 보안 시스템 동작 로직 ---
-        
         // 1. 침입 감지 시 실행 (Blynk V10 핀이 1이 되면 이 함수를 호출하게 설정)
         function triggerSecurityAlert(farmName) {
             const msgBox = document.getElementById('emergency-msg');

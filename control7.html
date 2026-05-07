@@ -769,10 +769,20 @@ body.unlocked .cctv-label {
         </div>
 
     </div>
-</div><br>
+</div><br><br>
 
 
 <!-- CCTV 모니터 섹션 추가 -->
+<div class="right-panel">
+    <div style="width: 100%; max-width: 800px;">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <span id="cctv-farm-badge" style="background: var(--main-green); color: white; padding: 8px 25px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                유전리 농장 카메라
+            </span>
+        </div>
+    </div>
+</div>
+
 <div class="right-panel">
     <div class="cctv-grid">
         <div class="cctv-item" id="cctv-item-1">
@@ -1184,6 +1194,49 @@ function loadCctvNames() {
 
 // 초기화 시 호출
 window.addEventListener('load', loadCctvNames);
+
+// CCTV와 농장의 연동 전환 기능
+window.onload = function() {
+    const path = window.location.pathname;
+    const fileName = path.split('/').pop(); 
+
+    // 1. 저장된 농장 이름 혹은 기본 이름 결정
+    const savedName = localStorage.getItem(fileName);
+    let defaultName = "유전리 농장";
+    let cameraBaseUrl = "http://192.168.0.101"; // 농장별 카메라 IP 예시
+
+    if (fileName.includes('control3')) { defaultName = "백신리 농장"; cameraBaseUrl = "http://192.168.0.103"; }
+    if (fileName.includes('control4')) { defaultName = "안심리 농장"; cameraBaseUrl = "http://192.168.0.104"; }
+    // ... 나머지 농장 조건들 ...
+
+    const farmName = savedName || defaultName;
+
+    // 2. 왼쪽 상단 농장 타이틀 업데이트
+    const titleElement = document.getElementById('farm-title');
+    if (titleElement) {
+        titleElement.innerHTML = `${farmName} <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>`;
+    }
+
+    // 3. [핵심] 오른쪽 CCTV 명찰 및 카메라 주소 업데이트
+    const cctvBadge = document.getElementById('cctv-farm-badge');
+    if (cctvBadge) {
+        cctvBadge.innerText = `${farmName} 모니터링`;
+    }
+
+    // 농장별로 다른 카메라 주소를 할당 (예시 주소입니다)
+    for (let i = 1; i <= 4; i++) {
+        const cctvImg = document.getElementById(`cctv-img-${i}`);
+        if (cctvImg) {
+            // 실제 카메라 스트리밍 경로로 수정하세요 (예: IP캠 rpc 주소 등)
+            // cctvImg.src = `${cameraBaseUrl}/stream/cam${i}`; 
+            cctvImg.src = `https://via.placeholder.com/640x360?text=${farmName}+CAM+0${i}`;
+        }
+    }
+
+    // 하단 버튼들 및 센서 데이터 업데이트
+    updateAllBottomButtons();
+    loadCctvNames(); // 저장된 카메라 개별 이름(입구, 창고 등) 불러오기
+};
 
     </script>
 </body>

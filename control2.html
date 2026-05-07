@@ -405,6 +405,18 @@ body.unlocked .cctv-label {
         max-width: 100% !important;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
     }
+
+    /* 스위치 카드: 4열 배치 */
+    .control-card {
+        flex: 0 1 calc(25% - 15px) !important;
+        height: 100px !important;
+    }
+    
+    /* 농장 전환 버튼: 3열 배치 */
+    .switch-card {
+        flex: 0 1 calc(33.33% - 15px) !important;
+        height: 80px !important;
+    }
 }
 
 /* 기존 CCTV 레이아웃 보강 */
@@ -415,6 +427,75 @@ body.unlocked .cctv-label {
     margin: 0 auto;
 }
 
+/* 바구니는 그대로 두되, 성격만 바꿉니다 */
+.control-grid, .change-grid {
+    display: flex !important;      /* 칸을 나누지 않고, 유연하게 배치 */
+    flex-wrap: wrap !important;    /* 자리가 좁으면 알아서 다음 줄로! */
+    justify-content: center;       /* 항상 가운데 정렬 */
+    gap: 10px;                     /* 카드끼리 시원하게 떨어뜨리기 */
+    max-width: 100%;               /* 부모 패널(좌측 패널) 안에서 꽉 차게 */
+    margin: 0 auto !important;
+}
+
+/* 카드들에게 '스스로 자리 잡는 능력'을 줍니다 */
+.control-card, .switch-card {
+    flex: 0 1 auto;                /* 자기 몸집만큼만 차지하되 유연하게 */
+    min-width: 160px;              /* 너무 작아지면 글자가 깨지니까 최소 폭 설정 */
+    margin: 0px;
+}
+
+/* [수정] 스위치 카드 컨테이너 (4개씩 2열 목표) */
+.control-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    gap: 15px; /* 터치 미스를 줄이기 위해 간격을 조금 넓혔습니다 */
+    max-width: 900px; /* PC에서 너무 퍼지지 않게 조절 */
+    margin: 0 auto;
+}
+
+/* [수정] 스위치 개별 카드 크기 */
+.control-card {
+    /* PC 분할 화면에서 4개가 한 줄에 나오도록 계산 (약 23%) */
+    flex: 0 1 calc(24% - 15px); 
+    min-width: 160px; /* 모바일에서도 보기 적당한 최소 크기 */
+    height: 100px !important; /* 터치하기 편하게 높이를 조금 더 키웠습니다 */
+}
+
+/* [수정] 농장 전환 버튼 컨테이너 (3개씩 2열 목표) */
+.change-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    gap: 15px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* [수정] 농장 전환 개별 카드 크기 */
+.switch-card {
+    /* PC 분할 화면에서 3개가 한 줄에 나오도록 계산 (약 31%) */
+    flex: 0 1 calc(32% - 15px);
+    min-width: 140px;
+    height: 80px !important; /* 글자가 잘 보이도록 높이 상향 */
+}
+
+/* 모바일 대응 (화면이 작아지면 다시 2개씩 나오게) */
+@media (max-width: 1023px) {
+    /* 스위치 카드: 2열 배치 (약 48%씩 차지) */
+    .control-card {
+        flex: 0 1 calc(50% - 15px) !important; 
+        height: 85px !important;
+        margin: 0 !important;
+    }
+    
+    /* 농장 전환 버튼: 2열 배치 */
+    .switch-card {
+        flex: 0 1 calc(50% - 15px) !important;
+        height: 64px !important;
+        margin: 0 !important;
+    }
+}
 
     </style>
 </head>

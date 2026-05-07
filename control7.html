@@ -281,6 +281,221 @@
     z-index: 10002; padding: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
 }
 
+/* CCTV 모니터링 섹션 스타일 */
+.cctv-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
+    gap: 8px;
+    max-width: 400px;
+    margin: 20px auto; /* 농장전환 버튼 아래 여백 */
+    padding: 10px;
+    background: #333; /* 모니터 느낌을 주는 어두운 배경 */
+    border-radius: 15px;
+}
+
+.cctv-item {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* 와이드 화면 비율 유지 */
+    background: #000;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.cctv-item iframe, .cctv-item img {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.cctv-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    border-radius: 3px;
+}
+
+/* CCTV 이름 수정용 스타일 */
+.cctv-label {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* 잠금 해제 시 이름에 효과 주기 */
+body.unlocked .cctv-label {
+    background: #FF1744 !important; /* 수정 가능함을 알리는 빨간색 */
+    text-decoration: underline dotted white;
+}
+
+/* 확대용 전체화면 레이어 */
+#cctv-zoom-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 20000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#cctv-zoom-overlay img, #cctv-zoom-overlay iframe {
+    width: 95%;
+    max-height: 80%;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+#zoom-close-btn {
+    margin-top: 20px;
+    padding: 15px 40px;
+    background: white;
+    color: black;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* PC용 메인 레이아웃: 좌우 분할 */
+@media (min-width: 1024px) {
+    body {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+        overflow: hidden; /* 전체 스크롤 방지 */
+        padding: 0;
+    }
+
+    /* 왼쪽 제어 구역 */
+    .left-panel {
+        flex: 1;
+        height: 100%;
+        overflow-y: auto; /* 제어부 내용이 많으면 내부 스크롤 */
+        padding: 20px;
+        background: var(--bg-light);
+        border-right: 2px solid #ddd;
+    }
+
+    /* 오른쪽 CCTV 구역 */
+    .right-panel {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #1a1a1a; /* 어두운 배경으로 몰입감 상향 */
+        padding: 10px;
+    }
+
+    /* CCTV 그리드 크기 확대 */
+    .cctv-grid {
+        max-width: 95% !important;
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    /* 스위치 그리드 최적화 */
+    .control-grid {
+        max-width: 100% !important;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+    }
+
+    /* 스위치 카드: 4열 배치 */
+    .control-card {
+        flex: 0 1 calc(25% - 15px) !important;
+        height: 100px !important;
+    }
+    
+    /* 농장 전환 버튼: 3열 배치 */
+    .switch-card {
+        flex: 0 1 calc(33.33% - 15px) !important;
+        height: 80px !important;
+    }
+}
+
+/* 기존 CCTV 레이아웃 보강 */
+.cctv-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+}
+
+/* 바구니는 그대로 두되, 성격만 바꿉니다 */
+.control-grid, .change-grid {
+    display: flex !important;      /* 칸을 나누지 않고, 유연하게 배치 */
+    flex-wrap: wrap !important;    /* 자리가 좁으면 알아서 다음 줄로! */
+    justify-content: center;       /* 항상 가운데 정렬 */
+    gap: 10px;                     /* 카드끼리 시원하게 떨어뜨리기 */
+    max-width: 100%;               /* 부모 패널(좌측 패널) 안에서 꽉 차게 */
+    margin: 0 auto !important;
+}
+
+/* 카드들에게 '스스로 자리 잡는 능력'을 줍니다 */
+.control-card, .switch-card {
+    flex: 0 1 auto;                /* 자기 몸집만큼만 차지하되 유연하게 */
+    min-width: 160px;              /* 너무 작아지면 글자가 깨지니까 최소 폭 설정 */
+    margin: 0px;
+}
+
+/* [수정] 스위치 카드 컨테이너 (4개씩 2열 목표) */
+.control-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    gap: 15px; /* 터치 미스를 줄이기 위해 간격을 조금 넓혔습니다 */
+    max-width: 900px; /* PC에서 너무 퍼지지 않게 조절 */
+    margin: 0 auto;
+}
+
+/* [수정] 스위치 개별 카드 크기 */
+.control-card {
+    /* PC 분할 화면에서 4개가 한 줄에 나오도록 계산 (약 23%) */
+    flex: 0 1 calc(24% - 15px); 
+    min-width: 160px; /* 모바일에서도 보기 적당한 최소 크기 */
+    height: 100px !important; /* 터치하기 편하게 높이를 조금 더 키웠습니다 */
+}
+
+/* [수정] 농장 전환 버튼 컨테이너 (3개씩 2열 목표) */
+.change-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    gap: 15px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* [수정] 농장 전환 개별 카드 크기 */
+.switch-card {
+    /* PC 분할 화면에서 3개가 한 줄에 나오도록 계산 (약 31%) */
+    flex: 0 1 calc(32% - 15px);
+    min-width: 140px;
+    height: 80px !important; /* 글자가 잘 보이도록 높이 상향 */
+}
+
+/* 모바일 대응 (화면이 작아지면 다시 2개씩 나오게) */
+@media (max-width: 1023px) {
+    /* 스위치 카드: 2열 배치 (약 48%씩 차지) */
+    .control-card {
+        flex: 0 1 calc(50% - 15px) !important; 
+        height: 85px !important;
+        margin: 0 !important;
+    }
+    
+    /* 농장 전환 버튼: 2열 배치 */
+    .switch-card {
+        flex: 0 1 calc(50% - 15px) !important;
+        height: 64px !important;
+        margin: 0 !important;
+    }
+}
 
     </style>
 </head>
@@ -290,7 +505,7 @@
 <!-- ============================================================================ -->
 
 <body>
-
+<div class="left-panel">
     <div style="background: white; 
         border-radius: 20px; 
         padding: 5px !important; 
@@ -482,8 +697,39 @@
         </div>
 
     </div>
+</div><br>
 
-    
+
+<!-- CCTV 모니터 섹션 추가 -->
+<div class="right-panel">
+    <div class="cctv-grid">
+        <div class="cctv-item" id="cctv-item-1">
+            <span class="cctv-label" onclick="editCctvName(1, event)">CAM 01</span>
+            <img src="https://via.placeholder.com/160x90?text=CAM+01" onclick="zoomCctv(this.src, 1)">
+        </div>
+        <div class="cctv-item" id="cctv-item-2">
+            <span class="cctv-label" onclick="editCctvName(2, event)">CAM 02</span>
+            <img src="https://via.placeholder.com/160x90?text=CAM+02" onclick="zoomCctv(this.src, 2)">
+        </div>
+        <div class="cctv-item" id="cctv-item-3">
+            <span class="cctv-label" onclick="editCctvName(3, event)">CAM 03</span>
+            <img src="https://via.placeholder.com/160x90?text=CAM+03" onclick="zoomCctv(this.src, 3)">
+        </div>
+        <div class="cctv-item" id="cctv-item-4">
+            <span class="cctv-label" onclick="editCctvName(4, event)">CAM 04</span>
+            <img src="https://via.placeholder.com/160x90?text=CAM+04" onclick="zoomCctv(this.src, 4)">
+        </div>
+    </div>
+
+    <div id="cctv-zoom-overlay" onclick="closeZoom()">
+        <h3 id="zoom-title" style="color:white; margin-bottom:15px;">카메라 확대</h3>
+        <img id="zoomed-img" src="">
+        <div id="zoom-close-btn">닫기</div>
+    </div>
+</div>    
+
+
+
     <script>
         // 1. [설정] 실제 기기 IP 및 설정
         const IP_PRO_4PM = "192.168.0.51"; 
@@ -811,6 +1057,61 @@ window.addEventListener('load', loadSavedNames);
             // 센서 상태 초기화 (Blynk V10을 다시 0으로)
             fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V10=0`);
         }
+
+// 1. CCTV 확대 보기 기능
+function zoomCctv(src, num) {
+    const overlay = document.getElementById('cctv-zoom-overlay');
+    const zoomedImg = document.getElementById('zoomed-img');
+    const zoomTitle = document.getElementById('zoom-title');
+    
+    // 현재 저장된 카메라 이름을 가져와서 제목으로 표시
+    const savedName = localStorage.getItem(`${farmId}-cctv-${num}-name`) || `CAM 0${num}`;
+    
+    zoomedImg.src = src;
+    zoomTitle.innerText = savedName;
+    overlay.style.display = 'flex';
+}
+
+function closeZoom() {
+    document.getElementById('cctv-zoom-overlay').style.display = 'none';
+}
+
+// 2. CCTV 이름 수정 기능 (잠금 해제 상태에서만 작동)
+function editCctvName(num, event) {
+    if (!isUnlocked) {
+        // 잠겨있을 때는 확대를 유도하거나 무시
+        return; 
+    }
+    
+    // 이벤트 전파 방지 (이름 클릭 시 사진 클릭 효과 방지)
+    event.stopPropagation();
+
+    const labelElement = event.target;
+    const currentName = labelElement.innerText;
+    const newName = prompt("카메라 이름을 입력하세요:", currentName);
+    
+    if (newName && newName.trim() !== "") {
+        labelElement.innerText = newName;
+        // 로컬 스토리지에 저장 (농장별로 구분)
+        localStorage.setItem(`${farmId}-cctv-${num}-name`, newName);
+    }
+    forceLock(); // 수정 후 다시 잠금
+}
+
+// 3. 페이지 로드 시 저장된 CCTV 이름 불러오기
+// 기존 loadSavedNames 함수 안에 아래 코드를 추가하거나 따로 실행하세요.
+function loadCctvNames() {
+    for (let i = 1; i <= 4; i++) {
+        const savedName = localStorage.getItem(`${farmId}-cctv-${i}-name`);
+        if (savedName) {
+            const item = document.querySelector(`#cctv-item-${i} .cctv-label`);
+            if (item) item.innerText = savedName;
+        }
+    }
+}
+
+// 초기화 시 호출
+window.addEventListener('load', loadCctvNames);
 
     </script>
 </body>

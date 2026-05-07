@@ -16,7 +16,7 @@
             font-family: sans-serif; 
             background: var(--bg-light); 
             margin: 0; 
-            padding: 15px; 
+            padding: 10px; 
             text-align: center; 
         }
 
@@ -29,8 +29,8 @@
         /* 화면이 스마트폰 사이즈에 자동으로 마춰지기 */
         .control-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px; 
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px; 
             max-width: 400px; /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
             margin: 0 auto;
         }
@@ -38,7 +38,7 @@
         /* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
         .control-card { 
             background: #ccf9d0; /* 연한 녹색 배경 */
-            height: 85px;
+            height: 95px !important; /* 터치하기 편하게 높이를 조금 더 키웠습니다 */
             padding: 10px 0; 
             border-radius: 20px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
@@ -66,6 +66,51 @@
             color: #ffffff;
         }
 
+/* 카드 전체 컨테이너 */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 화면 폭에 따라 카드 개수 자동 조절 */
+    gap: 15px;
+    padding: 10px;
+}
+
+/* 개별 카드 스타일 */
+.card {
+    background-color: #d1f5d3; /* 연두색 배경 */
+    border: 2px solid #5a8f60;
+    border-radius: 20px;
+    padding: 15px;
+    
+    /* 중앙 정렬을 위한 핵심 설정 */
+    display: flex;
+    flex-direction: column; /* 위에서 아래로 배치 */
+    align-items: center;    /* 수평 중앙 정렬 */
+    justify-content: space-around; /* 요소 사이 간격 균등 배분 */
+    
+    aspect-ratio: 16 / 9;   /* 카드의 가로세로 비율 유지 (이그러짐 방지) */
+    min-height: 130px !important; /* 터치하기 편하게 높이를 충분히 확보 */
+}
+
+/* 상단 아이콘과 글자 영역 */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1.2rem; /* 글자 크기도 화면에 맞춰 유연하게 */
+    font-weight: bold;
+    width: 100%;
+}
+
+/* 슬라이더 스위치 영역 */
+.switch-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+}
+
         /* 카드 내부 레이아웃 */
         .label { 
             font-weight: bold; 
@@ -89,8 +134,8 @@
 
         /* ON/OFF 글자 스타일 */
         .status-label { 
-            font-size: 1rem; 
-            font-weight: 900; 
+            font-size: 0.9rem; 
+            font-weight: 700; 
             color: #4d9554; 
         }
 
@@ -103,13 +148,13 @@
             position: relative; 
             display: inline-block; 
             width: 85px; 
-            height: 40px; 
+            height: 40px;     /* 슬라이드 두께 */
         }
 
         .switch input { 
             opacity: 0; 
             width: 0; 
-            height: 0; 
+            height: 0px !important; /* 스위치 높이를 50px로 키워서 터치하기 편하게 */
         }
 
         .slider { 
@@ -174,7 +219,7 @@
         .change-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px; 
+            gap: 10px; 
             max-width: 400px; /* 여기도 폭을 제한하면 폰 화면처럼 보입니다 */
             margin: 0 auto;
         }
@@ -372,7 +417,7 @@ body.unlocked .cctv-label {
 @media (min-width: 768px) and (max-width: 1023px) {
     .control-grid { grid-template-columns: repeat(3, 1fr); } /* 패드는 넓으니까 3열 */
     .change-grid { grid-template-columns: repeat(3, 1fr); }  
-    body { padding: 30px; }
+    body { padding: 20px !important; }
 }
 
 /* 모바일 대응 (화면이 작아지면 다시 2개씩 나오게) */
@@ -409,7 +454,7 @@ body.unlocked .cctv-label {
         flex: 1;
         height: 100%;
         overflow-y: auto; /* 제어부 내용이 많으면 내부 스크롤 */
-        padding: 20px;
+        padding: 10px;
         background: var(--bg-light);
         border-right: 2px solid #ddd;
     }
@@ -493,7 +538,7 @@ body.unlocked .cctv-label {
     display: flex !important;
     flex-wrap: wrap !important;
     justify-content: center;
-    gap: 15px; /* 터치 미스를 줄이기 위해 간격을 조금 넓혔습니다 */
+    gap: 10px; /* 터치 미스를 줄이기 위해 간격을 조금 넓혔습니다 */
     max-width: 900px; /* PC에서 너무 퍼지지 않게 조절 */
     margin: 0 auto;
 }
@@ -502,8 +547,8 @@ body.unlocked .cctv-label {
 .control-card {
     /* PC 분할 화면에서 4개가 한 줄에 나오도록 계산 (약 23%) */
     flex: 0 1 calc(24% - 15px); 
-    min-width: 150px !important; /* 모바일에서도 보기 적당한 최소 크기 */
-    height: 100px !important; /* 터치하기 편하게 높이를 조금 더 키웠습니다 */
+    min-width: 160px !important; /* 모바일에서도 보기 적당한 최소 크기 */
+    height: 95px !important; /* 터치하기 편하게 높이를 조금 더 키웠습니다 */
 }
 
 /* [수정] 농장 전환 버튼 컨테이너 (3개씩 2열 목표) */
@@ -511,7 +556,7 @@ body.unlocked .cctv-label {
     display: flex !important;
     flex-wrap: wrap !important;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     max-width: 900px;
     margin: 0 auto;
 }

@@ -87,7 +87,7 @@
             gap: 8px; 
         }
 
-        /* ON/OFF 글자 스타일 */
+        /* 꺼짐/켜짐 글자 스타일 */
         .status-label { 
             font-size: 1rem; 
             font-weight: 900; 
@@ -289,13 +289,22 @@
             border-radius: 3px;
         }
 
+        /*각 아이템과 이미지 크기 제어 */
         .cctv-item {
             width: 100%;
-            aspect-ratio: 16 / 9; /* 와이드 화면 비율 유지 */
-            background: #000;
-            border-radius: 5px;
-            overflow: hidden;
             position: relative;
+            background: #000;
+            aspect-ratio: 16 / 9; /* 와이드 화면 비율 유지 */
+            overflow: hidden;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+
+        .cctv-item img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover; /* 이미지가 꽉 차도록 설정 */
+            cursor: pointer;
         }
 
         .cctv-item iframe, .cctv-item img {
@@ -382,9 +391,12 @@
                 display: flex !important;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
+                justify-content:flex-start !important;
                 padding: 20px;
                 box-sizing: border-box;
+                /* 추가: 내용이 많아지면 스크롤이 생기도록 변경 */
+                height: 100vh;
+                overflow-y: auto !important;
             }
 
             /* [중요] 오른쪽 패널 (제어판 - HTML상 앞 순서) */
@@ -403,6 +415,7 @@
             .cctv-grid {
                 max-width: 95% !important;
                 width: 100% !important;
+                display: grid !important; /* 그리드 명시 */
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 15px !important;
             }
@@ -412,6 +425,39 @@
                 max-width: 100% !important;  /* 기존 400px 제한을 풀어서 넓게 사용 */
                 grid-template-columns: repeat(2, 1fr) !important;
                 margin: 0 auto !important;    /* 중앙 정렬 유지 */
+            }
+
+            /* 1. 카드를 가로 정렬로 변경 */
+            .control-card {
+                display: flex !important;
+                flex-direction: row !important; /* 가로 배치 */
+                align-items: center !important;
+                justify-content: space-between !important; /* 양끝 정렬 */
+                padding: 10px 15px !important; /* 좌우 여백 */
+                height: 70px !important; /* 가로일 때는 높이를 조금 줄여도 예쁩니다 */
+            }
+
+            /* 2. 이름 레이블(이모지+이름) 설정 */
+            .control-card .label {
+                margin-bottom: 0 !important; /* 아래 여백 제거 */
+                padding: 0 !important;      /* 패딩 초기화 */
+                line-height: normal !important; /* 2px 문제를 해결 */
+                text-align: left !important;
+                display: flex !important;
+                align-items: center !important;
+                flex-shrink: 0; /* 이름이 찌그러지지 않게 */
+            }
+
+            /* 3. 스위치 컨테이너 설정 */
+            .switch-container {
+                margin-top: 0 !important; /* 위 여백 제거 */
+                justify-content: flex-end !important;
+            }
+
+            /* 4. 그리드 폭 제한 해제 (CCTV 옆 공간을 충분히 쓰기 위함) */
+            .control-grid {
+                max-width: 100% !important; 
+                grid-template-columns: repeat(2, 1fr) !important; /* 2열 배치 */
             }
         }
 

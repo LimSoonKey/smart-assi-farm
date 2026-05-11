@@ -16,7 +16,7 @@
             font-family: sans-serif; 
             background: var(--bg-light); 
             margin: 0; 
-            padding: 15px; 
+            padding: 15px 5; 
             text-align: center; 
         }
 
@@ -30,53 +30,48 @@
         .control-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px; 
-            max-width: 400px; /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
+            gap: 6px; 
+            width: 100%;
+            max-width: 410px;                                /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
             margin: 0 auto;
         }
 
         /* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
         .control-card { 
-            background: #ccf9d0; /* 연한 녹색 배경 */
-            height: 85px;
-            padding: 10px 0; 
+            background: #ccf9d0;                           /* 연한 녹색 배경 */
+            min-height: 80px;                                /* 고정 height 대신 min-height 사용 */
+            padding: 15px 10px; 
             border-radius: 15px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
             border: 2px solid #4e7c3f;
-            transition: all 0.2s ease;
-            
-            /* 추가: 기본 글자색 (어두운 녹색 계열) */
-            color: #2e4d25; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;                          /* 패딩이 너비에 영향을 주지 않도록 */
         }
 
         /* [켜짐 상태] .on 클래스가 추가되었을 때 */
         .control-card.on { 
             border-color: var(--main-green); 
-            background-color: #32943a; /* 진한 녹색 배경 */
+            background-color: #32943a;                     /* 진한 녹색 배경 */
             box-shadow: 0 4px 15px #246927; 
-
-            /* 핵심 추가: 배경이 진해지므로 글자색을 백색으로 변경 */
-            color: #ffffff !important; 
+            color: #ffffff !important;                     /* 배경이 진해지므로 글자색을 백색으로 변경 */
         }
 
         /* 추가 팁: 카드 내의 작은 설명글이나 아이콘이 있다면 함께 색상을 바꿔줍니다 */
         .control-card.on p, 
         .control-card.on span,
-        .control-card.on label {
-            color: #ffffff;
-        }
+        .control-card.on label {color: #ffffff;}
 
         /* 카드 내부 레이아웃 */
         .label { 
             font-weight: bold; 
-            font-size: 1.2rem; 
-            padding: 10px 0 !important;
-            text-decoration: none;
-            line-height: 2px; /* 이 부분이 범인입니다! */
+            font-size: 1.1rem; 
+            line-height: 1.4 !important;
             display: block; 
-            margin-bottom: 18px; 
-            color: #333; 
-            transition: color 0.2s ease;   
+            margin-bottom: 10px; 
+            width: 100%;
         }
 
         /* 스위치와 글자를 감싸는 컨테이너 */
@@ -103,7 +98,7 @@
             position: relative; 
             display: inline-block; 
             width: 85px; 
-            height: 40px; 
+            height: 40px; vertical-align: middle; margin: 0 5px;
         }
 
         .switch input { 
@@ -154,8 +149,7 @@
         .emoji-icon {
             display: inline-block;
             margin-right: 0px;
-            /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
-            text-shadow: 
+            text-shadow:                                   /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
                 -1px -1px 0 #000080,  
                  1px -1px 0 #000080,
                 -1px  1px 0 #000080,  
@@ -173,9 +167,9 @@
         
         .change-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px; 
-            max-width: 400px; /* 여기도 폭을 제한하면 폰 화면처럼 보입니다 */
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 8px; 
+            max-width: 400px;                              /* 폭을 제한하여 폰 화면처럼 보이게.. */
             margin: 0 auto;
         }
 
@@ -183,42 +177,42 @@
         .switch-card { 
             background: rgb(180, 228, 252); 
             border: 2px solid #628aaf !important;
-            border-radius: 20px; 
+            border-radius: 15px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
             transition: all 0.2s ease;
             cursor: pointer;
             flex-direction: column !important;
-            overflow: hidden;           /* 넘치는 내용은 숨겨서 벌컥거림 방지 */
+            overflow: hidden;                                /* 넘치는 내용은 숨겨서 벌컥거림 방지 */
 
             /* 핵심 정렬 코드 */
-            display: flex !important;           /* 정렬 모드 강제 활성화 */
-            justify-content: center !important;  /* 가로 중앙 */
-            align-items: center !important;      /* 세로 중앙 */
+            display: flex !important;                        /* 정렬 모드 강제 활성화 */
+            justify-content: center !important;              /* 가로 중앙 */
+            align-items: center !important;                  /* 세로 중앙 */
     
             /* 패딩은 0으로 만들고 높이로만 조절합니다 */
-            padding: 0 !important;  
+            padding: 7.7px !important;  
             margin: 0 !important;
-            height: 64px !important;    /* 85픽셀로 높이를 딱 고정합니다 */
+            height: 64px !important;                         /* 85픽셀로 높이를 딱 고정합니다 */
         }
 
-        /* 버튼 안의 링크 글자들도 정렬합니다 */
+        /* 버튼 안의 링크 글자들 정렬 */
         .switch-card a {
             text-decoration: none;
-            line-height: 1;           /* 줄 간격을 고정하여 흔들림 방지 */
+            line-height: 1;                                  /* 줄 간격을 고정하여 흔들림 방지 */
         }
 
+        /* 글자 자체에 숨어있는 여백을 제거 */
         .switch-card .label {
-            /* 글자 자체에 숨어있는 여백을 제거합니다 */
             margin: 0 !important;
             padding: 0 !important;
             display: block !important;
-            line-height: 1;                     /* 줄 간격 때문에 치우치는 현상 방지 */
+            line-height: 1;                                  /* 줄 간격 때문에 치우치는 현상 방지 */
             font-weight: 700;
         }
 
         .timer-text {
             font-size: 1.1rem;
-            color: #f8f8f5; /* 작동 중일 때 눈에 띄는 빨간색 */
+            color: #f8f8f5;                                /* 작동 중일 때 눈에 띄는 빨간색 */
             margin-left: 8px;
             font-weight: normal;
         }
@@ -240,10 +234,10 @@
         /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
         body.unlocked .label {
             cursor: pointer;
-            text-decoration: underline dotted #4e7c3f; /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
+            text-decoration: underline dotted #4e7c3f;     /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
         }
 
-        /* 주 전원은 빨간색이므로 강조 유지 */
+        /* 전원은 빨간색이므로 강조 유지 */
         #card-power .label {
             font-weight: bold;
         }
@@ -252,10 +246,11 @@
         @media (max-width: 320px) {html { font-size: 14px; }}
         @media (min-width: 768px) {html { font-size: 18px; }}
 
+
         /* =============== 보안 알림 & CCTV 팝업 ============== */        
         /* --- 보안 알림 레이아웃 --- */
         #emergency-msg {
-            display: none; /* 평소엔 숨김 */
+            display: none;                                   /* 평소엔 숨김 */
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 400px; padding: 20px;
             background-color: white; border: 5px solid #FF1744; border-radius: 15px;
@@ -283,18 +278,18 @@
             grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
             gap: 3px;
             max-width: 400px;
-            margin: 20px auto; /* 농장전환 버튼 아래 여백 */
-            padding: 0px;
-            background: #333; /* 모니터 느낌을 주는 어두운 배경 */
+            margin: 20px auto;                               /* 농장전환 버튼 아래 여백 */
+            padding: 10px;
+            background: #fafdf7;                           /* 모니터 느낌을 주는 어두운 배경 */
             border-radius: 3px;
         }
 
         /*각 아이템과 이미지 크기 제어 */
         .cctv-item {
-            width: 100%;
+            width: 100% !important;
             position: relative;
             background: #000;
-            aspect-ratio: 16 / 9; /* 와이드 화면 비율 유지 */
+            aspect-ratio: 16/9;                              /* 와이드 화면 비율 유지 */
             overflow: hidden;
             border-radius: 5px;
             border: 1px solid #333;
@@ -308,8 +303,8 @@
         }
 
         .cctv-item iframe, .cctv-item img {
-            width: 100%;
-            height: 100%;
+            width: 100% !important;
+            height: 100% !important;
             border: none;
         }
 
@@ -328,7 +323,7 @@
 
         /* 잠금 해제 시 이름에 효과 주기 */
         body.unlocked .cctv-label {
-            background: #FF1744 !important; /* 수정 가능함을 알리는 빨간색 */
+            background: #ff1b17 !important;                /* 수정 가능함을 알리는 빨간색 */
             text-decoration: underline dotted white;
         }
 
@@ -336,7 +331,8 @@
         #cctv-zoom-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; 
+            height: 100%;
             background: rgba(0,0,0,0.95);
             z-index: 20000;
             flex-direction: column;
@@ -367,32 +363,42 @@
         /* PC용 메인 레이아웃: 좌우 분할 및 순서 반전 */
         @media (min-width: 1024px) {
             body {
-                margin: 0;
-                padding: 0;
-                height: 100vh;
-                overflow: hidden;
-                display: flex !important;
+                overflow-x: hidden;
+                /* margin: 0; */
+                /* padding: 0; */
+                /* height: 100vh; */
             }
 
             .main-container {
-                display: flex !important;
-                flex-direction: row !important;  /* 가로 배치 강제 */
-                width: 100vw;
-                height: 100vh;
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-areas: "cctv control" "cctv change";
+                gap: 15px;                                   /* 간격을 살짝 좁혀 이탈 방지 */
+                align-items: start !important;               /* 핵심: 모든 요소를 상단에 밀착 */
+                padding: 15px;
+                max-width: 100vw !important; 
+                box-sizing: border-box;
+            }
+
+            /* 오른쪽 제어판 구역 */
+            .control-section {
+                grid-area: control;
+                margin-top: 0 !important;
+                display: flex;
+                flex-direction: column;
             }
 
             /* [1] 왼쪽 CCTV 구역 (3/5 비율) */
-            /* 주의: HTML에 'legt-panel'이라고 되어 있다면 아래 이름을 .legt-panel로 쓰세요 */
             .legt-panel, .left-panel { 
-                order: 1 !important;           /* 무조건 첫 번째(왼쪽)로 배치 */
-                flex: 0 0 60% !important;      /* 너비 60% 고정 */
+                order: 1 !important;                         /* 무조건 첫 번째(왼쪽)로 배치 */
+                flex: 0 0 60% !important;                    /* 너비 60% 고정 */
                 width: 60% !important;
-                background: #1a1a1a !important; 
+                background: #fbfcf8 !important; 
                 display: flex !important;
                 flex-direction: column;
                 align-items: center;
                 justify-content:flex-start !important;
-                padding: 20px;
+                padding: 0px;
                 box-sizing: border-box;
                 /* 추가: 내용이 많아지면 스크롤이 생기도록 변경 */
                 height: 100vh;
@@ -401,71 +407,247 @@
 
             /* [중요] 오른쪽 패널 (제어판 - HTML상 앞 순서) */
             .right-panel {
-                order: 2 !important;         /* 화면 우측 배치 */
-                flex: 0 0 40% !important;          /* 2/5 비율 */
+                order: 2 !important;                         /* 화면 우측 배치 */
+                flex: 0 0 40% !important;                    /* 2/5 비율 */
                 height: 100%;
-                overflow-y: auto !important; /* 내용 많을 시 스크롤 */
+                overflow-y: auto !important;                 /* 내용 많을 시 스크롤 */
                 padding: 20px;
                 background: var(--bg-light);
-                border-left: 2px solid #ddd; /* 경계선 위치 변경 */
+                border-left: 2px solid #ddd;               /* 경계선 위치 변경 */
                 box-sizing: border-box;
             }
 
-            /* PC에서 CCTV 그리드 최적화 (가로 2줄 유지하며 크기 확대) */
-            .cctv-grid {
-                max-width: 95% !important;
-                width: 100% !important;
-                display: grid !important; /* 그리드 명시 */
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 15px !important;
-            }
-
             /* PC에서 스위치 그리드 최적화 (비율에 맞춰 2열 배치 추천) */
-            .control-grid,.change-grid {
-                max-width: 100% !important;  /* 기존 400px 제한을 풀어서 넓게 사용 */
+            .control-grid {
+                max-width: 100% !important;                  /* 기존 400px 제한을 풀어서 넓게 사용 */
                 grid-template-columns: repeat(2, 1fr) !important;
-                margin: 0 auto !important;    /* 중앙 정렬 유지 */
+                margin: 0 auto !important;                   /* 중앙 정렬 유지 */
+                width: 100% !important;
+                gap: 6px; 
+                display: grid;
             }
 
-            /* 1. 카드를 가로 정렬로 변경 */
+            /* PC에서 스위치 카드를 가로형으로 배치 */
             .control-card {
-                display: flex !important;
-                flex-direction: row !important; /* 가로 배치 */
-                align-items: center !important;
-                justify-content: space-between !important; /* 양끝 정렬 */
-                padding: 10px 15px !important; /* 좌우 여백 */
-                height: 70px !important; /* 가로일 때는 높이를 조금 줄여도 예쁩니다 */
+                flex-direction: row !important;              /* 가로 배치 */
+                justify-content: space-between !important;   /* 양끝 정렬 */
+                padding: 7px 10px !important;                /* 좌우 여백 */
+                min-height: 60px !important;
+                height: 170px !important;                    /* 가로일 때는 높이를 조금 줄여도 예쁘다 */
             }
 
-            /* 2. 이름 레이블(이모지+이름) 설정 */
+            /* 이름 레이블(이모지+이름) 설정 */
             .control-card .label {
-                margin-bottom: 0 !important; /* 아래 여백 제거 */
-                padding: 0 !important;      /* 패딩 초기화 */
-                line-height: normal !important; /* 2px 문제를 해결 */
-                text-align: left !important;
                 display: flex !important;
                 align-items: center !important;
-                flex-shrink: 0; /* 이름이 찌그러지지 않게 */
+                justify-content: center !important;          /* 중앙 정렬 유지 */
+                gap: 5px;                                    /* 이모지, 이름, 타이머 사이의 기본 간격 */
+                line-height: normal !important;              /* 2px 문제를 해결 */
+                margin-bottom: 0 !important;                 /* 아래 여백 제거 */
+                text-align: left !important;
+                width: auto !important;
+                padding-top: 25px;                           /* 위쪽 여백 */
+                padding-bottom: 25px;                        /* 아래쪽 여백 */
             }
 
+            /* 타이머 텍스트 스타일 수정 */
+            .timer-text {
+                display: inline-block;                       /* 너비를 가질 수 있게 설정 */
+                min-width: 65px;                             /* 핵심: 타이머(00:00)가 들어갈 최소 너비 미리 확보 */
+                text-align: left;                            /* 타이머 숫자는 왼쪽 정렬이 깔끔함 */
+                font-size: 1rem;
+                color: #ffffff;                            /* 켜졌을 때 글자색 (배경이 진해지므로) */
+                margin-left: 5px;
+                font-weight: normal;
+            }
+
+            /* 꺼져 있을 때는 타이머 공간이 투명하게 존재하게 함 */
+            .control-card:not(.on) .timer-text {
+                visibility: hidden;                          /* 공간은 차지하되 보이지는 않음 */
+            }
+
+            /* 확대 시 글자 크기가 깨지는 것 방지 */
+            .label, .item-name {
+                font-size: 1.2rem !important;
+                white-space: nowrap;                         /* 글자 줄바꿈 방지 */
+            }
+
+            /* 농장 전환 패널을 오른쪽 아래로 배치 */
+            .change-grid {
+                grid-column: 2;
+                width: 100% !important;
+                margin-top: 10px;
+                grid-template-columns: repeat(2, 1fr) !important;
+                grid-area: change;                           /* 하단 농장 전환 버튼 이탈 방지 */
+                margin-top: 10px;                            /* 스위치 패널과의 간격 */
+                width: 100%;
+                align-self: start;                           /* 아래로 처지지 않고 바로 위에 붙도록 설정 */
+            }
+
+            /* 농장 전환버튼을 감싸는 개별 바구니 */
+            .switch-card { 
+                height: auto !important;
+                min-height: 50px;
+                display: flex;
+                flex-direction: column !important;           /* 이름은 위, 수치는 아래 */
+                align-items: center !important;              /* 세로 중앙 */
+                justify-content: center !important;          /* 가로 중앙 */
+                padding: 7.7px !important;  
+            }
+
+            /* 농장 이름 스타일 */
+                .switch-card .label {
+                    font-size: 1.1rem !important;
+                    margin-bottom: 0 !important;
+                    color: #101111;
+                }
+    
             /* 3. 스위치 컨테이너 설정 */
             .switch-container {
-                margin-top: 0 !important; /* 위 여백 제거 */
+                margin-top: 0 !important;                    /* 위 여백 제거 */
                 justify-content: flex-end !important;
             }
 
-            /* 4. 그리드 폭 제한 해제 (CCTV 옆 공간을 충분히 쓰기 위함) */
-            .control-grid {
-                max-width: 100% !important; 
-                grid-template-columns: repeat(2, 1fr) !important; /* 2열 배치 */
+            /* 컨디션 수치들을 감싸는 컨테이너 (새로 추가할 클래스) */
+            .farm-stats-row {
+                display: flex;
+                justify-content: space-around;               /* 아이템 간 간격 균등 분배 */
+                width: 100%;
+                font-size: 0.85rem;
+                color: #555;
+                border-top: 1px solid rgba(0,0,0,0.05);      /* 경계선 살짝 */
+                padding-top: 5px;
+            }
+
+            .stat-item {
+                display: flex;
+                align-items: center;
+                gap: 3px;
+            }
+
+            .stat-value { font-weight: bold; }
+
+            /* 오른쪽 제어판 & 농장전환 버튼 크기 통일 */
+            .control-grid, .change-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important; /* 무조건 2열 고정 */
+                gap: 10px !important;
+                width: 100% !important;
+                max-width: 100% !important;                  /* 제한 해제 */
+            }
+
+            /* 상단 스위치 카드와 하단 농장전환 버튼의 높이 및 정렬 통일 */
+            .control-card, .switch-card {
+                min-height: 65px !important;                 /* 최소 높이 통일 */
+                height: auto !important;                     /* 내용에 따라 늘어나도록 */
+                margin: 0 !important;
+                padding: 10px !important;
+                box-sizing: border-box;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+
+            /* ========= CCTV 그리드 설정 (2열 고정) ========== */
+
+            /* 왼쪽 CCTV 구역 */
+            .cctv-section {
+                grid-area: cctv;
+                width: 100% !important; 
+                max-width: none !important;                  /* 혹시 모를 제한 해제 */
+                display: block !important;
+                margin: 0 !important;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                height: auto;                                /* 고정 높이 제거 */
+                max-height: 95vh;                            /* 화면 높이를 넘지 않도록 제한 */
+            }
+
+            /* 화면 축소 시 글자가 밖으로 나가는 것 방지 */
+            .cctv-grid {
+                display: grid !important;                    /* 그리드 명시 */
+                width: 100% !important;                      /* 양옆 여백만 살짝 남기고 꽉 채움 */
+                max-width: 100% !important;                  /* 기존의 작은 max-width 제한을 제거 */
+                grid-template-columns: 1fr 1fr !important;   /* repeat 대신 확실하게 1fr 1fr */
+                gap: 3px !important; 
+                margin: 0 auto !important;
+                padding: 0 !important;
+            }
+
+            /*각 아이템과 이미지 크기 제어 */
+            .cctv-item {
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: 16 / 9 !important;             /* 와이드 화면 비율 유지 */
+                position: relative;
+                background: #000;
+                border-radius: 5px;
+                overflow: hidden;
+                border: 1px solid #333;
+            }
+
+            .cctv-item img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover;                           /* 이미지가 꽉 차도록 설정 */
+                cursor: pointer;
+            }
+
+            .cctv-item iframe, .cctv-item img {
+                width: 100% !important;
+                height: 100% !important;
+                border: none;
+            }
+
+            .cctv-label {
+                position: absolute;
+                width: auto !important;                      /* 고정 너비 해제 (이게 핵심!) */
+                min-width: 40px;                             /* 최소 너비만 지정 */
+                max-width: 90% !important;
+                top: 5px;
+                left: 0px;
+                padding: 2px 0px;
+                font-size: 0.8rem;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 10;                                 /* 이미지보다 위에 보이도록 */
+                color: white;
+                /* border-radius: 3px; */
+                /* cursor: pointer; */
+                /* transition: all 0.2s; */
+            }
+
+            /* 제목 및 배지 상단 여백 초기화 */
+            #cctv-farm-badge, #farm-title {
+                margin-top: 0 !important;
+            }
+
+            /* 4. 이미지도 박스 크기에 맞춰 꽉 차게 설정 */
+            .cctv-item img, .cctv-item iframe {
+                display: block;
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;                /* 이미지가 박스에 꽉 차게 */
+            }
+
+            /* 배지(제목) 너비도 화면에 맞춰 적절히 조절 */
+            #cctv-farm-badge {
+                max-width: 100% !important;
+                
+                padding: 10px 30px !important;
             }
         }
 
         /* 모바일일 때는 세로로 나오게 설정 */
         @media (max-width: 1023px) {
             .main-container {
-                display: block;
+                display: flex;
+                flex-direction: column;
+                padding: 10px;
+                gap: 20px;
             }
+
             .right-panel {
                 background: none;
                 padding: 10px;
@@ -480,253 +662,279 @@
 <!-- ============================================================================ -->
 
 <body>
-<div class="main-container">
-    <div class="right-panel">    
-        <div style="background: white; 
-            border-radius: 20px; 
-            padding: 5px !important; 
-            margin-bottom: 10px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-            max-width: 98%; 
-            margin-left: auto; 
-            margin-right: auto;">
-        
-            <h2 id="farm-title" onclick="editTitle()" style="margin-top:0;">
-                산법리 농장
-                <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>
-            </h2>
+    <div class="main-container">
+        <div class="control-section">
+            <div style="background: white; 
+                border-radius: 20px; 
+                padding: 10px !important; 
+                margin-bottom: 10px; 
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+                width: 97% !important; 
+                margin-left: auto !important; 
+                margin-right: auto;">
+
+                <h2 id="farm-title" onclick="editTitle()" style="margin-top:0; color: #d32f2f;">
+                    산법리 농장
+                    <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>
+                </h2>
     
-            <div style="display: flex; justify-content: space-around; font-size: 1rem; color: #555;">
-                <div>💧 수분: <span id="stat-moisture" style="font-weight:bold; color:#1a73e8;">--%</span></div>
-                <div>🧪 영양: <span id="stat-ec" style="font-weight:bold; color:#2e7d32;">--ms/cm</span></div>
-                <div>🌡️ 온도: <span id="stat-temp" style="font-weight:bold;">--°C</span></div>
-            </div>
-        </div>
+                <div style="display: flex; justify-content: space-around; font-size: 1rem; color: #555;">
+                    <div>
+                        <span class="emoji-icon">💧</span> 
+                        <span class="item-name">수분</span>
+                        <span id="stat-moisture" style="font-weight:bold; color:#1a73e8;">--%</span>
+                    </div>
 
-        <div class="control-grid">
-            <div class="control-card" id="card-water">
-                <span class="label" onclick="editItemLabel(this)">
-                    <span class="emoji-icon">🚰</span> 
-                    <span class="item-name">급수</span>
-                    <span id="timer-water" class="timer-text"></span>
-                </span>
+                    <div>
+                        <span class="emoji-icon">🧪</span> 
+                        <span class="item-name">영양</span>
+                        <span id="stat-ec" style="font-weight:bold; color:#2e7d32;">--ms/cm</span>
+                    </div>
 
-                <div class="switch-container">
-                    <span class="status-label off-label">꺼짐</span>
-                    <label class="switch">
-                        <input type="checkbox" onchange="toggleDevice('water', this, 0, IP_PRO_4PM)">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="status-label on-label">켜짐</span>
-                </div>
-            </div>
-
-            <div class="control-card" id="card-irrigation">
-                <span class="label" onclick="editItemLabel(this)">
-                    <span class="emoji-icon">🚿</span> 
-                    <span class="item-name">관수</span>
-                    <span id="timer-irrigation" class="timer-text"></span>
-                </span>
-
-                <div class="switch-container">
-                    <span class="status-label off-label">꺼짐</span>
-                    <label class="switch">
-                        <input type="checkbox" onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM)">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="status-label on-label">켜짐</span>
+                    <div>
+                        <span class="emoji-icon">🌡️</span> 
+                        <span class="item-name">온도</span>
+                        <span id="stat-temp" style="font-weight:bold;">--°C</span>
+                    </div>
                 </div>
             </div>
         
-            <div class="control-card" id="card-pesticide">
-                <span class="label" onclick="editItemLabel(this)">
-                    <span class="emoji-icon">🧪</span> 
-                    <span class="item-name">농약</span>
-                    <span id="timer-pesticide" class="timer-text"></span>
-                </span>
 
-                <div class="switch-container">
-                    <span class="status-label off-label">꺼짐</span>
-                    <label class="switch">
-                        <input type="checkbox" onchange="toggleDevice('pesticide', this, 3, IP_PRO_4PM)">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="status-label on-label">켜짐</span>
+            <div class="control-grid">
+                <div class="control-card" id="card-water">
+                    <span class="label" onclick="editItemLabel(this)">
+                        <span class="emoji-icon">🚰</span> 
+                        <span class="item-name">급수</span>
+                        <span id="timer-water" class="timer-text"></span>
+                    </span>
+                    <div class="switch-container">
+                        <span class="status-label off-label">꺼짐</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleDevice('water', this, 0, IP_PRO_4PM)">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="status-label on-label">켜짐</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="control-card" id="card-fertilizer">
-                <span class="label" onclick="editItemLabel(this)">
-                    <span class="emoji-icon">💊</span> 
-                    <span class="item-name">액비</span>
-                    <span id="timer-fertilizer" class="timer-text"></span>
-                </span>
-
-                <div class="switch-container">
-                    <span class="status-label off-label">꺼짐</span>
-                    <label class="switch">
-                        <input type="checkbox" onchange="toggleDevice('fertilizer', this, 0, IP_PLUS_1PM)">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="status-label on-label">켜짐</span>
+                <div class="control-card" id="card-irrigation">
+                    <span class="label" onclick="editItemLabel(this)">
+                        <span class="emoji-icon">🚿</span> 
+                        <span class="item-name">관수</span>
+                        <span id="timer-irrigation" class="timer-text"></span>
+                    </span>
+                    <div class="switch-container">
+                        <span class="status-label off-label">꺼짐</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM)">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="status-label on-label">켜짐</span>
+                    </div>
                 </div>
-            </div>
-
-            <div class="control-card" id="card-shield">
-                <span class="label" onclick="editItemLabel(this)">
-                    <span class="emoji-icon">☀️</span> 
-                    <span class="item-name">천막</span>
-                    <span id="timer-shield" class="timer-text"></span>
-                </span>
-            
-                <div class="switch-container">
-                    <span class="status-label off-label">꺼짐</span>
-                    <label class="switch">
-                        <input type="checkbox" onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="status-label on-label">켜짐</span>
+        
+                <div class="control-card" id="card-pesticide">
+                    <span class="label" onclick="editItemLabel(this)">
+                        <span class="emoji-icon">🧪</span> 
+                        <span class="item-name">농약</span>
+                        <span id="timer-pesticide" class="timer-text"></span>
+                    </span>
+                    <div class="switch-container">
+                        <span class="status-label off-label">꺼짐</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleDevice('pesticide', this, 3, IP_PRO_4PM)">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="status-label on-label">켜짐</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="control-card" id="card-frost">
-                <span class="label" onclick="editItemLabel(this)">
-                    <span class="emoji-icon">❄️</span> 
-                    <span class="item-name">서리</span>
-                    <span id="timer-frost" class="timer-text"></span>
-                </span>
-
-                <div class="switch-container">
-                    <span class="status-label off-label">꺼짐</span>
-                    <label class="switch">
-                        <input type="checkbox" onchange="toggleDevice('frost', this, 0, IP_PLUS_1PM)">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="status-label on-label">켜짐</span>
+                <div class="control-card" id="card-fertilizer">
+                    <span class="label" onclick="editItemLabel(this)">
+                        <span class="emoji-icon">💊</span> 
+                        <span class="item-name">액비</span>
+                        <span id="timer-fertilizer" class="timer-text"></span>
+                    </span>
+                    <div class="switch-container">
+                        <span class="status-label off-label">꺼짐</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleDevice('fertilizer', this, 0, IP_PLUS_1PM)">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="status-label on-label">켜짐</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="control-card" id="card-light">
-                <span class="label" onclick="editItemLabel(this)">
-                    <span class="emoji-icon">💡</span> 
-                    <span class="item-name">전등</span>
-                    <span id="timer-light" class="timer-text"></span>
-                </span>
-
-                <div class="switch-container">
-                    <span class="status-label off-label">꺼짐</span>
-                    <label class="switch">
-                        <input type="checkbox" onchange="toggleDevice('light', this, 0, IP_PLUS_1PM)">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="status-label on-label">켜짐</span>
+                <div class="control-card" id="card-shield">
+                    <span class="label" onclick="editItemLabel(this)">
+                        <span class="emoji-icon">☀️</span> 
+                        <span class="item-name">천막</span>
+                        <span id="timer-shield" class="timer-text"></span>
+                    </span>
+                    <div class="switch-container">
+                        <span class="status-label off-label">꺼짐</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="status-label on-label">켜짐</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="control-card" id="card-power">
-                <span class="label" onclick="editItemLabel(this)" style="color: #d32f2f;">
-                    <span class="emoji-icon">⚡</span>
-                    <span class="item-name">주 전원</span>
-                </span>
-
-                <div class="switch-container">
-                    <span class="status-label off-label">꺼짐</span>
-                    <label class="switch">
-                        <input type="checkbox" onchange="toggleDevice('power', this, 0, IP_PLUS_1PM)">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="status-label on-label">켜짐</span>
+                <div class="control-card" id="card-frost">
+                    <span class="label" onclick="editItemLabel(this)">
+                        <span class="emoji-icon">❄️</span> 
+                        <span class="item-name">서리</span>
+                        <span id="timer-frost" class="timer-text"></span>
+                    </span>
+                    <div class="switch-container">
+                        <span class="status-label off-label">꺼짐</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleDevice('frost', this, 0, IP_PLUS_1PM)">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="status-label on-label">켜짐</span>
+                    </div>
                 </div>
+
+                <div class="control-card" id="card-light">
+                    <span class="label" onclick="editItemLabel(this)">
+                        <span class="emoji-icon">💡</span> 
+                        <span class="item-name">전등</span>
+                        <span id="timer-light" class="timer-text"></span>
+                    </span>
+                    <div class="switch-container">
+                        <span class="status-label off-label">꺼짐</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleDevice('light', this, 0, IP_PLUS_1PM)">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="status-label on-label">켜짐</span>
+                    </div>
+                </div>
+
+                <div class="control-card" id="card-power">
+                    <span class="label" onclick="editItemLabel(this)" style="color: #d32f2f;">
+                        <span class="emoji-icon">⚡</span>
+                        <span class="item-name">전원</span>
+                        <span id="timer-power" class="timer-text"></span>
+                    </span>
+                    <div class="switch-container">
+                        <span class="status-label off-label">꺼짐</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleDevice('power', this, 0, IP_PLUS_1PM)">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="status-label on-label">켜짐</span>
+                    </div>
+                </div>
+            </div>    
+
+            <div id="status-bar" style="text-align: center;">명령을 기다리는 중입니다. </div><br>
+
+            <div id="lock-status-container" style="margin-bottom: 0px;">
+                <button id="lock-btn" onmousedown="startLongPress()" onmouseup="endLongPress()" ontouchstart="startLongPress()" ontouchend="endLongPress()"
+                    style="
+                        width: 300px !important; 
+                        padding: 10px 0px; 
+                        border-radius: 30px; 
+                        border: 2px solid #555; 
+                        background: #eee; 
+                        cursor: pointer; 
+                        transition: 0.3s;">
+                    <span id="lock-icon">🔒</span> <span id="lock-text">농장명, 스위치명 수정 (3초간 꾹 누르세요)</span>
+                </button>
             </div>
         </div>
+
     
-
-        <div id="status-bar">명령을 기다리는 중입니다. </div><br>
-
-        <div id="lock-status-container" style="margin-bottom: 20px;">
-            <button id="lock-btn" onmousedown="startLongPress()" onmouseup="endLongPress()" ontouchstart="startLongPress()" ontouchend="endLongPress()"
-                style="width: 300px !important; padding: 10px 0px; border-radius: 30px; border: 2px solid #555; background: #eee; cursor: pointer; transition: 0.3s;">
-                <span id="lock-icon">🔒</span> <span id="lock-text">농장명, 스위치명 수정 (3초간 꾹 누르세요)</span>
-            </button>
-        </div>
-        
-        <div class="change-grid">
-            <div class="switch-card" id="card-A">
-                <a href="control2.html" class="label" style="color: #101111;">유전리 농장</a>
-            </div>
-
-            <div class="switch-card" id="card-B">
-                <a href="control3.html" class="label" style="color: #101111;">백신리 농장</a>
-            </div>
-        
-            <div class="switch-card" id="card-C">
-                <a href="control4.html" class="label" style="color: #101111;">안심리 농장</a>
-            </div>
-
-            <div class="switch-card" id="card-D">
-                <a href="control5.html" class="label" style="color: #101111;">옹암리 농장</a>
-            </div>
-
-            <div class="switch-card" id="card-E">
-                <a href="control6.html" class="label" style="color: #101111;">산법리 농장</a>
-            </div>
-
-            <div class="switch-card" id="card-F">
-                <a href="control7.html" class="label" style="color: #101111;">단촌리 농장</a>
-            </div>
-        </div>
-    </div><br><br>
-
-
-    <!-- CCTV 모니터 섹션 추가 -->
-    <div class="legt-panel"><br>
-        <div style="width: 100%; max-width: 800px;">
-            <div style="text-align: center; margin-bottom: 15px;">
-                <span id="cctv-farm-badge" style="background: var(--main-green); color: white; padding: 8px 25px; border-radius: 50px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+        <!--============ CCTV 모니터 섹션 ==============-->
+        <div class="cctv-section" style="text-align: center !important; font-size: 1.1rem;">
+            <div class id="cctv-farm-badge">
+                <div style="
+                background: rgb(107, 43, 133); 
+                border-radius: 20px; 
+                padding: 15px !important; 
+                margin-bottom: 10px; 
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+                max-width: 45%; 
+                font-size: 1.2rem; 
+                color: #faf9f9;
+                font-weight: bold;
+                margin-left: auto; 
+                margin-right: auto;">
                 산법리 농장 카메라
-                </span>
-            </div>
-        </div>
-
-        <div class="cctv-grid">
-            <div class="cctv-item" id="cctv-item-1">
-                <span class="cctv-label" onclick="editCctvName(1, event)">CAM 01</span>
-                <img src="https://via.placeholder.com/160x90?text=CAM+01" onclick="zoomCctv(this.src, 1)">
             </div>
 
-            <div class="cctv-item" id="cctv-item-2">
-                <span class="cctv-label" onclick="editCctvName(2, event)">CAM 02</span>
-                <img src="https://via.placeholder.com/160x90?text=CAM+02" onclick="zoomCctv(this.src, 2)">
+            <div class="cctv-grid">
+                <div class="cctv-item" id="cctv-item-1">
+                    <span class="cctv-label" onclick="editCctvName(1, event)">CAM 01</span>
+                    <img src="https://via.placeholder.com/160x90?text=CAM+01" onclick="zoomCctv(this.src, 1)">
+                </div>
+
+                <div class="cctv-item" id="cctv-item-2">
+                    <span class="cctv-label" onclick="editCctvName(2, event)">CAM 02</span>
+                    <img src="https://via.placeholder.com/160x90?text=CAM+02" onclick="zoomCctv(this.src, 2)">
+                </div>
+
+                <div class="cctv-item" id="cctv-item-3">
+                    <span class="cctv-label" onclick="editCctvName(3, event)">CAM 03</span>
+                    <img src="https://via.placeholder.com/160x90?text=CAM+03" onclick="zoomCctv(this.src, 3)">
+                </div>
+
+                <div class="cctv-item" id="cctv-item-4">
+                    <span class="cctv-label" onclick="editCctvName(4, event)">CAM 04</span>
+                    <img src="https://via.placeholder.com/160x90?text=CAM+04" onclick="zoomCctv(this.src, 4)">
+                </div>
+
+                <div class="cctv-item" id="cctv-item-5">
+                    <span class="cctv-label" onclick="editCctvName(5, event)">CAM 05</span>
+                    <img src="https://via.placeholder.com/160x90?text=CAM+05" onclick="zoomCctv(this.src, 5)">
+                </div>
+
+                <div class="cctv-item" id="cctv-item-6">
+                    <span class="cctv-label" onclick="editCctvName(6, event)">CAM 06</span>
+                    <img src="https://via.placeholder.com/160x90?text=CAM+06" onclick="zoomCctv(this.src, 6)">
+                </div>
             </div>
 
-            <div class="cctv-item" id="cctv-item-3">
-                <span class="cctv-label" onclick="editCctvName(3, event)">CAM 03</span>
-                <img src="https://via.placeholder.com/160x90?text=CAM+03" onclick="zoomCctv(this.src, 3)">
+            <div id="cctv-zoom-overlay" onclick="closeZoom()">
+                <h3 id="zoom-title" style="color:white; margin-bottom:15px;">카메라 확대</h3>
+                <img id="zoomed-img" src="">
+                <div id="zoom-close-btn">닫기</div>
             </div>
-
-            <div class="cctv-item" id="cctv-item-4">
-                <span class="cctv-label" onclick="editCctvName(4, event)">CAM 04</span>
-                <img src="https://via.placeholder.com/160x90?text=CAM+04" onclick="zoomCctv(this.src, 4)">
-            </div>
-
-            <div class="cctv-item" id="cctv-item-5">
-                <span class="cctv-label" onclick="editCctvName(5, event)">CAM 05</span>
-                <img src="https://via.placeholder.com/160x90?text=CAM+05" onclick="zoomCctv(this.src, 5)">
-            </div>
-
-            <div class="cctv-item" id="cctv-item-6">
-                <span class="cctv-label" onclick="editCctvName(6, event)">CAM 06</span>
-                <img src="https://via.placeholder.com/160x90?text=CAM+06" onclick="zoomCctv(this.src, 6)">
-            </div>
-        </div>
-
-        <div id="cctv-zoom-overlay" onclick="closeZoom()">
-            <h3 id="zoom-title" style="color:white; margin-bottom:15px;">카메라 확대</h3>
-            <img id="zoomed-img" src="">
-            <div id="zoom-close-btn">닫기</div>
         </div>
     </div>
-</div>    
+
+
+    <!-- 농장 전환 패널 -->
+    <div class="change-grid">
+        <div class="switch-card" id="card-A">
+            <a href="control2.html" class="label">유전리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-B">
+            <a href="control3.html" class="label">백신리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-C">
+            <a href="control4.html" class="label">안심리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-D">
+            <a href="control5.html" class="label">옹암리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-E">
+            <a href="control6.html" class="label">산법리 농장</a>
+        </div>
+
+        <div class="switch-card" id="card-F">
+            <a href="control7.html" class="label">단촌리 농장</a>
+        </div>
+
+    </div></div><br>
+
     
     <!-- =============== script ==================================================== -->
     <script>
@@ -745,7 +953,7 @@
         async function toggleDevice(device, element, channel, ip) {
             const isOn = element.checked;
 
-            // 주 전원 안전장치
+            // 전원 안전장치
             if (device === 'power') {
                 const action = isOn ? "켜시겠습니까?" : "끄시겠습니까? 모든 기능이 중단됩니다.";
                 if (!confirm(`정말 전원을 ${action}`)) {
@@ -813,7 +1021,7 @@
             display.innerText = "";
         }
 
-        // 3. [관리] 농장명 및 라벨 수정 로직 (사장님의 3초 꾹 누르기 기능)
+        // [관리] 농장명 및 라벨 수정 로직 (사장님의 3초 꾹 누르기 기능)
         let pressTimer;
         let isUnlocked = false;
 
@@ -840,68 +1048,68 @@
             }
         }
 
-// [1] 현재 농장을 식별하는 고유 키 생성 (파일명 기준)
-// 예: farm1.html 이면 'farm1'이 키가 됩니다.
-const farmId = window.location.pathname.split("/").pop().replace(".html", "") || "default-farm";
+        // [1] 현재 농장을 식별하는 고유 키 생성 (파일명 기준)
+        // 예: farm1.html 이면 'farm1'이 키가 됩니다.
+        const farmId = window.location.pathname.split("/").pop().replace(".html", "") || "default-farm";
 
-// [2] 모든 이름을 불러오는 함수
-function loadSavedNames() {
-    // 스위치 이름 복구
-    const cards = document.querySelectorAll('.control-card');
-    cards.forEach(card => {
-        // 저장 키에 농장 아이디를 조합 (예: farm1-card-water-name)
-        const savedName = localStorage.getItem(`${farmId}-${card.id}-name`);
-        if (savedName) {
-            const nameElement = card.querySelector('.item-name');
-            if (nameElement) nameElement.innerText = savedName;
+        // [2] 모든 이름을 불러오는 함수
+        function loadSavedNames() {
+            // 스위치 이름 복구
+            const cards = document.querySelectorAll('.control-card');
+            cards.forEach(card => {
+                // 저장 키에 농장 아이디를 조합 (예: farm1-card-water-name)
+                const savedName = localStorage.getItem(`${farmId}-${card.id}-name`);
+                if (savedName) {
+                    const nameElement = card.querySelector('.item-name');
+                    if (nameElement) nameElement.innerText = savedName;
+                }
+            });
+    
+            // 농장 제목 복구
+            const savedFarmTitle = localStorage.getItem(`${farmId}-farm-title`);
+            const farmTitleElement = document.getElementById('farm-title');
+            if (savedFarmTitle && farmTitleElement) {
+                farmTitleElement.firstChild.textContent = savedFarmTitle;
+            }
         }
-    });
+
+        // [3] 스위치 이름 수정 함수
+        function editItemLabel(element) {
+            if (!isUnlocked) return; 
+
+            const nameElement = element.querySelector('.item-name');
+            if (!nameElement) return;
+
+            const cardId = element.closest('.control-card').id;
+            const currentName = nameElement.innerText.trim();
+            const newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
     
-    // 농장 제목 복구
-    const savedFarmTitle = localStorage.getItem(`${farmId}-farm-title`);
-    const farmTitleElement = document.getElementById('farm-title');
-    if (savedFarmTitle && farmTitleElement) {
-        farmTitleElement.firstChild.textContent = savedFarmTitle;
-    }
-}
+            if (newName && newName.trim() !== "") {
+                nameElement.innerText = newName;
+                // 농장별로 구분하여 저장
+                localStorage.setItem(`${farmId}-${cardId}-name`, newName);
+            }
+            forceLock();
+        }
 
-// [3] 스위치 이름 수정 함수
-function editItemLabel(element) {
-    if (!isUnlocked) return; 
+        // [4] 농장 이름 수정 함수
+        function editTitle() {
+            if (!isUnlocked) return;
+            const titleElement = document.getElementById('farm-title');
+            if (!titleElement) return;
 
-    const nameElement = element.querySelector('.item-name');
-    if (!nameElement) return;
-
-    const cardId = element.closest('.control-card').id;
-    const currentName = nameElement.innerText.trim();
-    const newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
+            const currentTitle = titleElement.firstChild.textContent.trim();
+            const newTitle = prompt("새로운 농장 이름을 입력하세요:", currentTitle);
     
-    if (newName && newName.trim() !== "") {
-        nameElement.innerText = newName;
-        // 농장별로 구분하여 저장
-        localStorage.setItem(`${farmId}-${cardId}-name`, newName);
-    }
-    forceLock();
-}
+            if (newTitle && newTitle.trim() !== "") {
+                titleElement.firstChild.textContent = newTitle;
+                // 농장별로 구분하여 저장
+                localStorage.setItem(`${farmId}-farm-title`, newTitle);
+            }
+            forceLock();
+        }
 
-// [4] 농장 이름 수정 함수
-function editTitle() {
-    if (!isUnlocked) return;
-    const titleElement = document.getElementById('farm-title');
-    if (!titleElement) return;
-
-    const currentTitle = titleElement.firstChild.textContent.trim();
-    const newTitle = prompt("새로운 농장 이름을 입력하세요:", currentTitle);
-    
-    if (newTitle && newTitle.trim() !== "") {
-        titleElement.firstChild.textContent = newTitle;
-        // 농장별로 구분하여 저장
-        localStorage.setItem(`${farmId}-farm-title`, newTitle);
-    }
-    forceLock();
-}
-
-window.addEventListener('load', loadSavedNames);
+        window.addEventListener('load', loadSavedNames);
         window.addEventListener('load', function() {
             loadSavedNames();
             // 만약 다른 초기화 함수가 더 있었다면 여기에 추가
@@ -966,8 +1174,34 @@ window.addEventListener('load', loadSavedNames);
                     }
 
                     // [수정된 부분] m, m, m으로 되어있던 부분을 각각의 변수로 변경
-                    link.innerHTML = `${name} <br>
-                    <span class="sub-status" style="font-size: 0.8rem; font-weight: normal;">수:${m_val} 양:${ec_val} 온:${t_val}</span>`;
+                    // [최종 수정] 텍스트 줄 대신 아이콘 레이아웃으로 변경
+                    // link.innerHTML을 사용하여 버튼 전체 내용을 "새로" 그립니다.
+                    link.innerHTML = `
+                        <div style="margin-bottom: 7px; font-weight: bold;">${name}</div>
+                        <div class="farm-stats-row" 
+                            style="display: flex; 
+                            justify-content: space-around; 
+                            width: 100%; 
+                            font-size: 0.85rem; 
+                            border-top: none; 
+                            padding-top: 6px;">
+
+                            <div class="stat-item" style="display: flex; align-items: center; gap: 3px;">
+                                <span class="emoji-icon">💧</span>
+                                <span class="item-name" style="font-weight: bold; color: #1a73e8;">${m_val}${m_val === "--" ? "" : "%"}</span>
+                            </div>
+
+                            <div class="stat-item" style="display: flex; align-items: center; gap: 3px;">
+                                <span class="emoji-icon">🧪</span>
+                                <span class="item-name" style="font-weight: bold; color: #2e7d32;">${ec_val}</span>
+                            </div>
+                            
+                            <div class="stat-item" style="display: flex; align-items: center; gap: 3px;">
+                                <span class="emoji-icon">🌡️</span>
+                                <span class="item-name" style="font-weight: bold; color: #d32f2f;">${t_val}${t_val === "--" ? "" : "°C"}</span>
+                            </div>
+                        </div>
+                    `;
                 }
             });
         }
@@ -993,7 +1227,7 @@ window.addEventListener('load', loadSavedNames);
             } catch (e) { console.log("센서 연결 실패"); }
         }
     
-        // 5. [초기화] 페이지 로드 시 실행
+        // [초기화] 페이지 로드 시 실행
         window.onload = function() {
             const path = window.location.pathname;
             // 1. 현재 파일명만 추출 (예: control3.html)

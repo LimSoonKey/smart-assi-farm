@@ -1,204 +1,246 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>어시팜 스위치</title>
 
     <style>
-        :root { 
-            --main-green: #FF1744; 
-            --bg-light: #f1f8e9; 
-            --error-red: #d3d32f; 
+        :root {
+            --main-green: #FF1744;
+            --bg-light: #f1f8e9;
+            --error-red: #d3d32f;
         }
 
-        body { 
-            font-family: sans-serif; 
-            background: var(--bg-light); 
-            margin: 0; 
-            padding: 15px 5; 
-            text-align: center; 
+        body {
+            font-family: sans-serif;
+            background: var(--bg-light);
+            margin: 0;
+            padding: 15px 5;
+            text-align: center;
         }
 
-        h2 { 
-            color: var(--main-green); 
-            margin-bottom: 20px; 
-            font-size: 1.8rem; 
+        h2 {
+            color: var(--main-green);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
         }
-        
+
+
+        /* =============== 적외선 도트 크기 조절(PIR 센서 상태 표시) ============== */
+        .pir-dot {
+            width: 96%;
+            height: 8px;
+            background: #cbe5f7;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .pir-active {
+            background: #FF1744;
+            box-shadow: 0 0 10px #FF1744;
+        }
+
+
         /* 화면이 스마트폰 사이즈에 자동으로 마춰지기 */
         .control-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 6px; 
+            gap: 6px;
             width: 100%;
-            max-width: 410px;                                /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
+            max-width: 410px;
+            /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
             margin: 0 auto;
         }
 
         /* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
-        .control-card { 
-            background: #ccf9d0;                           /* 연한 녹색 배경 */
-            min-height: 80px;                                /* 고정 height 대신 min-height 사용 */
-            padding: 15px 10px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        .control-card {
+            background: #ccf9d0;
+            /* 연한 녹색 배경 */
+            min-height: 80px;
+            /* 고정 height 대신 min-height 사용 */
+            padding: 10px 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border: 2px solid #4e7c3f;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-sizing: border-box;                          /* 패딩이 너비에 영향을 주지 않도록 */
+            box-sizing: border-box;
+            /* 패딩이 너비에 영향을 주지 않도록 */
         }
 
         /* [켜짐 상태] .on 클래스가 추가되었을 때 */
-        .control-card.on { 
-            border-color: var(--main-green); 
-            background-color: #32943a;                     /* 진한 녹색 배경 */
-            box-shadow: 0 4px 15px #246927; 
-            color: #ffffff !important;                     /* 배경이 진해지므로 글자색을 백색으로 변경 */
+        .control-card.on {
+            border-color: var(--main-green);
+            background-color: #32943a;
+            /* 진한 녹색 배경 */
+            box-shadow: 0 4px 15px #246927;
+            color: #ffffff !important;
+            /* 배경이 진해지므로 글자색을 백색으로 변경 */
         }
 
         /* 추가 팁: 카드 내의 작은 설명글이나 아이콘이 있다면 함께 색상을 바꿔줍니다 */
-        .control-card.on p, 
+        .control-card.on p,
         .control-card.on span,
-        .control-card.on label {color: #ffffff;}
+        .control-card.on label {
+            color: #ffffff;
+        }
 
         /* 카드 내부 레이아웃 */
-        .label { 
-            font-weight: bold; 
-            font-size: 1.1rem; 
+        .label {
+            font-weight: bold;
+            font-size: 1.1rem;
             line-height: 1.4 !important;
-            display: block; 
-            margin-bottom: 10px; 
+            display: block;
+            margin-bottom: 10px;
             width: 100%;
         }
 
         /* 스위치와 글자를 감싸는 컨테이너 */
-        .switch-container { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         /* 꺼짐/켜짐 글자 스타일 */
-        .status-label { 
-            font-size: 1rem; 
-            font-weight: 900; 
-            color: #4d9554; 
+        .status-label {
+            font-size: 1rem;
+            font-weight: 900;
+            color: #4d9554;
         }
 
         /* 스위치 상태에 따른 글자 색상 변화 */
-        input:not(:checked) ~ .off-label { color: var(--error-red); }
-        input:checked ~ .on-label { color: var(--main-green); }
+        input:not(:checked)~.off-label {
+            color: var(--error-red);
+        }
+
+        input:checked~.on-label {
+            color: var(--main-green);
+        }
 
         /* 스위치 크기를 조금 더 키워 조작이 편하게 함 */
-        .switch { 
-            position: relative; 
-            display: inline-block; 
-            width: 85px; 
-            height: 40px; vertical-align: middle; margin: 0 5px;
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 85px;
+            height: 40px;
+            vertical-align: middle;
+            margin: 0 5px;
         }
 
-        .switch input { 
-            opacity: 0; 
-            width: 0; 
-            height: 0; 
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
 
-        .slider { 
-            position: absolute; 
-            cursor: pointer; 
-            top: 0; 
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
             text-align: center !important;
             width: 80px;
-            left: 0px; 
-            right: 0; 
-            bottom: 0; 
-            background-color: #8b8888; 
-            transition: .4s; 
-            border-radius: 34px; 
+            left: 0px;
+            right: 0;
+            bottom: 0;
+            background-color: #8b8888;
+            transition: .4s;
+            border-radius: 34px;
         }
 
-        .slider:before { 
-            position: absolute; 
-            content: ""; 
-            height: 32px; 
-            width: 32px; 
-            left: 2px; 
-            bottom: 4px; 
-            background-color: white; 
-            transition: .4s; 
-            border-radius: 50%; 
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 32px;
+            width: 32px;
+            left: 2px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
-        
-        input:checked + .slider { background-color: var(--main-green); }
-        input:checked + .slider:before { transform: translateX(45px); } /* 스위치 왕복 거리 */
 
-        #status-bar { 
-            margin-top: 30px; 
-            font-weight: bold; 
-            color: #444; 
-            font-size: 1.1rem; 
-            height: 25px; 
+        input:checked+.slider {
+            background-color: var(--main-green);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(45px);
+        }
+
+        /* 스위치 왕복 거리 */
+
+        #status-bar {
+            margin-top: 30px;
+            font-weight: bold;
+            color: #444;
+            font-size: 1.1rem;
+            height: 25px;
         }
 
 
         /* 이모지만 선명하게 만드는 전용 스타일 */
         .emoji-icon {
             display: inline-block;
+            font-size: 0.9rem !important;
             margin-right: 0px;
-            text-shadow:                                   /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
-                -1px -1px 0 #000080,  
-                 1px -1px 0 #000080,
-                -1px  1px 0 #000080,  
-                 1px  1px 0 #000080;
+            text-shadow:
+                /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
+                -1px -1px 0 #000080,
+                1px -1px 0 #000080,
+                -1px 1px 0 #000080,
+                1px 1px 0 #000080;
         }
 
         /* 이름 글자는 깔끔하게 유지 */
         .item-name {
-            text-shadow: none !important; 
+            text-shadow: none !important;
             font-weight: bold;
+            font-size: 0.9rem !important;
         }
 
 
         /* =============== 농장 전환 버튼 ============== */
-        
+
         .change-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 8px; 
-            max-width: 400px;                              /* 폭을 제한하여 폰 화면처럼 보이게.. */
+            gap: 6px;
+            max-width: 400px;
+            /* 폭을 제한하여 폰 화면처럼 보이게.. */
             margin: 0 auto;
         }
 
         /* 전환버튼을 감싸는 개별 바구니 */
-        .switch-card { 
-            background: rgb(180, 228, 252); 
+        .switch-card {
+            background: rgb(180, 228, 252);
             border: 2px solid #628aaf !important;
-            border-radius: 15px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease;
             cursor: pointer;
             flex-direction: column !important;
-            overflow: hidden;                                /* 넘치는 내용은 숨겨서 벌컥거림 방지 */
+            overflow: hidden;
+            /* 넘치는 내용은 숨겨서 벌컥거림 방지 */
 
             /* 핵심 정렬 코드 */
-            display: flex !important;                        /* 정렬 모드 강제 활성화 */
-            justify-content: center !important;              /* 가로 중앙 */
-            align-items: center !important;                  /* 세로 중앙 */
-    
-            /* 패딩은 0으로 만들고 높이로만 조절합니다 */
-            padding: 7.7px !important;  
-            margin: 0 !important;
-            height: 64px !important;                         /* 85픽셀로 높이를 딱 고정합니다 */
-        }
+            display: flex !important;
+            /* 정렬 모드 강제 활성화 */
+            justify-content: center !important;
+            /* 가로 중앙 */
+            align-items: center !important;
+            /* 세로 중앙 */
 
-        /* 버튼 안의 링크 글자들 정렬 */
-        .switch-card a {
-            text-decoration: none;
-            line-height: 1;                                  /* 줄 간격을 고정하여 흔들림 방지 */
+            /* 패딩은 0으로 만들고 높이로만 조절합니다 */
+            padding: 7.7px !important;
+            margin: 0 !important;
+            height: 64px !important;
+            /* 85픽셀로 높이를 딱 고정합니다 */
         }
 
         /* 글자 자체에 숨어있는 여백을 제거 */
@@ -206,13 +248,23 @@
             margin: 0 !important;
             padding: 0 !important;
             display: block !important;
-            line-height: 1;                                  /* 줄 간격 때문에 치우치는 현상 방지 */
+            line-height: 1;
+            /* 줄 간격 때문에 치우치는 현상 방지 */
             font-weight: 700;
+            font-size: 1.1rem !important;
+        }
+
+        /* 버튼 안의 링크 글자들 정렬 */
+        .switch-card a {
+            text-decoration: none;
+            line-height: 1;
+            /* 줄 간격을 고정하여 흔들림 방지 */
         }
 
         .timer-text {
             font-size: 1.1rem;
-            color: #f8f8f5;                                /* 작동 중일 때 눈에 띄는 빨간색 */
+            color: #f8f8f5;
+            /* 작동 중일 때 눈에 띄는 빨간색 */
             margin-left: 8px;
             font-weight: normal;
         }
@@ -234,7 +286,8 @@
         /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
         body.unlocked .label {
             cursor: pointer;
-            text-decoration: underline dotted #4e7c3f;     /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
+            text-decoration: underline dotted #4e7c3f;
+            /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
         }
 
         /* 전원은 빨간색이므로 강조 유지 */
@@ -242,45 +295,73 @@
             font-weight: bold;
         }
 
-        /* 화면 크기에 따라서 폰트 사이즈가 유연하게 변함 */ 
-        @media (max-width: 320px) {html { font-size: 14px; }}
-        @media (min-width: 768px) {html { font-size: 18px; }}
+        /* 화면 크기에 따라서 폰트 사이즈가 유연하게 변함 */
+        @media (max-width: 320px) {html {font-size: 14px;}}
+        @media (min-width: 768px) {html {font-size: 18px;}}
 
 
-        /* =============== 보안 알림 & CCTV 팝업 ============== */        
+        /* =============== 보안 알림 & CCTV 팝업 ============== */
         /* --- 보안 알림 레이아웃 --- */
         #emergency-msg {
-            display: none;                                   /* 평소엔 숨김 */
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px; padding: 20px;
-            background-color: white; border: 5px solid #FF1744; border-radius: 15px;
-            z-index: 10001; cursor: pointer; text-align: center;
+            display: none;
+            /* 평소엔 숨김 */
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: white;
+            border: 5px solid #FF1744;
+            border-radius: 15px;
+            z-index: 10001;
+            cursor: pointer;
+            text-align: center;
         }
 
         /* 빨간 글자 깜박임 효과 */
         .blink-red {
-            color: #FF1744; font-size: 1.8rem; font-weight: bold;
+            color: #FF1744;
+            font-size: 1.8rem;
+            font-weight: bold;
             animation: alert-blink 0.6s infinite;
         }
 
-        @keyframes alert-blink {0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; }}
+        @keyframes alert-blink {
+            0% {opacity: 1;}
+            50% {opacity: 0;}
+            100% {opacity: 1;}
+        }
 
         /* CCTV 팝업 스타일 */
         #cctv-popup {
-            display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
-            width: 95%; max-width: 500px; background: #000; border-radius: 20px;
-            z-index: 10002; padding: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            display: none;
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 500px;
+            background: #000;
+            border-radius: 20px;
+            z-index: 10002;
+            padding: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         }
 
         /* CCTV 모니터링 섹션 스타일 */
         .cctv-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
+            grid-template-columns: repeat(2, 1fr);
+            /* 2열 배치 */
             gap: 3px;
             max-width: 400px;
-            margin: 20px auto;                               /* 농장전환 버튼 아래 여백 */
-            padding: 10px;
-            background: #fafdf7;                           /* 모니터 느낌을 주는 어두운 배경 */
+            margin: 20px auto;
+            /* 농장전환 버튼 아래 여백 */
+            padding: 0px;
+            background: #fafdf7;
+            /* 모니터 느낌을 주는 어두운 배경 */
             border-radius: 3px;
         }
 
@@ -289,7 +370,8 @@
             width: 100% !important;
             position: relative;
             background: #000;
-            aspect-ratio: 16/9;                              /* 와이드 화면 비율 유지 */
+            aspect-ratio: 16/9;
+            /* 와이드 화면 비율 유지 */
             overflow: hidden;
             border-radius: 5px;
             border: 1px solid #333;
@@ -298,11 +380,13 @@
         .cctv-item img {
             width: 100% !important;
             height: 100% !important;
-            object-fit: cover; /* 이미지가 꽉 차도록 설정 */
+            object-fit: cover;
+            /* 이미지가 꽉 차도록 설정 */
             cursor: pointer;
         }
 
-        .cctv-item iframe, .cctv-item img {
+        .cctv-item iframe,
+        .cctv-item img {
             width: 100% !important;
             height: 100% !important;
             border: none;
@@ -323,7 +407,8 @@
 
         /* 잠금 해제 시 이름에 효과 주기 */
         body.unlocked .cctv-label {
-            background: #ff1b17 !important;                /* 수정 가능함을 알리는 빨간색 */
+            background: #ff1b17 !important;
+            /* 수정 가능함을 알리는 빨간색 */
             text-decoration: underline dotted white;
         }
 
@@ -331,16 +416,19 @@
         #cctv-zoom-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; 
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 20000;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        #cctv-zoom-overlay img, #cctv-zoom-overlay iframe {
+        #cctv-zoom-overlay img,
+        #cctv-zoom-overlay iframe {
             width: 95%;
             max-height: 80%;
             border-radius: 10px;
@@ -359,9 +447,7 @@
         }
 
 
-        
 
-        
         /* =============== PC 레이아웃 (1024px 이상) ============== */
         /* PC용 메인 레이아웃: 좌우 분할 및 순서 반전 */
         @media (min-width: 1024px) {
@@ -376,10 +462,12 @@
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
                 grid-template-areas: "cctv control" "cctv change";
-                gap: 15px;                                   /* 간격을 살짝 좁혀 이탈 방지 */
-                align-items: start !important;               /* 핵심: 모든 요소를 상단에 밀착 */
+                gap: 15px;
+                /* 간격을 살짝 좁혀 이탈 방지 */
+                align-items: start !important;
+                /* 핵심: 모든 요소를 상단에 밀착 */
                 padding: 15px;
-                max-width: 100vw !important; 
+                max-width: 100vw !important;
                 box-sizing: border-box;
             }
 
@@ -392,15 +480,18 @@
             }
 
             /* [1] 왼쪽 CCTV 구역 (3/5 비율) */
-            .legt-panel, .left-panel { 
-                order: 1 !important;                         /* 무조건 첫 번째(왼쪽)로 배치 */
-                flex: 0 0 60% !important;                    /* 너비 60% 고정 */
+            .legt-panel,
+            .left-panel {
+                order: 1 !important;
+                /* 무조건 첫 번째(왼쪽)로 배치 */
+                flex: 0 0 60% !important;
+                /* 너비 60% 고정 */
                 width: 60% !important;
-                background: #fbfcf8 !important; 
+                background: #fbfcf8 !important;
                 display: flex !important;
                 flex-direction: column;
                 align-items: center;
-                justify-content:flex-start !important;
+                justify-content: flex-start !important;
                 padding: 0px;
                 box-sizing: border-box;
                 /* 추가: 내용이 많아지면 스크롤이 생기도록 변경 */
@@ -410,69 +501,92 @@
 
             /* [중요] 오른쪽 패널 (제어판 - HTML상 앞 순서) */
             .right-panel {
-                order: 2 !important;                         /* 화면 우측 배치 */
-                flex: 0 0 40% !important;                    /* 2/5 비율 */
+                order: 2 !important;
+                /* 화면 우측 배치 */
+                flex: 0 0 40% !important;
+                /* 2/5 비율 */
                 height: 100%;
-                overflow-y: auto !important;                 /* 내용 많을 시 스크롤 */
+                overflow-y: auto !important;
+                /* 내용 많을 시 스크롤 */
                 padding: 20px;
                 background: var(--bg-light);
-                border-left: 2px solid #ddd;               /* 경계선 위치 변경 */
+                border-left: 2px solid #ddd;
+                /* 경계선 위치 변경 */
                 box-sizing: border-box;
             }
 
             /* PC에서 스위치 그리드 최적화 (비율에 맞춰 2열 배치 추천) */
             .control-grid {
-                max-width: 100% !important;                  /* 기존 400px 제한을 풀어서 넓게 사용 */
+                max-width: 100% !important;
+                /* 기존 400px 제한을 풀어서 넓게 사용 */
                 grid-template-columns: repeat(2, 1fr) !important;
-                margin: 0 auto !important;                   /* 중앙 정렬 유지 */
+                margin: 0 auto !important;
+                /* 중앙 정렬 유지 */
                 width: 100% !important;
-                gap: 6px; 
+                gap: 6px;
                 display: grid;
             }
 
             /* PC에서 스위치 카드를 가로형으로 배치 */
             .control-card {
-                flex-direction: row !important;              /* 가로 배치 */
-                justify-content: space-between !important;   /* 양끝 정렬 */
-                padding: 7px 10px !important;                /* 좌우 여백 */
+                flex-direction: row !important;
+                /* 가로 배치 */
+                justify-content: space-between !important;
+                /* 양끝 정렬 */
+                padding: 7px 10px !important;
+                /* 좌우 여백 */
                 min-height: 60px !important;
-                height: 170px !important;                    /* 가로일 때는 높이를 조금 줄여도 예쁘다 */
+                height: 170px !important;
+                /* 가로일 때는 높이를 조금 줄여도 예쁘다 */
             }
 
             /* 이름 레이블(이모지+이름) 설정 */
             .control-card .label {
                 display: flex !important;
                 align-items: center !important;
-                justify-content: center !important;          /* 중앙 정렬 유지 */
-                gap: 5px;                                    /* 이모지, 이름, 타이머 사이의 기본 간격 */
-                line-height: normal !important;              /* 2px 문제를 해결 */
-                margin-bottom: 0 !important;                 /* 아래 여백 제거 */
+                justify-content: center !important;
+                /* 중앙 정렬 유지 */
+                gap: 5px;
+                /* 이모지, 이름, 타이머 사이의 기본 간격 */
+                line-height: normal !important;
+                /* 2px 문제를 해결 */
+                margin-bottom: 0 !important;
+                /* 아래 여백 제거 */
                 text-align: left !important;
                 width: auto !important;
-                padding-top: 25px;                           /* 위쪽 여백 */
-                padding-bottom: 25px;                        /* 아래쪽 여백 */
+                padding-top: 25px;
+                /* 위쪽 여백 */
+                padding-bottom: 25px;
+                /* 아래쪽 여백 */
             }
 
             /* 타이머 텍스트 스타일 수정 */
             .timer-text {
-                display: inline-block;                       /* 너비를 가질 수 있게 설정 */
-                min-width: 65px;                             /* 핵심: 타이머(00:00)가 들어갈 최소 너비 미리 확보 */
-                text-align: left;                            /* 타이머 숫자는 왼쪽 정렬이 깔끔함 */
+                display: inline-block;
+                /* 너비를 가질 수 있게 설정 */
+                min-width: 65px;
+                /* 핵심: 타이머(00:00)가 들어갈 최소 너비 미리 확보 */
+                text-align: left;
+                /* 타이머 숫자는 왼쪽 정렬이 깔끔함 */
                 font-size: 1rem;
-                color: #ffffff;                            /* 켜졌을 때 글자색 (배경이 진해지므로) */
+                color: #ffffff;
+                /* 켜졌을 때 글자색 (배경이 진해지므로) */
                 margin-left: 5px;
                 font-weight: normal;
             }
 
             /* 꺼져 있을 때는 타이머 공간이 투명하게 존재하게 함 */
             .control-card:not(.on) .timer-text {
-                visibility: hidden;                          /* 공간은 차지하되 보이지는 않음 */
+                visibility: hidden;
+                /* 공간은 차지하되 보이지는 않음 */
             }
 
             /* 확대 시 글자 크기가 깨지는 것 방지 */
-            .label, .item-name {
+            .label,
+            .item-name {
                 font-size: 1.2rem !important;
-                white-space: nowrap;                         /* 글자 줄바꿈 방지 */
+                white-space: nowrap;
+                /* 글자 줄바꿈 방지 */
             }
 
             /* 농장 전환 패널을 오른쪽 아래로 배치 */
@@ -481,44 +595,53 @@
                 width: 100% !important;
                 margin-top: 10px;
                 grid-template-columns: repeat(2, 1fr) !important;
-                grid-area: change;                           /* 하단 농장 전환 버튼 이탈 방지 */
-                margin-top: 10px;                            /* 스위치 패널과의 간격 */
+                grid-area: change;
+                /* 하단 농장 전환 버튼 이탈 방지 */
+                margin-top: 10px;
+                /* 스위치 패널과의 간격 */
                 width: 100%;
-                align-self: start;                           /* 아래로 처지지 않고 바로 위에 붙도록 설정 */
+                align-self: start;
+                /* 아래로 처지지 않고 바로 위에 붙도록 설정 */
             }
 
             /* 농장 전환버튼을 감싸는 개별 바구니 */
-            .switch-card { 
+            .switch-card {
                 height: auto !important;
                 min-height: 50px;
                 display: flex;
-                flex-direction: column !important;           /* 이름은 위, 수치는 아래 */
-                align-items: center !important;              /* 세로 중앙 */
-                justify-content: center !important;          /* 가로 중앙 */
-                padding: 7.7px !important;  
+                flex-direction: column !important;
+                /* 이름은 위, 수치는 아래 */
+                align-items: center !important;
+                /* 세로 중앙 */
+                justify-content: center !important;
+                /* 가로 중앙 */
+                padding: 7.7px !important;
             }
 
             /* 농장 이름 스타일 */
-                .switch-card .label {
-                    font-size: 1.1rem !important;
-                    margin-bottom: 0 !important;
-                    color: #101111;
-                }
-    
+            .switch-card .label {
+                font-size: 1.1rem !important;
+                margin-bottom: 0 !important;
+                color: #101111;
+            }
+
             /* 3. 스위치 컨테이너 설정 */
             .switch-container {
-                margin-top: 0 !important;                    /* 위 여백 제거 */
+                margin-top: 0 !important;
+                /* 위 여백 제거 */
                 justify-content: flex-end !important;
             }
 
             /* 컨디션 수치들을 감싸는 컨테이너 (새로 추가할 클래스) */
             .farm-stats-row {
                 display: flex;
-                justify-content: space-around;               /* 아이템 간 간격 균등 분배 */
+                justify-content: space-around;
+                /* 아이템 간 간격 균등 분배 */
                 width: 100%;
                 font-size: 0.85rem;
                 color: #555;
-                border-top: 1px solid rgba(0,0,0,0.05);      /* 경계선 살짝 */
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+                /* 경계선 살짝 */
                 padding-top: 5px;
             }
 
@@ -528,21 +651,29 @@
                 gap: 3px;
             }
 
-            .stat-value { font-weight: bold; }
+            .stat-value {
+                font-weight: bold;
+            }
 
             /* 오른쪽 제어판 & 농장전환 버튼 크기 통일 */
-            .control-grid, .change-grid {
+            .control-grid,
+            .change-grid {
                 display: grid !important;
-                grid-template-columns: repeat(2, 1fr) !important; /* 무조건 2열 고정 */
+                grid-template-columns: repeat(2, 1fr) !important;
+                /* 무조건 2열 고정 */
                 gap: 10px !important;
                 width: 100% !important;
-                max-width: 100% !important;                  /* 제한 해제 */
+                max-width: 100% !important;
+                /* 제한 해제 */
             }
 
             /* 상단 스위치 카드와 하단 농장전환 버튼의 높이 및 정렬 통일 */
-            .control-card, .switch-card {
-                min-height: 65px !important;                 /* 최소 높이 통일 */
-                height: auto !important;                     /* 내용에 따라 늘어나도록 */
+            .control-card,
+            .switch-card {
+                min-height: 65px !important;
+                /* 최소 높이 통일 */
+                height: auto !important;
+                /* 내용에 따라 늘어나도록 */
                 margin: 0 !important;
                 padding: 10px !important;
                 box-sizing: border-box;
@@ -557,24 +688,31 @@
             /* 왼쪽 CCTV 구역 */
             .cctv-section {
                 grid-area: cctv;
-                width: 100% !important; 
-                max-width: none !important;                  /* 혹시 모를 제한 해제 */
+                width: 100% !important;
+                max-width: none !important;
+                /* 혹시 모를 제한 해제 */
                 display: block !important;
                 margin: 0 !important;
                 flex-direction: column;
                 align-items: center;
                 justify-content: flex-start;
-                height: auto;                                /* 고정 높이 제거 */
-                max-height: 95vh;                            /* 화면 높이를 넘지 않도록 제한 */
+                height: auto;
+                /* 고정 높이 제거 */
+                max-height: 95vh;
+                /* 화면 높이를 넘지 않도록 제한 */
             }
 
             /* 화면 축소 시 글자가 밖으로 나가는 것 방지 */
             .cctv-grid {
-                display: grid !important;                    /* 그리드 명시 */
-                width: 100% !important;                      /* 양옆 여백만 살짝 남기고 꽉 채움 */
-                max-width: 100% !important;                  /* 기존의 작은 max-width 제한을 제거 */
-                grid-template-columns: 1fr 1fr !important;   /* repeat 대신 확실하게 1fr 1fr */
-                gap: 3px !important; 
+                display: grid !important;
+                /* 그리드 명시 */
+                width: 100% !important;
+                /* 양옆 여백만 살짝 남기고 꽉 채움 */
+                max-width: 100% !important;
+                /* 기존의 작은 max-width 제한을 제거 */
+                grid-template-columns: 1fr 1fr !important;
+                /* repeat 대신 확실하게 1fr 1fr */
+                gap: 3px !important;
                 margin: 0 auto !important;
                 padding: 0 !important;
             }
@@ -583,7 +721,8 @@
             .cctv-item {
                 width: 100% !important;
                 height: auto !important;
-                aspect-ratio: 16 / 9 !important;             /* 와이드 화면 비율 유지 */
+                aspect-ratio: 16 / 9 !important;
+                /* 와이드 화면 비율 유지 */
                 position: relative;
                 background: #000;
                 border-radius: 5px;
@@ -594,11 +733,13 @@
             .cctv-item img {
                 width: 100% !important;
                 height: 100% !important;
-                object-fit: cover;                           /* 이미지가 꽉 차도록 설정 */
+                object-fit: cover;
+                /* 이미지가 꽉 차도록 설정 */
                 cursor: pointer;
             }
 
-            .cctv-item iframe, .cctv-item img {
+            .cctv-item iframe,
+            .cctv-item img {
                 width: 100% !important;
                 height: 100% !important;
                 border: none;
@@ -606,15 +747,18 @@
 
             .cctv-label {
                 position: absolute;
-                width: auto !important;                      /* 고정 너비 해제 (이게 핵심!) */
-                min-width: 40px;                             /* 최소 너비만 지정 */
+                width: auto !important;
+                /* 고정 너비 해제 (이게 핵심!) */
+                min-width: 40px;
+                /* 최소 너비만 지정 */
                 max-width: 90% !important;
                 top: 5px;
                 left: 0px;
                 padding: 2px 0px;
                 font-size: 0.8rem;
                 background: rgba(0, 0, 0, 0.6);
-                z-index: 10;                                 /* 이미지보다 위에 보이도록 */
+                z-index: 10;
+                /* 이미지보다 위에 보이도록 */
                 color: white;
                 /* border-radius: 3px; */
                 /* cursor: pointer; */
@@ -622,22 +766,25 @@
             }
 
             /* 제목 및 배지 상단 여백 초기화 */
-            #cctv-farm-badge, #farm-title {
+            #cctv-farm-badge,
+            #farm-title {
                 margin-top: 0 !important;
             }
 
             /* 4. 이미지도 박스 크기에 맞춰 꽉 차게 설정 */
-            .cctv-item img, .cctv-item iframe {
+            .cctv-item img,
+            .cctv-item iframe {
                 display: block;
                 width: 100% !important;
                 height: 100% !important;
-                object-fit: cover !important;                /* 이미지가 박스에 꽉 차게 */
+                object-fit: cover !important;
+                /* 이미지가 박스에 꽉 차게 */
             }
 
             /* 배지(제목) 너비도 화면에 맞춰 적절히 조절 */
             #cctv-farm-badge {
                 max-width: 100% !important;
-                
+
                 padding: 10px 30px !important;
             }
         }
@@ -657,30 +804,30 @@
             }
         }
 
-    /* 1. "CAM 01" 글자 위치를 오른쪽 상단으로 이동 */
-    #zoom-title {
-        position: absolute !important;
-        top: 20px !important;    /* 상단에서 20px 내림 */
-        right: auto !important;  /* 오른쪽에서 20px 띄움 */
-        left: 5px !important;   /* 기존 왼쪽 정렬 해제 */
-        transform: none !important; /* 기존 중앙 정렬 해제 */
-        
-        /* 시인성을 위한 스타일 */
-        background: rgba(0, 0, 0, 0.6);
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 1rem !important;
-        color: white;
-    }
+        /* "CAM 01" 글자 위치를 오른쪽 상단으로 이동 */
+        #zoom-title {
+            position: absolute !important;
+            top: 20px !important;
+            /* 상단에서 20px 내림 */
+            right: auto !important;
+            /* 오른쪽에서 20px 띄움 */
+            left: 5px !important;
+            /* 기존 왼쪽 정렬 해제 */
+            transform: none !important;
+            /* 기존 중앙 정렬 해제 */
 
-    /* 2. "닫기" 버튼 숨기기 (터치로 닫기가 되므로 삭제) */
-    #zoom-close-btn {
-        display: none !important;
-    }
+            /* 시인성을 위한 스타일 */
+            background: rgba(0, 0, 0, 0.6);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1rem !important;
+            color: white;
+        }
 
-
-
-
+        /* "닫기" 버튼 숨기기 (터치로 닫기가 되므로 삭제) */
+        #zoom-close-btn {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -692,11 +839,11 @@
     <div class="main-container">
         <div class="control-section">
             <div style="background: white; 
-                border-radius: 20px; 
-                padding: 10px !important; 
+                border-radius: 15px; 
+                padding-top: 10px !important; 
                 margin-bottom: 10px; 
                 box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-                width: 97% !important; 
+                width: 99% !important; 
                 margin-left: auto !important; 
                 margin-right: auto;">
 
@@ -704,41 +851,111 @@
                     백신리 농장
                     <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>
                 </h2>
-    
-                <div style="display: flex; justify-content: space-around; font-size: 1rem; color: #555;">
+
+                <div style="display: flex; justify-content: space-around; color: #555;">
                     <div>
-                        <span class="emoji-icon">💧</span> 
+                        <span class="emoji-icon">💧</span>
                         <span class="item-name">수분</span>
                         <span id="stat-moisture" style="font-weight:bold; color:#1a73e8;">--%</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">🧪</span> 
+                        <span class="emoji-icon">🧪</span>
                         <span class="item-name">영양</span>
                         <span id="stat-ec" style="font-weight:bold; color:#2e7d32;">--ms/cm</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">🌡️</span> 
+                        <span class="emoji-icon">🌡️</span>
                         <span class="item-name">온도</span>
-                        <span id="stat-temp" style="font-weight:bold;">--°C</span>
+                        <span id="stat-temp" style="font-weight:bold; color:#966d46;">--°C</span>
+                    </div>
+                </div>
+
+                <div style="
+                    display: flex; 
+                    justify-content: space-around; 
+                    font-size: 0.85rem; 
+                    color: #666; 
+                    margin-bottom: 12px; 
+                    background: #f9f9f9; 
+                    padding: 0px; 
+                    left: 0;
+                    width: 100%;">
+
+                    <div>
+                        <span class="emoji-icon">🎐</span>
+                        <span class="item-name">풍속</span>
+                        <span id="stat-wind" style="font-weight:bold; color:#626cba;">--m/s</span>
+                    </div>
+
+                    <div>
+                        <span class="emoji-icon">☀️</span>
+                        <span class="item-name">햇빛</span>
+                        <span id="stat-lux" style="font-weight:bold; color:#ee4628;">--lx</span>
+                    </div>
+
+                    <div>
+                        <span class="emoji-icon">🔊</span>
+                        <span class="item-name">소음</span>
+                        <span id="stat-sound" style="font-weight:bold; color:#2f3630;">--dB</span>
+                    </div>
+                </div>
+
+                <div id="advanced-monitor" style="
+                    background: #fff; 
+                    border-radius: 15px; 
+                    padding: 0px; 
+                    padding-bottom: 10px;
+                    margin: 10px auto; 
+                    width: 99%; 
+                    border: 1px solid #fbfafa;">
+
+                    <div style="
+                        display: flex; 
+                        justify-content: space-between; 
+                        align-items: center; 
+                        margin-bottom: 15px;">
+
+                        <strong style="color: #6b2b85;">🛡️경계선</strong>
+
+                        <span id="security-level" style="
+                            font-size: 0.8rem; 
+                            color: rgb(9, 9, 9); 
+                            padding: 2px 15px; 
+                            border-radius: 10px;">작동중
+                        </span>
+                    </div>
+
+                    <div style="display: grid; margin-top: -10px; grid-template-columns: repeat(6, 1fr); gap: 4px;">
+                        <div id="pir-top-1" class="pir-dot" title="2단-1"></div>
+                        <div id="pir-top-2" class="pir-dot" title="2단-2"></div>
+                        <div id="pir-top-3" class="pir-dot" title="2단-3"></div>
+                        <div id="pir-top-4" class="pir-dot" title="2단-4"></div>
+                        <div id="pir-top-5" class="pir-dot" title="2단-5"></div>
+                        <div id="pir-top-6" class="pir-dot" title="2단-6"></div>
+                        <div id="pir-bot-1" class="pir-dot" title="1단-1"></div>
+                        <div id="pir-bot-2" class="pir-dot" title="1단-2"></div>
+                        <div id="pir-bot-3" class="pir-dot" title="1단-3"></div>
+                        <div id="pir-bot-4" class="pir-dot" title="1단-4"></div>
+                        <div id="pir-bot-5" class="pir-dot" title="1단-5"></div>
+                        <div id="pir-bot-6" class="pir-dot" title="1단-6"></div>
                     </div>
                 </div>
             </div>
-        
 
             <div class="control-grid">
                 <div class="control-card" id="card-water">
                     <span class="label" onclick="editItemLabel(this)">
-                        <span class="emoji-icon">🚰</span> 
-                        <span class="item-name">급수</span>
+                        <span class="emoji-icon">🚰</span>
+                        <span class="item-name" style="font-size: 1.2rem !important;">급수</span>
                         <span id="timer-water" class="timer-text"></span>
                     </span>
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleDevice('water', this, 0, IP_PRO_4PM)">
-                            <span class="slider"></span>
+                        <label class="switch" title="급수 장치 제어">
+                            <input type="checkbox" title="급수 장치 스위치" onchange="toggleDevice('water', this, 0, IP_PRO_4PM)">
+                            <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
                     </div>
@@ -746,31 +963,31 @@
 
                 <div class="control-card" id="card-irrigation">
                     <span class="label" onclick="editItemLabel(this)">
-                        <span class="emoji-icon">🚿</span> 
-                        <span class="item-name">관수</span>
+                        <span class="emoji-icon">🚿</span>
+                        <span class="item-name" style="font-size: 1.2rem !important;">관수</span>
                         <span id="timer-irrigation" class="timer-text"></span>
                     </span>
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM)">
-                            <span class="slider"></span>
+                        <label class="switch" title="관수 장치 제어">
+                            <input type="checkbox" title="관수 장치 스위치" onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM)">
+                            <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
                     </div>
                 </div>
-        
+
                 <div class="control-card" id="card-pesticide">
                     <span class="label" onclick="editItemLabel(this)">
-                        <span class="emoji-icon">🧪</span> 
-                        <span class="item-name">농약</span>
+                        <span class="emoji-icon">🧪</span>
+                        <span class="item-name" style="font-size: 1.2rem !important;">농약</span>
                         <span id="timer-pesticide" class="timer-text"></span>
                     </span>
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleDevice('pesticide', this, 3, IP_PRO_4PM)">
-                            <span class="slider"></span>
+                        <label class="switch" title="농약 장치 제어">
+                            <input type="checkbox" title="농약 살포 스위치" onchange="toggleDevice('pesticide', this, 3, IP_PRO_4PM)">
+                            <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
                     </div>
@@ -778,15 +995,15 @@
 
                 <div class="control-card" id="card-fertilizer">
                     <span class="label" onclick="editItemLabel(this)">
-                        <span class="emoji-icon">💊</span> 
-                        <span class="item-name">액비</span>
+                        <span class="emoji-icon">💊</span>
+                        <span class="item-name" style="font-size: 1.2rem !important;">액비</span>
                         <span id="timer-fertilizer" class="timer-text"></span>
                     </span>
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleDevice('fertilizer', this, 0, IP_PLUS_1PM)">
-                            <span class="slider"></span>
+                        <label class="switch" title="액비 장치 제어">
+                            <input type="checkbox" title="액비 살포 스위치" onchange="toggleDevice('fertilizer', this, 0, IP_PLUS_1PM)">
+                            <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
                     </div>
@@ -794,15 +1011,15 @@
 
                 <div class="control-card" id="card-shield">
                     <span class="label" onclick="editItemLabel(this)">
-                        <span class="emoji-icon">☀️</span> 
-                        <span class="item-name">천막</span>
+                        <span class="emoji-icon">☀️</span>
+                        <span class="item-name" style="font-size: 1.2rem !important;">천막</span>
                         <span id="timer-shield" class="timer-text"></span>
                     </span>
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
-                            <span class="slider"></span>
+                        <label class="switch" title="천막 장치 제어">
+                            <input type="checkbox" title="천막 개폐 스위치" onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
+                            <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
                     </div>
@@ -810,15 +1027,15 @@
 
                 <div class="control-card" id="card-frost">
                     <span class="label" onclick="editItemLabel(this)">
-                        <span class="emoji-icon">❄️</span> 
-                        <span class="item-name">서리</span>
+                        <span class="emoji-icon">❄️</span>
+                        <span class="item-name" style="font-size: 1.2rem !important;">서리</span>
                         <span id="timer-frost" class="timer-text"></span>
                     </span>
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleDevice('frost', this, 0, IP_PLUS_1PM)">
-                            <span class="slider"></span>
+                        <label class="switch" title="방상 장치 제어">
+                            <input type="checkbox" title="방상팬 가동 스위치" onchange="toggleDevice('frost', this, 0, IP_PLUS_1PM)">
+                            <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
                     </div>
@@ -826,15 +1043,15 @@
 
                 <div class="control-card" id="card-light">
                     <span class="label" onclick="editItemLabel(this)">
-                        <span class="emoji-icon">💡</span> 
-                        <span class="item-name">전등</span>
+                        <span class="emoji-icon">💡</span>
+                        <span class="item-name" style="font-size: 1.2rem !important;">전등</span>
                         <span id="timer-light" class="timer-text"></span>
                     </span>
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleDevice('light', this, 0, IP_PLUS_1PM)">
-                            <span class="slider"></span>
+                        <label class="switch" title="전등 장치 제어">
+                            <input type="checkbox" title="현장 전등 스위치" onchange="toggleDevice('light', this, 0, IP_PLUS_1PM)">
+                            <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
                     </div>
@@ -843,25 +1060,25 @@
                 <div class="control-card" id="card-power">
                     <span class="label" onclick="editItemLabel(this)" style="color: #d32f2f;">
                         <span class="emoji-icon">⚡</span>
-                        <span class="item-name">전원</span>
+                        <span class="item-name" style="font-size: 1.2rem !important;">전원</span>
                         <span id="timer-power" class="timer-text"></span>
                     </span>
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleDevice('power', this, 0, IP_PLUS_1PM)">
-                            <span class="slider"></span>
+                        <label class="switch" title="전원 장치 제어">
+                            <input type="checkbox" title="주 전원 on/off 스위치" onchange="toggleDevice('power', this, 0, IP_PLUS_1PM)">
+                            <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
                     </div>
                 </div>
-            </div>    
+            </div>
 
             <div id="status-bar" style="text-align: center;">명령을 기다리는 중입니다. </div><br>
 
             <div id="lock-status-container" style="margin-bottom: 0px;">
-                <button id="lock-btn" onmousedown="startLongPress()" onmouseup="endLongPress()" ontouchstart="startLongPress()" ontouchend="endLongPress()"
-                    style="
+                <button id="lock-btn" onmousedown="startLongPress()" onmouseup="endLongPress()"
+                    ontouchstart="startLongPress()" ontouchend="endLongPress()" style="
                         width: 300px !important; 
                         padding: 10px 0px; 
                         border-radius: 30px; 
@@ -874,107 +1091,110 @@
             </div>
         </div>
 
-    
+
         <!--============ CCTV 모니터 섹션 ==============-->
         <div class="cctv-section" style="text-align: center !important; font-size: 1.1rem;">
-            <div class id="cctv-farm-badge">
+            <div id="cctv-farm-badge">
                 <div style="
-                background: rgb(107, 43, 133); 
-                border-radius: 50px; 
-                padding: 15px !important; 
-                margin-bottom: 10px; 
-                box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-                max-width: 45%; 
-                font-size: 1.2rem; 
-                color: #faf9f9;
-                font-weight: bold;
-                margin-left: auto; 
-                margin-right: auto;">
-                백신리 농장 카메라
+                    background: rgb(107, 43, 133); 
+                    border-radius: 50px; 
+                    padding: 10px 15px !important; 
+                    margin-bottom: 10px; 
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+                    max-width: 45%; 
+                    font-size: 1.1rem; 
+                    color: #faf9f9;
+                    font-weight: bold;
+                    margin-left: auto; 
+                    margin-right: auto;">
+                    백신리 농장 카메라
+                </div>
+
+                <div class="cctv-grid">
+                    <div class="cctv-item" id="cctv-item-1">
+                        <span class="cctv-label" onclick="editCctvName(1, event)">CAM 01</span>
+                        <img src="https://via.placeholder.com/160x90?text=CAM+01" onclick="zoomCctv(this.src, 1)" title="유전리 농장 1번 카메라">
+                    </div>
+
+                    <div class="cctv-item" id="cctv-item-2">
+                        <span class="cctv-label" onclick="editCctvName(2, event)">CAM 02</span>
+                        <img src="https://via.placeholder.com/160x90?text=CAM+02" onclick="zoomCctv(this.src, 2)" title="유전리 농장 2번 카메라">
+                    </div>
+
+                    <div class="cctv-item" id="cctv-item-3">
+                        <span class="cctv-label" onclick="editCctvName(3, event)">CAM 03</span>
+                        <img src="https://via.placeholder.com/160x90?text=CAM+03" onclick="zoomCctv(this.src, 3)" title="유전리 농장 3번 카메라">
+                    </div>
+
+                    <div class="cctv-item" id="cctv-item-4">
+                        <span class="cctv-label" onclick="editCctvName(4, event)">CAM 04</span>
+                        <img src="https://via.placeholder.com/160x90?text=CAM+04" onclick="zoomCctv(this.src, 4)" title="유전리 농장 4번 카메라">
+                    </div>
+
+                    <div class="cctv-item" id="cctv-item-5">
+                        <span class="cctv-label" onclick="editCctvName(5, event)">CAM 05</span>
+                        <img src="https://via.placeholder.com/160x90?text=CAM+05" onclick="zoomCctv(this.src, 5)" title="유전리 농장 5번 카메라">
+                    </div>
+
+                    <div class="cctv-item" id="cctv-item-6">
+                        <span class="cctv-label" onclick="editCctvName(6, event)">CAM 06</span>
+                        <img src="https://via.placeholder.com/160x90?text=CAM+06" onclick="zoomCctv(this.src, 6)" title="유전리 농장 6번 카메라">
+                    </div>
+                </div>
+
+                <div id="cctv-zoom-overlay" onclick="closeZoom()">
+                    <h3 id="zoom-title" style="color:white; margin-bottom:15px;">카메라 확대</h3>
+                    <img id="zoomed-img" src="">
+                    <div id="zoom-close-btn">닫기</div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- =============== 농장전환 패널 ===========================================-->
+        <div class="change-grid">
+            <div class="switch-card" id="card-A">
+                <a href="control2.html" class="label">유전리 농장</a>
             </div>
 
-            <div class="cctv-grid">
-                <div class="cctv-item" id="cctv-item-1">
-                    <span class="cctv-label" onclick="editCctvName(1, event)">CAM 01</span>
-                    <img src="https://via.placeholder.com/160x90?text=CAM+01" onclick="zoomCctv(this.src, 1)">
-                </div>
-
-                <div class="cctv-item" id="cctv-item-2">
-                    <span class="cctv-label" onclick="editCctvName(2, event)">CAM 02</span>
-                    <img src="https://via.placeholder.com/160x90?text=CAM+02" onclick="zoomCctv(this.src, 2)">
-                </div>
-
-                <div class="cctv-item" id="cctv-item-3">
-                    <span class="cctv-label" onclick="editCctvName(3, event)">CAM 03</span>
-                    <img src="https://via.placeholder.com/160x90?text=CAM+03" onclick="zoomCctv(this.src, 3)">
-                </div>
-
-                <div class="cctv-item" id="cctv-item-4">
-                    <span class="cctv-label" onclick="editCctvName(4, event)">CAM 04</span>
-                    <img src="https://via.placeholder.com/160x90?text=CAM+04" onclick="zoomCctv(this.src, 4)">
-                </div>
-
-                <div class="cctv-item" id="cctv-item-5">
-                    <span class="cctv-label" onclick="editCctvName(5, event)">CAM 05</span>
-                    <img src="https://via.placeholder.com/160x90?text=CAM+05" onclick="zoomCctv(this.src, 5)">
-                </div>
-
-                <div class="cctv-item" id="cctv-item-6">
-                    <span class="cctv-label" onclick="editCctvName(6, event)">CAM 06</span>
-                    <img src="https://via.placeholder.com/160x90?text=CAM+06" onclick="zoomCctv(this.src, 6)">
-                </div>
+            <div class="switch-card" id="card-B">
+                <a href="control3.html" class="label">백신리 농장</a>
             </div>
 
-            <div id="cctv-zoom-overlay" onclick="closeZoom()">
-                <h3 id="zoom-title" style="color:white; margin-bottom:15px;">카메라 확대</h3>
-                <img id="zoomed-img" src="">
-                <div id="zoom-close-btn">닫기</div>
+            <div class="switch-card" id="card-C">
+                <a href="control4.html" class="label">안심리 농장</a>
             </div>
+
+            <div class="switch-card" id="card-D">
+                <a href="control5.html" class="label">옹암리 농장</a>
+            </div>
+
+            <div class="switch-card" id="card-E">
+                <a href="control6.html" class="label">산법리 농장</a>
+            </div>
+
+            <div class="switch-card" id="card-F">
+                <a href="control7.html" class="label">단촌리 농장</a>
+            </div>
+
         </div>
-    </div>
+    </div><br>
 
-    
-    <!-- =============== 농장전환 패널 ===========================================-->
-    <div class="change-grid">
-        <div class="switch-card" id="card-A">
-            <a href="control2.html" class="label">유전리 농장</a>
-        </div>
 
-        <div class="switch-card" id="card-B">
-            <a href="control3.html" class="label">백신리 농장</a>
-        </div>
 
-        <div class="switch-card" id="card-C">
-            <a href="control4.html" class="label">안심리 농장</a>
-        </div>
-
-        <div class="switch-card" id="card-D">
-            <a href="control5.html" class="label">옹암리 농장</a>
-        </div>
-
-        <div class="switch-card" id="card-E">
-            <a href="control6.html" class="label">산법리 농장</a>
-        </div>
-
-        <div class="switch-card" id="card-F">
-            <a href="control7.html" class="label">단촌리 농장</a>
-        </div>
-
-    </div></div><br>
-
-    
     <!-- =============== script ==================================================== -->
     <script>
         // 1. [설정] 실제 기기 IP 및 설정
-        const IP_PRO_4PM = "192.168.0.51"; 
-        const IP_PLUS_1PM = "192.168.0.55"; 
+        const IP_PRO_4PM = "192.168.0.51";
+        const IP_PLUS_1PM = "192.168.0.55";
         const SENSOR_IP = "192.168.0.60"; // 센서 ESP32 IP
         const PASS_CODE = "1234"; // 보안 비밀번호
 
         // 알림음 및 변수 설정
         const successAudio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
         const errorAudio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock_short.ogg");
-        let intervals = {}; 
+        let intervals = {};
 
         // 2. [핵심] 기기 제어 함수 (5초 타임아웃 적용 버전)
         async function toggleDevice(device, element, channel, ip) {
@@ -1003,17 +1223,17 @@
             }
 
             statusText.innerText = `${device} 명령 전송 중...`;
-    
+
             // [타임아웃 설정] 5초간 응답 없으면 중단
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000); 
-    
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+
             const url = `http://${ip}/rpc/Switch.Set?id=${channel}&on=${isOn}`;
 
             try {
                 const response = await fetch(url, { signal: controller.signal });
                 clearTimeout(timeoutId); // 성공 시 타이머 해제
-    
+
                 if (response.ok) {
                     successAudio.play();
                     statusText.innerText = `✅ ${device} ${isOn ? '켜짐' : '꺼짐'} 완료`;
@@ -1021,10 +1241,10 @@
             } catch (error) {
                 clearTimeout(timeoutId);
                 errorAudio.play();
-            
+
                 // 연결 실패 시 원상복구
                 statusText.innerText = error.name === 'AbortError' ? `❌ ${device} 기기 연결을 확인해주세요.` : `❌ ${device} 연결 실패`;
-                element.checked = !isOn; 
+                element.checked = !isOn;
                 card.classList.remove('on');
                 if (timerDisplay) stopTimer(device, timerDisplay);
                 alert(`${device} 기기 응답이 없습니다. Wi-Fi를 확인하세요.`);
@@ -1034,7 +1254,7 @@
         // 타이머 관리 함수들
         function startTimer(device, display) {
             let seconds = 0;
-            if(intervals[device]) clearInterval(intervals[device]); 
+            if (intervals[device]) clearInterval(intervals[device]);
             intervals[device] = setInterval(() => {
                 seconds++;
                 let min = String(Math.floor(seconds / 60)).padStart(2, '0');
@@ -1091,7 +1311,7 @@
                     if (nameElement) nameElement.innerText = savedName;
                 }
             });
-    
+
             // 농장 제목 복구
             const savedFarmTitle = localStorage.getItem(`${farmId}-farm-title`);
             const farmTitleElement = document.getElementById('farm-title');
@@ -1102,7 +1322,7 @@
 
         // [3] 스위치 이름 수정 함수
         function editItemLabel(element) {
-            if (!isUnlocked) return; 
+            if (!isUnlocked) return;
 
             const nameElement = element.querySelector('.item-name');
             if (!nameElement) return;
@@ -1110,7 +1330,7 @@
             const cardId = element.closest('.control-card').id;
             const currentName = nameElement.innerText.trim();
             const newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
-    
+
             if (newName && newName.trim() !== "") {
                 nameElement.innerText = newName;
                 // 농장별로 구분하여 저장
@@ -1127,7 +1347,7 @@
 
             const currentTitle = titleElement.firstChild.textContent.trim();
             const newTitle = prompt("새로운 농장 이름을 입력하세요:", currentTitle);
-    
+
             if (newTitle && newTitle.trim() !== "") {
                 titleElement.firstChild.textContent = newTitle;
                 // 농장별로 구분하여 저장
@@ -1137,7 +1357,7 @@
         }
 
         window.addEventListener('load', loadSavedNames);
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             loadSavedNames();
             // 만약 다른 초기화 함수가 더 있었다면 여기에 추가
             // 예: initOtherSettings();
@@ -1154,27 +1374,33 @@
             document.getElementById('farm-title').classList.remove('unlocked-title');
         }
 
-        // 4. [데이터] 센서 데이터 및 하단 버튼 동기화
-        function updateSensorDisplay(moisture, ec, temp) {
-            document.getElementById('stat-moisture').innerText = moisture + "%";
-            document.getElementById('stat-ec').innerText = ec + "ms/cm";
-            document.getElementById('stat-temp').innerText = temp + "°C";
-    
+        // [데이터] 센서 데이터 및 하단 버튼 동기화
+        function updateSensorDisplay(moisture, ec, temp, wind, lux, sound) {
+            document.getElementById('stat-moisture').innerText = moisture + "%"; // 수분 데이터 업데이트
+            document.getElementById('stat-ec').innerText = ec + "ms/cm";         // 영양 데이터 업데이트
+            document.getElementById('stat-temp').innerText = temp + "°C";        // 온도 데이터 업데이트
+            document.getElementById('stat-wind').innerText = wind + "m/s";       // 풍속 데이터 업데이트
+            document.getElementById('stat-lux').innerText = lux + "lx";          // 조도 데이터 업데이트
+            document.getElementById('stat-sound').innerText = sound + "dB";      // 소음 데이터 업데이트
+
             // 전체 하단 버튼 업데이트 시 현재 받은 따끈따끈한 데이터를 직접 전달합니다.
-            updateAllBottomButtons(moisture, ec, temp);
+            updateAllBottomButtons(moisture, ec, temp, wind, lux, sound);
         }
 
         function updateBottomButton(name) {
-            const activeCardId = getActiveCardId(); 
+            const activeCardId = getActiveCardId();
             const targetLink = document.querySelector(`#${activeCardId} a`);
             if (targetLink) {
                 const moisture = document.getElementById('stat-moisture').innerText.replace('%', '');
                 targetLink.innerHTML = `${name} <br>
-                <span class="sub-status" style="font-size: 0.8rem; font-weight: normal; color: #000;">수: ${moisture}% 양: ${ec}ms/cm 온: ${temp}°C</span>`;
+                <span class="sub-status" style="
+                    font-size: 0.7rem; 
+                    font-weight: normal; 
+                    color: #000;">수: ${moisture}% 양: ${ec}ms/cm 온: ${temp}°C</span>`;
             }
         }
 
-        function updateAllBottomButtons(moisture, ec, temp) {
+        function updateAllBottomButtons(moisture, ec, temp, wind, lux, sound) {
             const farms = [
                 { id: 'card-A', path: 'control2.html', def: '유전리 농장' },
                 { id: 'card-B', path: 'control3.html', def: '백신리 농장' },
@@ -1185,33 +1411,32 @@
             ];
 
             const currentFile = window.location.pathname.split('/').pop();
-        
+
             farms.forEach(f => {
                 const link = document.querySelector(`#${f.id} a`);
                 if (link) {
                     const name = localStorage.getItem(f.path) || f.def;
-                    
-                    // 현재 보고 있는 농장 페이지와 버튼의 경로가 일치할 때만 실시간 데이터를 표시
-                    let m_val = "--", ec_val = "--", t_val = "--";
-            
+
+                    let m_val = "--", ec_val = "--", t_val = "--", w_val = "--", l_val = "--", s_val = "--";
+
                     if (f.path.includes(currentFile)) {
                         m_val = moisture;
                         ec_val = ec;
                         t_val = temp;
+                        w_val = wind;
+                        l_val = lux;
+                        s_val = sound;
                     }
 
-                    // [수정된 부분] m, m, m으로 되어있던 부분을 각각의 변수로 변경
-                    // [최종 수정] 텍스트 줄 대신 아이콘 레이아웃으로 변경
-                    // link.innerHTML을 사용하여 버튼 전체 내용을 "새로" 그립니다.
                     link.innerHTML = `
-                        <div style="margin-bottom: 7px; font-weight: bold;">${name}</div>
+                        <div style="margin-bottom: 7px; padding-top: 10px; font-weight: bold;">${name}</div>
                         <div class="farm-stats-row" 
                             style="display: flex; 
                             justify-content: space-around; 
-                            width: 100%; 
+                            width: 100%;
                             font-size: 0.85rem; 
-                            border-top: none; 
-                            padding-top: 6px;">
+                            border-top: none;
+                            padding-top: 0px;">
 
                             <div class="stat-item" style="display: flex; align-items: center; gap: 3px;">
                                 <span class="emoji-icon">💧</span>
@@ -1228,11 +1453,27 @@
                                 <span class="item-name" style="font-weight: bold; color: #d32f2f;">${t_val}${t_val === "--" ? "" : "°C"}</span>
                             </div>
                         </div>
-                    `;
-                }
-            });
-        }
 
+                        <div style="display: flex; justify-content: space-around; font-size: 0.85rem; color: #666; margin-bottom: 12px;">
+                            <div>
+                                <span class="emoji-icon">🎐</span> 
+                                <span id="stat-wind" style="font-weight:bold;">${w_val}</span>
+                            </div>
+                            <div>
+                                <span class="emoji-icon">☀️</span> 
+                                <span id="stat-lux" style="font-weight:bold;">${l_val}</span>
+                            </div>
+                            <div>
+                                <span class="emoji-icon">🔊</span> 
+                                <span id="stat-sound" style="font-weight:bold;">${s_val}</span>
+                            </div>
+                        </div>
+                    `; // 1. 백틱과 세미콜론으로 문장 종결
+                } // 2. if (link) 블록 닫기
+            }); // 3. farms.forEach 블록 닫기
+        } // 4. updateAllBottomButtons 함수 블록 닫기
+
+        
         function getActiveCardId() {
             const p = window.location.pathname;
             if (p.includes('control2')) return 'card-A';
@@ -1244,25 +1485,15 @@
             return 'card-A';
         }
 
-        async function fetchSensorData() {
-            try {
-                const response = await fetch(`http://${SENSOR_IP}/get_sensor_data`, { signal: AbortSignal.timeout(3000) });
-                if (response.ok) {
-                    const data = await response.json();
-                    updateSensorDisplay(data.moisture, data.ec, data.temp);
-                }
-            } catch (e) { console.log("센서 연결 실패"); }
-        }
-    
         // [초기화] 페이지 로드 시 실행
-        window.onload = function() {
+        window.onload = function () {
             const path = window.location.pathname;
             // 1. 현재 파일명만 추출 (예: control3.html)
-            const fileName = path.split('/').pop(); 
-    
+            const fileName = path.split('/').pop();
+
             // 2. 저장된 이름 불러오기
             const savedName = localStorage.getItem(fileName);
-    
+
             // 3. 파일명에 따른 기본 농장 이름 설정
             let defaultName = "유전리 농장";
             if (fileName.includes('control3')) defaultName = "백신리 농장";
@@ -1272,16 +1503,16 @@
             if (fileName.includes('control7')) defaultName = "단촌리 농장";
 
             const farmName = savedName || defaultName;
-    
+
             // 4. 화면에 농장 이름 표시
             const titleElement = document.getElementById('farm-title');
             if (titleElement) {
                 titleElement.innerHTML = `${farmName} <span id="edit-icon" style="display:none; font-size: 1rem;">✏️</span>`;
             }
-    
+
             // 5. 하단 버튼들 및 센서 데이터 업데이트
             updateAllBottomButtons();
-            updateSensorDisplay(32, 1.2, 24); // 테스트 데이터
+            updateSensorDisplay(32, 1.2, 24, 5.2, 1000, 60); // 테스트 데이터
         };
 
         // 스와이프 뒤로가기
@@ -1291,9 +1522,9 @@
             if (e.changedTouches[0].screenX - touchStartX > 150) window.location.href = "index.html";
         }, false);
 
-        
+
         // --- 보안 시스템 동작 로직 ---
-        
+
         // 1. 침입 감지 시 실행 (Blynk V10 핀이 1이 되면 이 함수를 호출하게 설정)
         function triggerSecurityAlert(farmName) {
             const msgBox = document.getElementById('emergency-msg');
@@ -1320,16 +1551,16 @@
             clearInterval(window.alertInterval);
             window.alertInterval = null;
             window.speechSynthesis.cancel();
-            
+
             // 현장 싸이렌 OFF (V6)
             fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V6=0`);
-        
+
             // CCTV 팝업 띄우기
             document.getElementById('cctv-popup').style.display = 'block';
-            
+
             // 알림 메시지 숨기기
             document.getElementById('emergency-msg').style.display = 'none';
-        
+
             // 센서 상태 초기화 (Blynk V10을 다시 0으로)
             fetch(`https://blynk.cloud/external/api/update?token=${IP_PLUS_1PM}&V10=0`);
         }
@@ -1340,10 +1571,10 @@
             const overlay = document.getElementById('cctv-zoom-overlay');
             const zoomedImg = document.getElementById('zoomed-img');
             const zoomTitle = document.getElementById('zoom-title');
-    
+
             // 현재 저장된 카메라 이름을 가져와서 제목으로 표시
             const savedName = localStorage.getItem(`${farmId}-cctv-${num}-name`) || `CAM 0${num}`;
-    
+
             zoomedImg.src = src;
             zoomTitle.innerText = savedName;
             overlay.style.display = 'flex';
@@ -1357,16 +1588,16 @@
         function editCctvName(num, event) {
             if (!isUnlocked) {
                 // 잠겨있을 때는 확대를 유도하거나 무시
-                return; 
+                return;
             }
-    
+
             // 이벤트 전파 방지 (이름 클릭 시 사진 클릭 효과 방지)
             event.stopPropagation();
 
             const labelElement = event.target;
             const currentName = labelElement.innerText;
             const newName = prompt("카메라 이름을 입력하세요:", currentName);
-    
+
             if (newName && newName.trim() !== "") {
                 labelElement.innerText = newName;
                 // 로컬 스토리지에 저장 (농장별로 구분)
@@ -1387,9 +1618,90 @@
             }
         }
 
+        // [능동형 제어 엔진] 센서 값에 따라 자동으로 기기를 조작합니다.
+        function autoControlEngine(data) {
+            // 1. 강풍 감지 시 천막 자동 닫기 (안전 우선)
+            if (data.windSpeed > 15) { // 15m/s 이상 강풍 시
+                const shieldInput = document.querySelector('#card-shield input');
+                if (shieldInput.checked) {
+                    shieldInput.checked = false;
+                    toggleDevice('shield', shieldInput, 2, IP_PRO_4PM);
+                    alert("⚠️ 강풍 감지! 천막을 자동으로 보호 모드로 전환합니다.");
+                }
+            }
+
+            // 2. 2단 입체 보안 로직 (상/하단 동시 감지 시)
+            const topActive = data.pirTop.some(s => s === 1);
+            const botActive = data.pirBot.some(s => s === 1);
+
+            if (topActive && botActive) {
+                // 상하단 동시 감지 시 즉시 비상 사이렌 및 CCTV 팝업
+                triggerSecurityAlert("유전리 농장 실전 침입");
+                updateSecurityUI(true);
+            }
+        }
+
+        // UI 업데이트 함수
+        function updateSecurityUI(isAlert) {
+            const level = document.getElementById('security-level');
+            if (isAlert) {
+                level.innerText = "🚨 침입 발생";
+                level.style.background = "#FF1744";
+            } else {
+                level.innerText = "정상 작동중";
+                level.style.background = "#4caf50";
+            }
+        }
+
+        // 개별 적외선 센서 점 표시 업데이트
+        function setPirDot(id, isActive) {
+            const dot = document.getElementById(id);
+            if (isActive) dot.classList.add('pir-active');
+            else dot.classList.remove('pir-active');
+        }
+
         // 초기화 시 호출
         window.addEventListener('load', loadCctvNames);
 
+
+        // 센서 파일인 sensors.h와 아두이노 메인 파일인 SmartAssiFarm.ino와의 연결점 
+        async function fetchRealtimeData() {
+            try {
+                // 1. 아두이노 서버(/get_status)에 데이터 요청
+                const response = await fetch('/get_status'); 
+                if (!response.ok) throw new Error("서버 응답 없음");
+        
+                const data = await response.json();
+
+                // 2. 보안 상황판(PIR 도트) 업데이트
+                if (typeof updateSecurityUI === "function") {
+                    updateSecurityUI(data.pir); 
+                }
+
+                // 3. 환경 수치(풍속 등) 업데이트
+                const windEl = document.getElementById('stat-wind');
+                if (windEl) {
+                    windEl.innerText = data.wind + "m/s";
+                }
+
+                // 만약 조도(lux) 데이터도 화면에 표시하고 싶다면?
+                const luxEl = document.getElementById('stat-lux');
+                if (luxEl) {
+                    luxEl.innerText = data.lux + " lux";
+                }
+
+            } catch (e) {
+                console.log("센서 데이터 연결 실패:", e);
+            }
+        }
+
+        // 2초마다 실행 (스마트 팜 현장 상황을 실시간으로 반영하기 위함)
+        setInterval(fetchRealtimeData, 2000);
+        
+        // 페이지 열자마자 바로 실행
+        fetchRealtimeData();        
+
     </script>
 </body>
+
 </html>

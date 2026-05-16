@@ -42,24 +42,20 @@
             box-shadow: 0 0 10px #FF1744;
         }
 
-
         /* 화면이 스마트폰 사이즈에 자동으로 마춰지기 */
         .control-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 6px;
             width: 100%;
-            max-width: 410px;
-            /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
+            max-width: 410px;                                /* pc에서도 너무 퍼지지 않게 폭을 좁게 제한 */
             margin: 0 auto;
         }
 
         /* [기본 상태] 스위치를 감싸는 개별 박스(카드) */
         .control-card {
-            background: #ccf9d0;
-            /* 연한 녹색 배경 */
-            min-height: 80px;
-            /* 고정 height 대신 min-height 사용 */
+            background: #ccf9d0;                           /* 연한 녹색 배경 */
+            min-height: 80px;                                /* 고정 height 대신 min-height 사용 */
             padding: 10px 10px;
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -68,26 +64,21 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-sizing: border-box;
-            /* 패딩이 너비에 영향을 주지 않도록 */
+            box-sizing: border-box;                          /* 패딩이 너비에 영향을 주지 않도록 */
         }
 
         /* [켜짐 상태] .on 클래스가 추가되었을 때 */
         .control-card.on {
             border-color: var(--main-green);
-            background-color: #32943a;
-            /* 진한 녹색 배경 */
+            background-color: #32943a;                     /* 진한 녹색 배경 */
             box-shadow: 0 4px 15px #246927;
-            color: #ffffff !important;
-            /* 배경이 진해지므로 글자색을 백색으로 변경 */
+            color: #ffffff !important;                     /* 배경이 진해지므로 글자색을 백색으로 변경 */
         }
 
         /* 추가 팁: 카드 내의 작은 설명글이나 아이콘이 있다면 함께 색상을 바꿔줍니다 */
         .control-card.on p,
         .control-card.on span,
-        .control-card.on label {
-            color: #ffffff;
-        }
+        .control-card.on label { color: #ffffff; }
 
         /* 카드 내부 레이아웃 */
         .label {
@@ -115,13 +106,8 @@
         }
 
         /* 스위치 상태에 따른 글자 색상 변화 */
-        input:not(:checked)~.off-label {
-            color: var(--error-red);
-        }
-
-        input:checked~.on-label {
-            color: var(--main-green);
-        }
+        input:not(:checked)~.off-label { color: var(--error-red); }
+        input:checked~.on-label { color: var(--main-green); }
 
         /* 스위치 크기를 조금 더 키워 조작이 편하게 함 */
         .switch {
@@ -165,16 +151,10 @@
             border-radius: 50%;
         }
 
-        input:checked+.slider {
-            background-color: var(--main-green);
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(45px);
-        }
+        input:checked+.slider { background-color: var(--main-green); }
+        input:checked+.slider:before { transform: translateX(45px); }
 
         /* 스위치 왕복 거리 */
-
         #status-bar {
             margin-top: 30px;
             font-weight: bold;
@@ -183,14 +163,28 @@
             height: 25px;
         }
 
+        /* ============= 장치가 완료된 후 스위치 카드가 깜박임 ====================== */
+        /* 부드럽게 깜빡이는 애니메이션 정의 */
+        @keyframes blink-effect {
+            0% { background-color: #e2f0d9; }
+            50% { background-color: #ffeb3b; }             /* 기존 연녹색 배경 */
+            100% { background-color: #e2f0d9; }            /* 경고/완료를 알리는 노란색 (원하시는 색상으로 변경 가능) */
+        }
+
+        /* 작업 완료 후 확인 대기 중인 카드 스타일 */
+        .switch-card.completed {
+            animation: blink-effect 1.5s infinite;            /* 1.5초 간격으로 무한 반복 */
+            cursor: pointer;
+            border: 2px solid #ff9800;                     /* 테두리도 강조하고 싶다면 추가 */
+        }
+
 
         /* 이모지만 선명하게 만드는 전용 스타일 */
         .emoji-icon {
             display: inline-block;
             font-size: 0.9rem !important;
             margin-right: 0px;
-            text-shadow:
-                /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
+            text-shadow:                                     /* 이모지 윤곽선 효과: 다른 글자에는 영향을 주지 않음 */
                 -1px -1px 0 #000080,
                 1px -1px 0 #000080,
                 -1px 1px 0 #000080,
@@ -204,15 +198,12 @@
             font-size: 0.9rem !important;
         }
 
-
-        /* =============== 농장 전환 버튼 ============== */
-
+        /* ============= 농장 전환 버튼 =================================== */
         .change-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 6px;
-            max-width: 400px;
-            /* 폭을 제한하여 폰 화면처럼 보이게.. */
+            max-width: 400px;                                /* 폭을 제한하여 폰 화면처럼 보이게.. */
             margin: 0 auto;
         }
 
@@ -225,31 +216,25 @@
             transition: all 0.2s ease;
             cursor: pointer;
             flex-direction: column !important;
-            overflow: hidden;
-            /* 넘치는 내용은 숨겨서 벌컥거림 방지 */
+            overflow: hidden;                                /* 넘치는 내용은 숨겨서 벌컥거림 방지 */
 
             /* 핵심 정렬 코드 */
-            display: flex !important;
-            /* 정렬 모드 강제 활성화 */
-            justify-content: center !important;
-            /* 가로 중앙 */
-            align-items: center !important;
-            /* 세로 중앙 */
+            display: flex !important;                        /* 정렬 모드 강제 활성화 */
+            justify-content: center !important;              /* 가로 중앙 */
+            align-items: center !important;                  /* 세로 중앙 */
 
             /* 패딩은 0으로 만들고 높이로만 조절합니다 */
             padding: 7.7px !important;
             margin: 0 !important;
-            height: 64px !important;
-            /* 85픽셀로 높이를 딱 고정합니다 */
+            height: 64px !important;                         /* 64픽셀로 높이를 딱 고정한다 */
         }
 
         /* 글자 자체에 숨어있는 여백을 제거 */
         .switch-card .label {
             margin: 0 !important;
             padding: 0 !important;
-            display: block !important;
-            line-height: 1;
-            /* 줄 간격 때문에 치우치는 현상 방지 */
+            display: block;
+            line-height: 1;                                  /* 줄 간격 때문에 치우치는 현상 방지 */
             font-weight: 700;
             font-size: 1.1rem !important;
         }
@@ -257,14 +242,12 @@
         /* 버튼 안의 링크 글자들 정렬 */
         .switch-card a {
             text-decoration: none;
-            line-height: 1;
-            /* 줄 간격을 고정하여 흔들림 방지 */
+            line-height: 1;                                  /* 줄 간격을 고정하여 흔들림 방지 */
         }
 
         .timer-text {
             font-size: 1.1rem;
-            color: #f8f8f5;
-            /* 작동 중일 때 눈에 띄는 빨간색 */
+            color: #f8f8f5;                                /* 작동 중일 때 눈에 띄는 빨간색 */
             margin-left: 8px;
             font-weight: normal;
         }
@@ -286,25 +269,20 @@
         /* 잠금이 풀렸을 때(예: body에 unlocked 클래스가 붙는다고 가정) */
         body.unlocked .label {
             cursor: pointer;
-            text-decoration: underline dotted #4e7c3f;
-            /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
+            text-decoration: underline dotted #4e7c3f;     /* 아래에 연한 점선을 그어 수정 가능함을 표시 */
         }
 
-        /* 전원은 빨간색이므로 강조 유지 */
-        #card-power .label {
-            font-weight: bold;
-        }
+        #card-power .label { font-weight: bold; }            /* 전원은 빨간색이므로 강조 유지 */
 
         /* 화면 크기에 따라서 폰트 사이즈가 유연하게 변함 */
-        @media (max-width: 320px) {html {font-size: 14px;}}
-        @media (min-width: 768px) {html {font-size: 18px;}}
+        @media (max-width: 320px) { html { font-size: 14px; } }
+        @media (min-width: 768px) { html { font-size: 18px; } }
 
 
         /* =============== 보안 알림 & CCTV 팝업 ============== */
         /* --- 보안 알림 레이아웃 --- */
         #emergency-msg {
-            display: none;
-            /* 평소엔 숨김 */
+            display: none;                                   /* 평소엔 숨김 */
             position: fixed;
             top: 20px;
             left: 50%;
@@ -329,9 +307,9 @@
         }
 
         @keyframes alert-blink {
-            0% {opacity: 1;}
-            50% {opacity: 0;}
-            100% {opacity: 1;}
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         /* CCTV 팝업 스타일 */
@@ -353,15 +331,12 @@
         /* CCTV 모니터링 섹션 스타일 */
         .cctv-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            /* 2열 배치 */
+            grid-template-columns: repeat(2, 1fr);           /* 2열 배치 */
             gap: 3px;
             max-width: 400px;
-            margin: 20px auto;
-            /* 농장전환 버튼 아래 여백 */
+            margin: 20px auto;                               /* 농장전환 버튼 아래 여백 */
             padding: 0px;
-            background: #fafdf7;
-            /* 모니터 느낌을 주는 어두운 배경 */
+            background: #fafdf7;                           /* 모니터 느낌을 주는 어두운 배경 */
             border-radius: 3px;
         }
 
@@ -370,8 +345,7 @@
             width: 100% !important;
             position: relative;
             background: #000;
-            aspect-ratio: 16/9;
-            /* 와이드 화면 비율 유지 */
+            aspect-ratio: 16/9;                              /* 와이드 화면 비율 유지 */
             overflow: hidden;
             border-radius: 5px;
             border: 1px solid #333;
@@ -380,8 +354,7 @@
         .cctv-item img {
             width: 100% !important;
             height: 100% !important;
-            object-fit: cover;
-            /* 이미지가 꽉 차도록 설정 */
+            object-fit: cover;                               /* 이미지가 꽉 차도록 설정 */
             cursor: pointer;
         }
 
@@ -407,8 +380,7 @@
 
         /* 잠금 해제 시 이름에 효과 주기 */
         body.unlocked .cctv-label {
-            background: #ff1b17 !important;
-            /* 수정 가능함을 알리는 빨간색 */
+            background: #ff1b17 !important;                /* 수정 가능함을 알리는 빨간색 */
             text-decoration: underline dotted white;
         }
 
@@ -446,26 +418,22 @@
             cursor: pointer;
         }
 
+        /* 기본적으로 모바일에서는 숨김 처리*/
+        .home-button-container { display: none !important; }
 
 
         /* =============== PC 레이아웃 (1024px 이상) ============== */
         /* PC용 메인 레이아웃: 좌우 분할 및 순서 반전 */
         @media (min-width: 1024px) {
-            body {
-                overflow-x: hidden;
-                /* margin: 0; */
-                /* padding: 0; */
-                /* height: 100vh; */
-            }
+
+            body { overflow-x: hidden; }
 
             .main-container {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
                 grid-template-areas: "cctv control" "cctv change";
-                gap: 15px;
-                /* 간격을 살짝 좁혀 이탈 방지 */
-                align-items: start !important;
-                /* 핵심: 모든 요소를 상단에 밀착 */
+                gap: 15px;                                   /* 간격을 살짝 좁혀 이탈 방지 */
+                align-items: start !important;               /* 핵심: 모든 요소를 상단에 밀착 */
                 padding: 15px;
                 max-width: 100vw !important;
                 box-sizing: border-box;
@@ -482,10 +450,8 @@
             /* [1] 왼쪽 CCTV 구역 (3/5 비율) */
             .legt-panel,
             .left-panel {
-                order: 1 !important;
-                /* 무조건 첫 번째(왼쪽)로 배치 */
-                flex: 0 0 60% !important;
-                /* 너비 60% 고정 */
+                order: 1 !important;                         /* 무조건 첫 번째(왼쪽)로 배치 */
+                flex: 0 0 60% !important;                    /* 너비 60% 고정 */
                 width: 60% !important;
                 background: #fbfcf8 !important;
                 display: flex !important;
@@ -493,100 +459,75 @@
                 align-items: center;
                 justify-content: flex-start !important;
                 padding: 0px;
-                box-sizing: border-box;
-                /* 추가: 내용이 많아지면 스크롤이 생기도록 변경 */
+                box-sizing: border-box;                      /* 추가: 내용이 많아지면 스크롤이 생기도록 변경 */
                 height: 100vh;
                 overflow-y: auto !important;
             }
 
             /* [중요] 오른쪽 패널 (제어판 - HTML상 앞 순서) */
             .right-panel {
-                order: 2 !important;
-                /* 화면 우측 배치 */
-                flex: 0 0 40% !important;
-                /* 2/5 비율 */
+                order: 2 !important;                         /* 화면 우측 배치 */
+                flex: 0 0 40% !important;                    /* 2/5 비율 */
                 height: 100%;
-                overflow-y: auto !important;
-                /* 내용 많을 시 스크롤 */
+                overflow-y: auto !important;                 /* 내용 많을 시 스크롤 */
                 padding: 20px;
                 background: var(--bg-light);
-                border-left: 2px solid #ddd;
-                /* 경계선 위치 변경 */
+                border-left: 2px solid #ddd;               /* 경계선 위치 변경 */
                 box-sizing: border-box;
             }
 
             /* PC에서 스위치 그리드 최적화 (비율에 맞춰 2열 배치 추천) */
             .control-grid {
                 max-width: 100% !important;
-                /* 기존 400px 제한을 풀어서 넓게 사용 */
-                grid-template-columns: repeat(2, 1fr) !important;
+                grid-template-columns: repeat(2, 1fr) !important; /* 기존 400px 제한을 풀어서 넓게 사용 */
                 margin: 0 auto !important;
-                /* 중앙 정렬 유지 */
-                width: 100% !important;
+                width: 100% !important;                      /* 중앙 정렬 유지 */
                 gap: 6px;
                 display: grid;
             }
 
             /* PC에서 스위치 카드를 가로형으로 배치 */
             .control-card {
-                flex-direction: row !important;
-                /* 가로 배치 */
-                justify-content: space-between !important;
-                /* 양끝 정렬 */
-                padding: 7px 10px !important;
-                /* 좌우 여백 */
+                flex-direction: row !important;              /* 가로 배치 */
+                justify-content: space-between !important;   /* 양끝 정렬 */
+                padding: 7px 10px !important;                /* 좌우 여백 */
                 min-height: 60px !important;
-                height: 170px !important;
-                /* 가로일 때는 높이를 조금 줄여도 예쁘다 */
+                height: 170px !important;                    /* 가로일 때는 높이를 조금 줄여도 예쁘다 */
             }
 
             /* 이름 레이블(이모지+이름) 설정 */
             .control-card .label {
                 display: flex !important;
                 align-items: center !important;
-                justify-content: center !important;
-                /* 중앙 정렬 유지 */
-                gap: 5px;
-                /* 이모지, 이름, 타이머 사이의 기본 간격 */
+                justify-content: center !important;          /* 중앙 정렬 유지 */
+                gap: 5px;                                    /* 이모지, 이름, 타이머 사이의 기본 간격 */
                 line-height: normal !important;
-                /* 2px 문제를 해결 */
-                margin-bottom: 0 !important;
-                /* 아래 여백 제거 */
+                margin-bottom: 0 !important;                 /* 아래 여백 제거 */
                 text-align: left !important;
                 width: auto !important;
-                padding-top: 25px;
-                /* 위쪽 여백 */
-                padding-bottom: 25px;
-                /* 아래쪽 여백 */
+                padding-top: 20px !important;                /* 위쪽 여백 */
+                padding-bottom: 20px !important;             /* 아래쪽 여백 */
             }
 
             /* 타이머 텍스트 스타일 수정 */
             .timer-text {
-                display: inline-block;
-                /* 너비를 가질 수 있게 설정 */
-                min-width: 65px;
-                /* 핵심: 타이머(00:00)가 들어갈 최소 너비 미리 확보 */
-                text-align: left;
-                /* 타이머 숫자는 왼쪽 정렬이 깔끔함 */
+                display: inline-block;                       /* 너비를 가질 수 있게 설정 */
+                min-width: 65px;                             /* 타이머(00:00)가 들어갈 최소 너비 미리 확보 */
+                text-align: left;                            /* 타이머 숫자는 왼쪽 정렬이 깔끔함 */
                 font-size: 1rem;
-                color: #ffffff;
-                /* 켜졌을 때 글자색 (배경이 진해지므로) */
+                color: #ffffff;                            /* 켜졌을 때 글자색 (배경이 진해지므로) */
                 margin-left: 5px;
                 font-weight: normal;
             }
 
             /* 꺼져 있을 때는 타이머 공간이 투명하게 존재하게 함 */
-            .control-card:not(.on) .timer-text {
-                visibility: hidden;
-                /* 공간은 차지하되 보이지는 않음 */
-            }
+            .control-card:not(.on) .timer-text {visibility: hidden;} /* 공간은 차지하되 보이지는 않음 */
 
             /* 확대 시 글자 크기가 깨지는 것 방지 */
             .label,
             .item-name {
-                font-size: 1.2rem !important;
-                white-space: nowrap;
-                /* 글자 줄바꿈 방지 */
+                font-size: 1rem !important;
+                white-space: nowrap;                         /* 글자 줄바꿈 방지 */
             }
 
             /* 농장 전환 패널을 오른쪽 아래로 배치 */
@@ -595,13 +536,10 @@
                 width: 100% !important;
                 margin-top: 10px;
                 grid-template-columns: repeat(2, 1fr) !important;
-                grid-area: change;
-                /* 하단 농장 전환 버튼 이탈 방지 */
-                margin-top: 10px;
-                /* 스위치 패널과의 간격 */
+                grid-area: change;                           /* 하단 농장 전환 버튼 이탈 방지 */
+                margin-top: 10px;                            /* 스위치 패널과의 간격 */
                 width: 100%;
-                align-self: start;
-                /* 아래로 처지지 않고 바로 위에 붙도록 설정 */
+                align-self: start;                           /* 아래로 처지지 않고 바로 위에 붙도록 설정 */
             }
 
             /* 농장 전환버튼을 감싸는 개별 바구니 */
@@ -609,13 +547,10 @@
                 height: auto !important;
                 min-height: 50px;
                 display: flex;
-                flex-direction: column !important;
-                /* 이름은 위, 수치는 아래 */
-                align-items: center !important;
-                /* 세로 중앙 */
-                justify-content: center !important;
-                /* 가로 중앙 */
-                padding: 7.7px !important;
+                flex-direction: column !important;           /* 이름은 위, 수치는 아래 */
+                align-items: center !important;              /* 세로 중앙 */
+                justify-content: center !important;          /* 가로 중앙 */
+                padding: 0px !important;
             }
 
             /* 농장 이름 스타일 */
@@ -627,21 +562,18 @@
 
             /* 3. 스위치 컨테이너 설정 */
             .switch-container {
-                margin-top: 0 !important;
-                /* 위 여백 제거 */
+                margin-top: 0 !important;                    /* 위 여백 제거 */
                 justify-content: flex-end !important;
             }
 
             /* 컨디션 수치들을 감싸는 컨테이너 (새로 추가할 클래스) */
             .farm-stats-row {
                 display: flex;
-                justify-content: space-around;
-                /* 아이템 간 간격 균등 분배 */
+                justify-content: space-around;               /* 아이템 간 간격 균등 분배 */
                 width: 100%;
                 font-size: 0.85rem;
                 color: #555;
-                border-top: 1px solid rgba(0, 0, 0, 0.05);
-                /* 경계선 살짝 */
+                border-top: 1px solid rgba(0, 0, 0, 0.05); /* 경계선 살짝 */
                 padding-top: 5px;
             }
 
@@ -651,29 +583,23 @@
                 gap: 3px;
             }
 
-            .stat-value {
-                font-weight: bold;
-            }
+            .stat-value { font-weight: bold; }
 
             /* 오른쪽 제어판 & 농장전환 버튼 크기 통일 */
             .control-grid,
             .change-grid {
                 display: grid !important;
-                grid-template-columns: repeat(2, 1fr) !important;
-                /* 무조건 2열 고정 */
+                grid-template-columns: repeat(2, 1fr) !important; /* 무조건 2열 고정 */
                 gap: 10px !important;
                 width: 100% !important;
-                max-width: 100% !important;
-                /* 제한 해제 */
+                max-width: 100% !important;                  /* 제한 해제 */
             }
 
             /* 상단 스위치 카드와 하단 농장전환 버튼의 높이 및 정렬 통일 */
             .control-card,
             .switch-card {
-                min-height: 65px !important;
-                /* 최소 높이 통일 */
-                height: auto !important;
-                /* 내용에 따라 늘어나도록 */
+                min-height: 65px !important;                 /* 최소 높이 통일 */
+                height: auto !important;                     /* 내용에 따라 늘어나도록 */
                 margin: 0 !important;
                 padding: 10px !important;
                 box-sizing: border-box;
@@ -684,34 +610,26 @@
 
 
             /* ========= CCTV 그리드 설정 (2열 고정) ========== */
-
             /* 왼쪽 CCTV 구역 */
             .cctv-section {
                 grid-area: cctv;
                 width: 100% !important;
-                max-width: none !important;
-                /* 혹시 모를 제한 해제 */
+                max-width: none !important;                  /* 혹시 모를 제한 해제 */
                 display: block !important;
                 margin: 0 !important;
                 flex-direction: column;
                 align-items: center;
                 justify-content: flex-start;
-                height: auto;
-                /* 고정 높이 제거 */
-                max-height: 95vh;
-                /* 화면 높이를 넘지 않도록 제한 */
+                height: auto;                                /* 고정 높이 제거 */
+                max-height: 95vh;                            /* 화면 높이를 넘지 않도록 제한 */
             }
 
             /* 화면 축소 시 글자가 밖으로 나가는 것 방지 */
             .cctv-grid {
-                display: grid !important;
-                /* 그리드 명시 */
-                width: 100% !important;
-                /* 양옆 여백만 살짝 남기고 꽉 채움 */
-                max-width: 100% !important;
-                /* 기존의 작은 max-width 제한을 제거 */
-                grid-template-columns: 1fr 1fr !important;
-                /* repeat 대신 확실하게 1fr 1fr */
+                display: grid !important;                    /* 그리드 명시 */
+                width: 100% !important;                      /* 양옆 여백만 살짝 남기고 꽉 채움 */
+                max-width: 100% !important;                  /* 기존의 작은 max-width 제한을 제거 */
+                grid-template-columns: 1fr 1fr !important;   /* repeat 대신 확실하게 1fr 1fr */
                 gap: 3px !important;
                 margin: 0 auto !important;
                 padding: 0 !important;
@@ -721,8 +639,7 @@
             .cctv-item {
                 width: 100% !important;
                 height: auto !important;
-                aspect-ratio: 16 / 9 !important;
-                /* 와이드 화면 비율 유지 */
+                aspect-ratio: 16 / 9 !important;             /* 와이드 화면 비율 유지 */
                 position: relative;
                 background: #000;
                 border-radius: 5px;
@@ -733,8 +650,7 @@
             .cctv-item img {
                 width: 100% !important;
                 height: 100% !important;
-                object-fit: cover;
-                /* 이미지가 꽉 차도록 설정 */
+                object-fit: cover;                           /* 이미지가 꽉 차도록 설정 */
                 cursor: pointer;
             }
 
@@ -747,29 +663,20 @@
 
             .cctv-label {
                 position: absolute;
-                width: auto !important;
-                /* 고정 너비 해제 (이게 핵심!) */
-                min-width: 40px;
-                /* 최소 너비만 지정 */
+                width: auto !important;                      /* 고정 너비 해제 (이게 핵심!) */
+                min-width: 40px;                             /* 최소 너비만 지정 */
                 max-width: 90% !important;
                 top: 5px;
                 left: 0px;
                 padding: 2px 0px;
                 font-size: 0.8rem;
                 background: rgba(0, 0, 0, 0.6);
-                z-index: 10;
-                /* 이미지보다 위에 보이도록 */
+                z-index: 10;                                 /* 이미지보다 위에 보이도록 */
                 color: white;
-                /* border-radius: 3px; */
-                /* cursor: pointer; */
-                /* transition: all 0.2s; */
             }
 
             /* 제목 및 배지 상단 여백 초기화 */
-            #cctv-farm-badge,
-            #farm-title {
-                margin-top: 0 !important;
-            }
+            #cctv-farm-badge, #farm-title { margin-top: 0 !important; }
 
             /* 4. 이미지도 박스 크기에 맞춰 꽉 차게 설정 */
             .cctv-item img,
@@ -777,17 +684,56 @@
                 display: block;
                 width: 100% !important;
                 height: 100% !important;
-                object-fit: cover !important;
-                /* 이미지가 박스에 꽉 차게 */
+                object-fit: cover !important;                /* 이미지가 박스에 꽉 차게 */
             }
 
             /* 배지(제목) 너비도 화면에 맞춰 적절히 조절 */
             #cctv-farm-badge {
                 max-width: 100% !important;
-
                 padding: 10px 30px !important;
             }
         }
+
+        /* 홈버튼 */
+        .home-button-container {
+            display: block !important;                       /* PC 모드에서만 강제로 보이게 전환 */
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 1000;
+        }
+
+        .home-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background-color: #ffffff;
+            border: 2px solid #2ecc71;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            flex-direction: column;
+        }
+
+        .home-link:hover {
+            background-color: #2ecc71;
+            transform: translateY(-5px);
+        }
+
+        .home-icon { font-size: 20px; }
+
+        .home-text {
+            font-size: 10px;
+            color: #333;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .home-link:hover .home-text, .home-link:hover .home-icon { color: white; }
+
 
         /* 모바일일 때는 세로로 나오게 설정 */
         @media (max-width: 1023px) {
@@ -807,16 +753,10 @@
         /* "CAM 01" 글자 위치를 오른쪽 상단으로 이동 */
         #zoom-title {
             position: absolute !important;
-            top: 20px !important;
-            /* 상단에서 20px 내림 */
-            right: auto !important;
-            /* 오른쪽에서 20px 띄움 */
-            left: 5px !important;
-            /* 기존 왼쪽 정렬 해제 */
-            transform: none !important;
-            /* 기존 중앙 정렬 해제 */
-
-            /* 시인성을 위한 스타일 */
+            top: 20px !important;                            /* 상단에서 20px 내림 */
+            right: auto !important;                          /* 오른쪽에서 20px 띄움 */
+            left: 5px !important;                            /* 기존 왼쪽 정렬 해제 */
+            transform: none !important;                      /* 기존 중앙 정렬 해제 */
             background: rgba(0, 0, 0, 0.6);
             padding: 5px 10px;
             border-radius: 5px;
@@ -825,8 +765,136 @@
         }
 
         /* "닫기" 버튼 숨기기 (터치로 닫기가 되므로 삭제) */
-        #zoom-close-btn {
-            display: none !important;
+        #zoom-close-btn { display: none !important; }
+
+        /* 과거영상 검색 */
+        /* 전체 화면 영상 컨테이너 스타일 */
+        #fullscreen-container {
+            display: none;                                   /* 평소엔 숨김 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            z-index: 99999;                                  /* 화면 최상단 배치 */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 모달 내부 비디오 채우기 */
+        #main-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;                             /* 가로세로 비율 유지 */
+        }
+
+        /* 우측 상단 버튼 그룹 배치 */
+        .modal-btn-group {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100000;
+            display: flex;
+            gap: 10px;                                       /* 버튼 사이 간격 */
+        }
+
+        /* 과거 영상 검색 버튼 스타일 */
+        #search-archive-btn {
+            padding: 12px 20px;
+            background-color: #6B2B85;                     /* 상단 '유전리 농장 카메라' 배지 색상과 통일 */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.2s;
+        }
+
+        #search-archive-btn:hover { background-color: #511f66; }
+
+        /* 닫기 버튼 스타일 */
+        #close-archive-btn {
+            padding: 12px 18px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #close-archive-btn:hover { background-color: rgba(255, 255, 255, 0.4); }
+
+        /* 과거 영상 리스트 전체 팝업창 */
+        #archive-list-container {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            width: 320px;
+            max-height: 70vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            border: 1px solid #6B2B85;
+            border-radius: 12px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            z-index: 100001;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 리스트 상단 헤더 */
+        .archive-header {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .archive-header h4 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #dfb2f4;
+        }
+
+        .archive-header button {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* 리스트 본문 (스크롤 가능하게) */
+        .archive-list-body {
+            padding: 10px;
+            overflow-y: auto;                                /* 목록이 길어지면 스크롤 바 생성 */
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* 각각의 시간 버튼 스타일 */
+        .archive-item-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: white;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .archive-item-btn:hover {
+            background-color: #6B2B85;
+            border-color: #6B2B85;
         }
     </style>
 </head>
@@ -917,7 +985,7 @@
                         align-items: center; 
                         margin-bottom: 15px;">
 
-                        <strong style="color: #6b2b85;">🛡️경계선</strong>
+                        <strong style="color: #6b2b85;">🚨경계선</strong>
 
                         <span id="security-level" style="
                             font-size: 0.8rem; 
@@ -954,7 +1022,8 @@
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="급수 장치 제어">
-                            <input type="checkbox" title="급수 장치 스위치" onchange="toggleDevice('water', this, 0, IP_PRO_4PM)">
+                            <input type="checkbox" title="급수 장치 스위치"
+                                onchange="toggleDevice('water', this, 0, IP_PRO_4PM)">
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
@@ -970,7 +1039,8 @@
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="관수 장치 제어">
-                            <input type="checkbox" title="관수 장치 스위치" onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM)">
+                            <input type="checkbox" title="관수 장치 스위치"
+                                onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM)">
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
@@ -986,7 +1056,8 @@
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="농약 장치 제어">
-                            <input type="checkbox" title="농약 살포 스위치" onchange="toggleDevice('pesticide', this, 3, IP_PRO_4PM)">
+                            <input type="checkbox" title="농약 살포 스위치"
+                                onchange="toggleDevice('pesticide', this, 3, IP_PRO_4PM)">
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
@@ -1002,7 +1073,8 @@
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="액비 장치 제어">
-                            <input type="checkbox" title="액비 살포 스위치" onchange="toggleDevice('fertilizer', this, 0, IP_PLUS_1PM)">
+                            <input type="checkbox" title="액비 살포 스위치"
+                                onchange="toggleDevice('fertilizer', this, 0, IP_PLUS_1PM)">
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
@@ -1018,7 +1090,8 @@
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="천막 장치 제어">
-                            <input type="checkbox" title="천막 개폐 스위치" onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
+                            <input type="checkbox" title="천막 개폐 스위치"
+                                onchange="toggleDevice('shield', this, 2, IP_PRO_4PM)">
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
@@ -1034,7 +1107,8 @@
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="방상 장치 제어">
-                            <input type="checkbox" title="방상팬 가동 스위치" onchange="toggleDevice('frost', this, 0, IP_PLUS_1PM)">
+                            <input type="checkbox" title="방상팬 가동 스위치"
+                                onchange="toggleDevice('frost', this, 0, IP_PLUS_1PM)">
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
@@ -1050,7 +1124,8 @@
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="전등 장치 제어">
-                            <input type="checkbox" title="현장 전등 스위치" onchange="toggleDevice('light', this, 0, IP_PLUS_1PM)">
+                            <input type="checkbox" title="현장 전등 스위치"
+                                onchange="toggleDevice('light', this, 0, IP_PLUS_1PM)">
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
@@ -1066,7 +1141,8 @@
                     <div class="switch-container">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="전원 장치 제어">
-                            <input type="checkbox" title="주 전원 on/off 스위치" onchange="toggleDevice('power', this, 0, IP_PLUS_1PM)">
+                            <input type="checkbox" title="주 전원 on/off 스위치"
+                                onchange="toggleDevice('power', this, 0, IP_PLUS_1PM)">
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
@@ -1095,50 +1171,46 @@
         <!--============ CCTV 모니터 섹션 ==============-->
         <div class="cctv-section" style="text-align: center !important; font-size: 1.1rem;">
             <div id="cctv-farm-badge">
-                <div style="
-                    background: rgb(107, 43, 133); 
-                    border-radius: 50px; 
-                    padding: 10px 15px !important; 
-                    margin-bottom: 10px; 
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-                    max-width: 45%; 
-                    font-size: 1.1rem; 
-                    color: #faf9f9;
-                    font-weight: bold;
-                    margin-left: auto; 
-                    margin-right: auto;">
+                <div
+                    style="background: rgb(107, 43, 133); border-radius: 50px; padding: 10px 15px !important; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); max-width: 45%; font-size: 1.1rem; color: #faf9f9; font-weight: bold; margin-left: auto; margin-right: auto;">
                     백신리 농장 카메라
                 </div>
 
                 <div class="cctv-grid">
                     <div class="cctv-item" id="cctv-item-1">
                         <span class="cctv-label" onclick="editCctvName(1, event)">CAM 01</span>
-                        <img src="https://via.placeholder.com/160x90?text=CAM+01" onclick="zoomCctv(this.src, 1)" title="유전리 농장 1번 카메라">
+                        <img src="https://via.placeholder.com/160x90?text=CAM+01" onclick="openCCTVModal(this.src, 1)"
+                            title="유전리 농장 1번 카메라">
                     </div>
 
                     <div class="cctv-item" id="cctv-item-2">
                         <span class="cctv-label" onclick="editCctvName(2, event)">CAM 02</span>
-                        <img src="https://via.placeholder.com/160x90?text=CAM+02" onclick="zoomCctv(this.src, 2)" title="유전리 농장 2번 카메라">
+                        <img src="https://via.placeholder.com/160x90?text=CAM+02" onclick="openCCTVModal(this.src, 2)"
+                            title="유전리 농장 2번 카메라">
                     </div>
 
                     <div class="cctv-item" id="cctv-item-3">
                         <span class="cctv-label" onclick="editCctvName(3, event)">CAM 03</span>
-                        <img src="https://via.placeholder.com/160x90?text=CAM+03" onclick="zoomCctv(this.src, 3)" title="유전리 농장 3번 카메라">
+                        <img src="https://via.placeholder.com/160x90?text=CAM+03" onclick="openCCTVModal(this.src, 3)"
+                            title="유전리 농장 3번 카메라">
                     </div>
 
                     <div class="cctv-item" id="cctv-item-4">
                         <span class="cctv-label" onclick="editCctvName(4, event)">CAM 04</span>
-                        <img src="https://via.placeholder.com/160x90?text=CAM+04" onclick="zoomCctv(this.src, 4)" title="유전리 농장 4번 카메라">
+                        <img src="https://via.placeholder.com/160x90?text=CAM+04" onclick="openCCTVModal(this.src, 4)"
+                            title="유전리 농장 4번 카메라">
                     </div>
 
                     <div class="cctv-item" id="cctv-item-5">
                         <span class="cctv-label" onclick="editCctvName(5, event)">CAM 05</span>
-                        <img src="https://via.placeholder.com/160x90?text=CAM+05" onclick="zoomCctv(this.src, 5)" title="유전리 농장 5번 카메라">
+                        <img src="https://via.placeholder.com/160x90?text=CAM+05" onclick="openCCTVModal(this.src, 5)"
+                            title="유전리 농장 5번 카메라">
                     </div>
 
                     <div class="cctv-item" id="cctv-item-6">
                         <span class="cctv-label" onclick="editCctvName(6, event)">CAM 06</span>
-                        <img src="https://via.placeholder.com/160x90?text=CAM+06" onclick="zoomCctv(this.src, 6)" title="유전리 농장 6번 카메라">
+                        <img src="https://via.placeholder.com/160x90?text=CAM+06" onclick="openCCTVModal(this.src, 6)"
+                            title="유전리 농장 6번 카메라">
                     </div>
                 </div>
 
@@ -1147,10 +1219,37 @@
                     <img id="zoomed-img" src="">
                     <div id="zoom-close-btn">닫기</div>
                 </div>
+
+                <div id="fullscreen-container" style="display: none;">
+                    <video id="main-video" autoplay playsinline onclick="event.stopPropagation()"></video>
+
+                    <div class="modal-btn-group" onclick="event.stopPropagation()">
+                        <button id="search-archive-btn" onclick="openSearchList(event)">🔍 과거 영상 검색</button>
+                        <button id="close-archive-btn" onclick="closeCCTVArchive()">❌ 닫기</button>
+                    </div>
+
+                    <div id="archive-list-container" style="display: none;" onclick="event.stopPropagation()">
+                        <div class="archive-header">
+                            <h4>📅 과거 영상 선택 (최근 순)</h4>
+                            <button
+                                onclick="document.getElementById('archive-list-container').style.display='none'">닫기</button>
+                        </div>
+                        <div id="archive-list" class="archive-list-body">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
 
+        <!-- 홈으로 돌아가기 버튼 -->
+        <div id="pcHomeBtn" class="home-button-container">
+            <a href="index.html" class="home-link">
+                <span class="home-icon">🏠</span>
+                <span class="home-text">홈으로</span>
+            </a>
+        </div>
 
         <!-- =============== 농장전환 패널 ===========================================-->
         <div class="change-grid">
@@ -1473,7 +1572,7 @@
             }); // 3. farms.forEach 블록 닫기
         } // 4. updateAllBottomButtons 함수 블록 닫기
 
-        
+
         function getActiveCardId() {
             const p = window.location.pathname;
             if (p.includes('control2')) return 'card-A';
@@ -1514,6 +1613,44 @@
             updateAllBottomButtons();
             updateSensorDisplay(32, 1.2, 24, 5.2, 1000, 60); // 테스트 데이터
         };
+
+
+        // 장치가 작업을 완료한 후 멈춤 알림 기능
+        // 1. 장치 작업이 끝났을 때 호출할 함수
+        function deviceTaskCompleted(deviceId) {
+            // id가 'card-급수' 또는 'card-1' 형태인 카드를 찾습니다.
+            // (실제 카드의 id 명칭에 맞게 수정 필요)
+            const card = document.getElementById(`card-${deviceId}`);
+
+            if (card) {
+                card.classList.remove('active'); // 기존 작동 중(진녹색) 클래스 제거
+                card.classList.add('completed'); // 깜빡임 애니메이션 클래스 추가
+
+                playCompletionSound(); // 멈춤 알림음 재생
+            }
+        }
+
+        // 2. 멈춤 알림음 재생 함수
+        function playCompletionSound() {
+            // 알림음 파일 경로를 적어줍니다. (실제 서버에 있는 오디오 파일 경로)
+            const audio = new Audio('/sounds/notification_stop.mp3');
+            audio.play().catch(err => console.log("오디오 재생 실패:", err));
+        }
+
+        // 3. 관리자가 깜빡이는 카드를 터치했을 때 멈추는 이벤트 설정
+        // 이 부분은 기존 window.onload 나 초기화 루틴 안에 넣으셔도 됩니다.
+        document.querySelectorAll('.switch-card').forEach(card => {
+            card.addEventListener('click', function () {
+                // 이 카드가 현재 '완료(completed)' 상태여서 깜빡이고 있을 때만 작동
+                if (this.classList.contains('completed')) {
+                    this.classList.remove('completed'); // 깜빡임 중단 (기존 연녹색으로 복귀)
+                    console.log(`${this.id} 장치 완료 확인됨.`);
+
+                    // 필요하다면 이곳에 서버로 "확인 완료" 신호를 보내는 코드를 추가합니다.
+                }
+            });
+        });
+
 
         // 스와이프 뒤로가기
         let touchStartX = 0;
@@ -1641,6 +1778,18 @@
             }
         }
 
+        // 영상 검색 버튼 클릭 이벤트
+        document.getElementById('search-archive-btn').addEventListener('click', function () {
+            // 1. 날짜/시간 선택 팝업(모달) 띄우기
+            // 2. 사용자가 선택한 파일 경로가 '2026-05-15_1400.mp4'라면
+            const selectedVideoPath = "/archive/cam01/2026-05-15_1400.mp4";
+
+            const videoPlayer = document.getElementById('main-video');
+            videoPlayer.src = selectedVideoPath; // 영상 소스 교체
+            videoPlayer.play(); // 즉시 재생
+        });
+
+
         // UI 업데이트 함수
         function updateSecurityUI(isAlert) {
             const level = document.getElementById('security-level');
@@ -1668,14 +1817,14 @@
         async function fetchRealtimeData() {
             try {
                 // 1. 아두이노 서버(/get_status)에 데이터 요청
-                const response = await fetch('/get_status'); 
+                const response = await fetch('/get_status');
                 if (!response.ok) throw new Error("서버 응답 없음");
-        
+
                 const data = await response.json();
 
                 // 2. 보안 상황판(PIR 도트) 업데이트
                 if (typeof updateSecurityUI === "function") {
-                    updateSecurityUI(data.pir); 
+                    updateSecurityUI(data.pir);
                 }
 
                 // 3. 환경 수치(풍속 등) 업데이트
@@ -1697,9 +1846,145 @@
 
         // 2초마다 실행 (스마트 팜 현장 상황을 실시간으로 반영하기 위함)
         setInterval(fetchRealtimeData, 2000);
-        
+
         // 페이지 열자마자 바로 실행
-        fetchRealtimeData();        
+        fetchRealtimeData();
+
+        // 과거영상 검색과 검색 버튼
+        // 전역 변수로 현재 선택된 카메라 번호를 추적 (과거 영상 조회용)
+        let currentCamNo = 1;
+
+        // 1. CCTV 이미지를 클릭했을 때 전체화면 모달을 여는 함수
+        function openCCTVModal(streamUrl, camNo) {
+            currentCamNo = camNo; // 현재 클릭한 카메라 번호 저장
+
+            const container = document.getElementById('fullscreen-container');
+            const video = document.getElementById('main-video');
+
+            // 이미지 주소(src) 대신 실제 스트리밍 주소가 있다면 매핑해 줍니다.
+            // 여기서는 테스트를 위해 클릭한 요소의 주소를 연결합니다.
+            video.src = streamUrl;
+
+            // 모달창 열기
+            container.style.display = 'flex';
+            video.play().catch(function (error) {
+                console.log("자동 재생 제한 대처:", error);
+            });
+        }
+
+        // 2. 닫기 버튼을 누르거나 배경을 눌러 모달을 닫는 함수
+        function closeCCTVArchive() {
+            const container = document.getElementById('fullscreen-container');
+            const video = document.getElementById('main-video');
+
+            video.pause();
+            video.src = ""; // 스트리밍 세션 종료 및 메모리 해제
+            container.style.display = 'none';
+        }
+
+        // 3. [검색] 버튼을 눌렀을 때 실행되는 함수
+        function openSearchList(event) {
+            event.stopPropagation(); // 모달 닫힘 이벤트 방지
+
+            const date = prompt("조회할 날짜와 시간을 입력하세요 (예: 20260516_1700)");
+            if (date) {
+                const video = document.getElementById('main-video');
+                // 현재 선택된 카메라 번호(currentCamNo)와 입력한 날짜를 조합하여 과거 영상 경로 설정
+                alert("CAM 0" + currentCamNo + "의 " + date + " 시점 녹화 영상을 재생합니다.");
+
+                // 실제 저장 장치 또는 서버 경로 구조에 맞게 src를 갱신합니다.
+                video.src = "/archive/cam0" + currentCamNo + "_" + date + ".mp4";
+                video.play();
+            }
+        }
+
+        // [수정] 검색 버튼 클릭 시 텍스트 창 대신 리스트를 아래로 뿌려주는 함수
+        function openSearchList(event) {
+            event.stopPropagation();
+
+            const listContainer = document.getElementById('archive-list-container');
+            const listBody = document.getElementById('archive-list');
+
+            // 리스트 토글 (켜져 있으면 닫고, 꺼져 있으면 켬)
+            if (listContainer.style.display === 'flex') {
+                listContainer.style.display = 'none';
+                return;
+            }
+
+            listBody.innerHTML = ""; // 기존 목록 초기화
+
+            // 💡 현재 날짜와 시간 기준으로 최근 5개 시간대 샘플 자동 생성 (가장 가까운 시간부터 순서대로)
+            const now = new Date();
+
+            for (let i = 0; i < 5; i++) {
+                // 시간차를 두고 과거 시간 계산 (예: 1시간 전, 2시간 전...)
+                const targetTime = new Date(now.getTime() - (i * 60 * 60 * 1000));
+
+                const year = targetTime.getFullYear();
+                const month = String(targetTime.getMonth() + 1).padStart(2, '0');
+                const day = String(targetTime.getDate()).padStart(2, '0');
+                const hours = String(targetTime.getHours()).padStart(2, '0');
+
+                // 화면에 보여줄 친숙한 표기 (예: 2026-05-16 16:00)
+                const displayLabel = `${year}-${month}-${day} ${hours}:00`;
+                // 파일명에 들어갈 포맷 (예: 20260516_1600)
+                const fileTimestamp = `${year}${month}${day}_${hours}00`;
+
+                // 버튼 태그 동적 생성
+                const btn = document.createElement('button');
+                btn.className = 'archive-item-btn';
+                btn.innerHTML = `⏱️ ${displayLabel}`;
+
+                // 시간 버튼 클릭 시 해당 과거 영상 재생 연동
+                btn.onclick = function () {
+                    const video = document.getElementById('main-video');
+                    alert(`CAM 0${currentCamNo}의 ${displayLabel} 녹화 영상을 재생합니다.`);
+
+                    // 🔗 실제 파일 저장 경로 규칙에 맞게 주소를 매핑합니다.
+                    video.src = `/archive/cam0${currentCamNo}_${fileTimestamp}.mp4`;
+                    video.play();
+
+                    // 재생 시작 후 리스트 창은 깔끔하게 닫아줍니다.
+                    listContainer.style.display = 'none';
+                };
+
+                listBody.appendChild(btn);
+            }
+
+            // 목록 창 표시
+            listContainer.style.display = 'flex';
+        }
+
+        // 닫기 함수 보완 (전체 모달 닫을 때 목록 창도 같이 닫기)
+        function closeCCTVArchive() {
+            const container = document.getElementById('fullscreen-container');
+            const listContainer = document.getElementById('archive-list-container');
+            const video = document.getElementById('main-video');
+
+            video.pause();
+            video.src = "";
+            listContainer.style.display = 'none';
+            container.style.display = 'none';
+        }
+
+        // 홈으로 돌아가기 버튼
+        function checkScreenSize() {
+            var homeBtn = document.getElementById('pcHomeBtn');
+            if (homeBtn) {
+                // 화면 너비가 1024px 미만(모바일/태블릿)이면 아예 HTML 구조에서 숨김
+                if (window.innerWidth < 1024) {
+                    homeBtn.style.setProperty('display', 'none', 'important');
+                } else {
+                    // PC 화면일 때만 보이게 처리
+                    homeBtn.style.setProperty('display', 'block', 'important');
+                }
+            }
+        }
+
+        // 페이지가 처음 켜질 때 실행
+        window.addEventListener('DOMContentLoaded', checkScreenSize);
+        // 브라우저 창 크기가 변할 때마다 실행
+        window.addEventListener('resize', checkScreenSize);
 
     </script>
 </body>

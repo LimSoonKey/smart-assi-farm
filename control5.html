@@ -895,6 +895,55 @@
         .archive-item-btn:hover {
             background-color: #6B2B85;
             border-color: #6B2B85;
+<<<<<<< HEAD
+        }
+
+
+        /* 관수 하위 스위치 카드 */
+        /* 하위 작물 카드 전용 그리드 (부모 그리드 안에서 한 줄 전체 점유) */
+        .sub-control-grid {
+            grid-column: 1 / -1;
+            display: grid;
+            /* auto-fit 대신 반응형으로 줄어들 수 있도록 설정 */
+            grid-template-columns: repeat(2, minmax(100px, 1fr)); 
+            gap: 6px;
+            background: rgba(76, 107, 46, 0.08);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px dashed #4e7c3f;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box; /* 패딩이 너비에 포함되도록 확실히 지정 */
+            min-width: 0; /* 그리드 아이템이 부모를 삐져나가지 않도록 방지 */
+        }
+
+        /* 하위 카드는 구분을 위해 메인 카드보다 조금 콤팩트하게 지정 */
+        .control-card.sub-card {
+            min-height: 65px !important;
+            height: auto !important;
+            background: #323cf5;
+            border: 1px solid #629b50;
+            padding: 6px 8px;
+            box-sizing: border-box;
+            min-width: 0; /* 내부 요소 때문에 카드가 커지는 것 방지 */
+    
+            /* 카드 내부 정렬을 부드럽게 맞추기 위한 옵션 (필요시 사용) */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* PC 블록 내 반응형 최적화 */
+        @media (min-width: 768px) {
+            .sub-control-grid {
+                /* 확실하게 3열로 고정하면서 삐져나가지 않도록 1fr 처리 */
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important; 
+            }
+=======
+>>>>>>> d5848089432c1df722ce4433da6d65d5f5455f8d
         }
     </style>
 </head>
@@ -1030,20 +1079,123 @@
                     </div>
                 </div>
 
-                <div class="control-card" id="card-irrigation">
-                    <span class="label" onclick="editItemLabel(this)">
+                <div class="control-card" id="card-irrigation" onclick="handleIrrigationClick(event)">
+                    <span class="label">
                         <span class="emoji-icon">🚿</span>
                         <span class="item-name" style="font-size: 1.2rem !important;">관수</span>
                         <span id="timer-irrigation" class="timer-text"></span>
                     </span>
-                    <div class="switch-container">
+                    <div class="switch-container" onclick="event.stopPropagation();">
                         <span class="status-label off-label">꺼짐</span>
                         <label class="switch" title="관수 장치 제어">
+<<<<<<< HEAD
+                            <input type="checkbox" id="main-irrigation-switch" title="관수 장치 스위치" 
+                                onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM); toggleAllCrops(this.checked);">
+=======
                             <input type="checkbox" title="관수 장치 스위치"
                                 onchange="toggleDevice('irrigation', this, 1, IP_PRO_4PM)">
+>>>>>>> d5848089432c1df722ce4433da6d65d5f5455f8d
                             <span class="slider">.</span>
                         </label>
                         <span class="status-label on-label">켜짐</span>
+                    </div>
+                </div>
+
+                <div id="sub-crops-irrigation" class="sub-control-grid" style="display: none;">
+                    <div class="control-card sub-card">
+                        <span class="label" onclick="editItemLabel(this)">
+                            <span class="emoji-icon">🌱</span>
+                            <span class="item-name">작물 1</span>
+                            <span id="timer-irrigation_crop1" class="timer-text"></span>
+                        </span>
+                        <div class="switch-container" onclick="event.stopPropagation();">
+                            <span class="status-label off-label">꺼짐</span>
+                            <label class="switch">
+                                <input type="checkbox" class="crop-switch" onchange="toggleDevice('irrigation_crop1', this, 11, IP_PRO_4PM)">
+                                <span class="slider">.</span>
+                            </label>
+                            <span class="status-label on-label">켜짐</span>
+                        </div>
+                    </div>
+    
+                    <div class="control-card sub-card">
+                        <span class="label" onclick="editItemLabel(this)">
+                            <span class="emoji-icon">🌿</span>
+                            <span class="item-name">작물 2</span>
+                            <span id="timer-irrigation_crop2" class="timer-text"></span>
+                        </span>
+                        <div class="switch-container" onclick="event.stopPropagation();">
+                            <span class="status-label off-label">꺼짐</span>
+                            <label class="switch">
+                                <input type="checkbox" class="crop-switch" onchange="toggleDevice('irrigation_crop2', this, 12, IP_PRO_4PM)">
+                                <span class="slider">.</span>
+                            </label>
+                            <span class="status-label on-label">켜짐</span>
+                        </div>
+                    </div>
+
+                    <div class="control-card sub-card">
+                        <span class="label" onclick="editItemLabel(this)">
+                            <span class="emoji-icon">🍅</span>
+                            <span class="item-name">작물 3</span>
+                            <span id="timer-irrigation_crop3" class="timer-text"></span>
+                        </span>
+                        <div class="switch-container" onclick="event.stopPropagation();">
+                            <span class="status-label off-label">꺼짐</span>
+                            <label class="switch">
+                                <input type="checkbox" class="crop-switch" onchange="toggleDevice('irrigation_crop3', this, 13, IP_PRO_4PM)">
+                                <span class="slider">.</span>
+                            </label>
+                            <span class="status-label on-label">켜짐</span>
+                        </div>
+                    </div>
+
+                    <div class="control-card sub-card">
+                        <span class="label" onclick="editItemLabel(this)">
+                            <span class="emoji-icon">🍓</span>
+                            <span class="item-name">작물 4</span>
+                            <span id="timer-irrigation_crop4" class="timer-text"></span>
+                        </span>
+                        <div class="switch-container" onclick="event.stopPropagation();">
+                            <span class="status-label off-label">꺼짐</span>
+                            <label class="switch">
+                                <input type="checkbox" class="crop-switch" onchange="toggleDevice('irrigation_crop4', this, 14, IP_PRO_4PM)">
+                                <span class="slider">.</span>
+                            </label>
+                            <span class="status-label on-label">켜짐</span>
+                        </div>
+                    </div>
+
+                    <div class="control-card sub-card">
+                        <span class="label" onclick="editItemLabel(this)">
+                            <span class="emoji-icon">🥕</span>
+                            <span class="item-name">작물 5</span>
+                            <span id="timer-irrigation_crop5" class="timer-text"></span>
+                        </span>
+                        <div class="switch-container" onclick="event.stopPropagation();">
+                            <span class="status-label off-label">꺼짐</span>
+                            <label class="switch">
+                                <input type="checkbox" class="crop-switch" onchange="toggleDevice('irrigation_crop5', this, 15, IP_PRO_4PM)">
+                                <span class="slider">.</span>
+                            </label>
+                            <span class="status-label on-label">켜짐</span>
+                        </div>
+                    </div>
+
+                    <div class="control-card sub-card">
+                        <span class="label" onclick="editItemLabel(this)">
+                            <span class="emoji-icon">🥦</span>
+                            <span class="item-name">작물 6</span>
+                            <span id="timer-irrigation_crop6" class="timer-text"></span>
+                        </span>
+                        <div class="switch-container" onclick="event.stopPropagation();">
+                            <span class="status-label off-label">꺼짐</span>
+                            <label class="switch">
+                                <input type="checkbox" class="crop-switch" onchange="toggleDevice('irrigation_crop6', this, 16, IP_PRO_4PM)">
+                                <span class="slider">.</span>
+                            </label>
+                            <span class="status-label on-label">켜짐</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1295,7 +1447,7 @@
         const errorAudio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock_short.ogg");
         let intervals = {};
 
-        // 2. [핵심] 기기 제어 함수 (5초 타임아웃 적용 버전)
+        // 2. [핵심] 기기 제어 함수 (하위 카드 예외 처리 및 에러 교정 완료)
         async function toggleDevice(device, element, channel, ip) {
             const isOn = element.checked;
 
@@ -1309,19 +1461,25 @@
             }
 
             const statusText = document.getElementById('status-bar');
-            const card = document.getElementById(`card-${device}`);
+    
+            // [교정 분기] 고유 ID가 있는 상위 카드는 ID로 찾고, 없는 하위 카드는 구조적으로 탐색합니다.
+            let card = document.getElementById(`card-${device}`);
+            if (!card && element) {
+                card = element.closest('.control-card');
+            }
+    
             const timerDisplay = document.getElementById(`timer-${device}`);
 
             // 시각적 피드백 선적용
             if (isOn) {
-                card.classList.add('on');
+                if (card) card.classList.add('on');
                 if (timerDisplay) startTimer(device, timerDisplay);
             } else {
-                card.classList.remove('on');
-                if (timerDisplay) stopTimer(device, timerDisplay);
+                if (card) card.classList.remove('on');
+                if (timerDisplay) stopTimer(device, timerDisplay); // 이제 에러 없이 정상 멈춤 작동합니다!
             }
 
-            statusText.innerText = `${device} 명령 전송 중...`;
+            if (statusText) statusText.innerText = `${device} 명령 전송 중...`;
 
             // [타임아웃 설정] 5초간 응답 없으면 중단
             const controller = new AbortController();
@@ -1332,19 +1490,21 @@
             try {
                 const response = await fetch(url, { signal: controller.signal });
                 clearTimeout(timeoutId); // 성공 시 타이머 해제
-
+        
                 if (response.ok) {
                     successAudio.play();
-                    statusText.innerText = `✅ ${device} ${isOn ? '켜짐' : '꺼짐'} 완료`;
+                    if (statusText) statusText.innerText = `✅ ${device} ${isOn ? '켜짐' : '꺼짐'} 완료`;
                 } else { throw new Error(); }
             } catch (error) {
                 clearTimeout(timeoutId);
                 errorAudio.play();
 
                 // 연결 실패 시 원상복구
-                statusText.innerText = error.name === 'AbortError' ? `❌ ${device} 기기 연결을 확인해주세요.` : `❌ ${device} 연결 실패`;
+                if (statusText) {
+                    statusText.innerText = error.name === 'AbortError' ? `❌ ${device} 기기 연결을 확인해주세요.` : `❌ ${device} 연결 실패`;
+                }
                 element.checked = !isOn;
-                card.classList.remove('on');
+                if (card) card.classList.remove('on');
                 if (timerDisplay) stopTimer(device, timerDisplay);
                 alert(`${device} 기기 응답이 없습니다. Wi-Fi를 확인하세요.`);
             }
@@ -1419,23 +1579,52 @@
             }
         }
 
-        // [3] 스위치 이름 수정 함수
+        // [3] 스위치 이름 수정 함수 (교정 완료)
         function editItemLabel(element) {
+            // 1. 잠금 해제 상태가 아니면 즉시 종료
             if (!isUnlocked) return;
+
+            // 2. 투터치/클릭 제어와 겹쳐서 오작동하는 것을 방지하기 위해 버블링 차단
+            if (window.event) {
+                window.event.stopPropagation();
+            }
 
             const nameElement = element.querySelector('.item-name');
             if (!nameElement) return;
 
-            const cardId = element.closest('.control-card').id;
+            // 3. 카드 ID 또는 하위 작물 식별자 가져오기
+            const cardElement = element.closest('.control-card');
+            if (!cardElement) return;
+
+            let storageKeyId = "";
+    
+            // 만약 고유 ID가 없는 하위 카드라면, 내부 체크박스의 식별자 이름을 ID 대신 사용합니다.
+            if (cardElement.id) {
+                storageKeyId = cardElement.id;
+            } else {
+                const cropInput = cardElement.querySelector('.crop-switch');
+                if (cropInput) {
+                    // onchange="toggleDevice('irrigation_crop1', ...)" 에서 'irrigation_crop1' 추출
+                    const match = cropInput.getAttribute('onchange').match(/'([^']+)'/);
+                    storageKeyId = match ? match[1] : 'unknown-crop';
+                } else {
+                    storageKeyId = 'unknown-item';
+                }
+            }
+
             const currentName = nameElement.innerText.trim();
             const newName = prompt("새로운 스위치 이름을 입력하세요:", currentName);
 
             if (newName && newName.trim() !== "") {
-                nameElement.innerText = newName;
-                // 농장별로 구분하여 저장
-                localStorage.setItem(`${farmId}-${cardId}-name`, newName);
+                nameElement.innerText = newName.trim();
+                // 원래 규칙인 농장별 ID를 조합하여 로컬스토리지에 저장
+                localStorage.setItem(`${farmId}-${storageKeyId}-name`, newName.trim());
             }
-            forceLock();
+    
+            // 수정 후 다시 잠금 상태로 복귀
+            if (typeof forceLock === "function") {
+                forceLock();
+            }
         }
 
         // [4] 농장 이름 수정 함수
@@ -1985,6 +2174,93 @@
         window.addEventListener('DOMContentLoaded', checkScreenSize);
         // 브라우저 창 크기가 변할 때마다 실행
         window.addEventListener('resize', checkScreenSize);
+<<<<<<< HEAD
+
+
+// 관수 하위 스위치카드
+
+let irrigationClickCount = 0;
+let irrigationClickTimer = null;
+
+function handleIrrigationClick(event) {
+    // 사용자가 스위치 자체나 글자 수정 버튼 등을 누른 경우는 폴딩 제어에서 제외
+    if (event.target.closest('.switch-container') || event.target.closest('.timer-text')) {
+        return;
+    }
+
+    irrigationClickCount++;
+
+    if (irrigationClickCount === 1) {
+        // 첫 번째 터치 시 250ms 동안 대기 (더블 터치 여부 확인용)
+        irrigationClickTimer = setTimeout(function() {
+            // [원 터치 실행] 대기 시간 동안 두 번째 터치가 없었으므로 일반 원터치(동작) 실행
+            irrigationClickCount = 0;
+            executeSingleTouchIrrigation();
+        }, 250); 
+    } else if (irrigationClickCount === 2) {
+        // [투 터치 실행] 250ms 이내에 연속 터치되었으므로 타이머를 무효화하고 하위 메뉴 토글
+        clearTimeout(irrigationClickTimer);
+        irrigationClickCount = 0;
+        toggleSubCropsGrid();
+    }
+}
+
+// 1. 원 터치: 메인 관수 장치 토글 동작 (기존 토글 스위치 강제 클릭 효과)
+function executeSingleTouchIrrigation() {
+    const mainSwitch = document.getElementById('main-irrigation-switch');
+    if (mainSwitch) {
+        mainSwitch.click(); // 기존 체크박스 작동 로직을 그대로 실행시킴
+    }
+}
+
+// 2. 투 터치: 숨겨진 6개 하위 작물 카드 열기/닫기
+function toggleSubCropsGrid() {
+    const subGrid = document.getElementById('sub-crops-irrigation');
+    if (subGrid) {
+        if (subGrid.style.display === 'none') {
+            subGrid.style.display = 'grid';
+        } else {
+            subGrid.style.display = 'none';
+        }
+    }
+}
+
+// 3. 편의 기능: 메인 스위치를 켜고 끌 때 하위 모든 작물 실제 기기 제어 및 타이머 전체 동기화
+function toggleAllCrops(isTrue) {
+    const subGrid = document.getElementById('sub-crops-irrigation');
+    if (!subGrid) return;
+
+    const subCards = subGrid.querySelectorAll('.control-card.sub-card');
+    
+    subCards.forEach(card => {
+        const sw = card.querySelector('.crop-switch');
+        if (!sw) return;
+
+        // 메인 스위치와 상태가 다른 하위 기기들만 골라서 동기화
+        if (sw.checked !== isTrue) {
+            sw.checked = isTrue; // 스위치 모양 변경
+
+            // 태그에 적힌 onchange="toggleDevice('irrigation_crop1', this, 11, IP_PRO_4PM)" 구문 분석
+            const onchangeStr = sw.getAttribute('onchange');
+            const matches = onchangeStr.match(/toggleDevice\s*\(\s*'([^']+)'\s*,\s*this\s*,\s*(\d+)\s*,\s*([^)]+)\)/);
+            
+            if (matches) {
+                const deviceName = matches[1];       // 'irrigation_crop1'
+                const channelNum = parseInt(matches[2], 10); // 11
+                const ipVarName = matches[3].trim();  // IP_PRO_4PM
+                
+                // 전역 변수(window)에서 IP_PRO_4PM 주소 값을 동적으로 가져옵니다.
+                const ipAddress = window[ipVarName] || ipVarName; 
+
+                // [핵심 변경점] 단순히 타이머만 끄는 게 아니라, 기기 제어 함수를 직접 실행합니다.
+                // 이 안에서 실제 꺼짐 명령 전송과 타이머 stopTimer가 모두 완벽히 처리됩니다.
+                toggleDevice(deviceName, sw, channelNum, ipAddress);
+            }
+        }
+    });
+}
+=======
+>>>>>>> d5848089432c1df722ce4433da6d65d5f5455f8d
 
     </script>
 </body>

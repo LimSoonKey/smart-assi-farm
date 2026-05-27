@@ -1009,20 +1009,20 @@
                 <div style="display: flex; justify-content: space-around; color: #555;">
                     <div>
                         <span class="emoji-icon">💧</span>
-                        <span class="item-name">수분</span>
+                        <span class="item-name">습도</span>
                         <span id="stat-moisture" style="font-weight:bold; color:#1a73e8;">--%</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">🧪</span>
-                        <span class="item-name">영양</span>
+                        <span class="emoji-icon">⚡</span>
+                        <span class="item-name">EC</span>
                         <span id="stat-ec" style="font-weight:bold; color:#2e7d32;">--ms/cm</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">🌡️</span>
-                        <span class="item-name">온도</span>
-                        <span id="stat-temp" style="font-weight:bold; color:#966d46;">--°C</span>
+                        <span class="emoji-icon">⚗️</span>
+                        <span class="item-name">pH</span>
+                        <span id="stat-ph" style="font-weight:bold; color:#d32f2f;">--</span>
                     </div>
                 </div>
 
@@ -1038,21 +1038,21 @@
                     width: 100%;">
 
                     <div>
-                        <span class="emoji-icon">🎐</span>
-                        <span class="item-name">풍속</span>
-                        <span id="stat-wind" style="font-weight:bold; color:#626cba;">--m/s</span>
+                        <span class="emoji-icon">🌱</span>
+                        <span class="item-name">질소</span>
+                        <span id="stat-n" style="font-weight:bold; color:#4caf50;">--mg/kg</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">☀️</span>
-                        <span class="item-name">햇빛</span>
-                        <span id="stat-lux" style="font-weight:bold; color:#ee4628;">--lx</span>
+                        <span class="emoji-icon">🌿</span>
+                        <span class="item-name">인</span>
+                        <span id="stat-p" style="font-weight:bold; color:#8bc34a;">--mg/kg</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">🔊</span>
-                        <span class="item-name">소음</span>
-                        <span id="stat-sound" style="font-weight:bold; color:#2f3630;">--dB</span>
+                        <span class="emoji-icon">🌾</span>
+                        <span class="item-name">칼륨</span>
+                        <span id="stat-k" style="font-weight:bold; color:#cddc39;">--mg/kg</span>
                     </div>
                 </div>
 
@@ -1874,17 +1874,17 @@
             document.getElementById('farm-title').classList.remove('unlocked-title');
         }
 
-        // [데이터] 센서 데이터 및 하단 버튼 동기화
-        function updateSensorDisplay(moisture, ec, temp, wind, lux, sound) {
-            document.getElementById('stat-moisture').innerText = moisture + "%"; // 수분 데이터 업데이트
-            document.getElementById('stat-ec').innerText = ec + "ms/cm";         // 영양 데이터 업데이트
-            document.getElementById('stat-temp').innerText = temp + "°C";        // 온도 데이터 업데이트
-            document.getElementById('stat-wind').innerText = wind + "m/s";       // 풍속 데이터 업데이트
-            document.getElementById('stat-lux').innerText = lux + "lx";          // 조도 데이터 업데이트
-            document.getElementById('stat-sound').innerText = sound + "dB";      // 소음 데이터 업데이트
+        // [데이터] 7in1 센서 데이터 및 하단 버튼 동기화 (습도, EC, pH, 질소, 인, 칼륨)
+        function updateSensorDisplay(moisture, ec, ph, n, p, k) {
+            document.getElementById('stat-moisture').innerText = moisture + "%";      // 습도
+            document.getElementById('stat-ec').innerText = ec + "ms/cm";              // 전기전도도(EC)
+            document.getElementById('stat-ph').innerText = ph;                        // pH (단위 없음)
+            document.getElementById('stat-n').innerText = n + "mg/kg";                // 질소
+            document.getElementById('stat-p').innerText = p + "mg/kg";                // 인
+            document.getElementById('stat-k').innerText = k + "mg/kg";                // 칼륨
 
-            // 전체 하단 버튼 업데이트 시 현재 받은 따끈따끈한 데이터를 직접 전달합니다.
-            updateAllBottomButtons(moisture, ec, temp, wind, lux, sound);
+            // 전체 하단 버튼 업데이트 시 현재 받은 데이터를 직접 전달합니다.
+            updateAllBottomButtons(moisture, ec, ph, n, p, k);
         }
 
         function updateBottomButton(name) {
@@ -1892,15 +1892,17 @@
             const targetLink = document.querySelector(`#${activeCardId} a`);
             if (targetLink) {
                 const moisture = document.getElementById('stat-moisture').innerText.replace('%', '');
+                const ec = document.getElementById('stat-ec').innerText.replace('ms/cm', '');
+                const ph = document.getElementById('stat-ph').innerText;
                 targetLink.innerHTML = `${name} <br>
                 <span class="sub-status" style="
                     font-size: 0.7rem; 
                     font-weight: normal; 
-                    color: #000;">수: ${moisture}% 양: ${ec}ms/cm 온: ${temp}°C</span>`;
+                    color: #000;">습도: ${moisture}% EC: ${ec} pH: ${ph}</span>`;
             }
         }
 
-        function updateAllBottomButtons(moisture, ec, temp, wind, lux, sound) {
+        function updateAllBottomButtons(moisture, ec, ph, n, p, k) {
             const farms = [
                 { id: 'card-A', path: 'control2.html', def: '유전리 농장' },
                 { id: 'card-B', path: 'control3.html', def: '백신리 농장' },
@@ -1917,19 +1919,20 @@
                 if (link) {
                     const name = localStorage.getItem(f.path) || f.def;
 
-                    let m_val = "--", ec_val = "--", t_val = "--", w_val = "--", l_val = "--", s_val = "--";
+                    let m_val = "--", ec_val = "--", ph_val = "--", n_val = "--", p_val = "--", k_val = "--";
 
                     if (f.path.includes(currentFile)) {
                         m_val = moisture;
                         ec_val = ec;
-                        t_val = temp;
-                        w_val = wind;
-                        l_val = lux;
-                        s_val = sound;
+                        ph_val = ph;
+                        n_val = n;
+                        p_val = p;
+                        k_val = k;
                     }
 
                     link.innerHTML = `
                         <div style="margin-bottom: 7px; padding-top: 10px; font-weight: bold;">${name}</div>
+                        
                         <div class="farm-stats-row" 
                             style="display: flex; 
                             justify-content: space-around; 
@@ -1944,28 +1947,28 @@
                             </div>
 
                             <div class="stat-item" style="display: flex; align-items: center; gap: 3px;">
-                                <span class="emoji-icon">🧪</span>
+                                <span class="emoji-icon">⚡</span>
                                 <span class="item-name" style="font-weight: bold; color: #2e7d32;">${ec_val}</span>
                             </div>
                             
                             <div class="stat-item" style="display: flex; align-items: center; gap: 3px;">
-                                <span class="emoji-icon">🌡️</span>
-                                <span class="item-name" style="font-weight: bold; color: #d32f2f;">${t_val}${t_val === "--" ? "" : "°C"}</span>
+                                <span class="emoji-icon">⚗️</span>
+                                <span class="item-name" style="font-weight: bold; color: #d32f2f;">${ph_val}</span>
                             </div>
                         </div>
 
-                        <div style="display: flex; justify-content: space-around; font-size: 0.85rem; color: #666; margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-around; font-size: 0.85rem; color: #666; margin-bottom: 12px; margin-top: 4px;">
                             <div>
-                                <span class="emoji-icon">🎐</span> 
-                                <span id="stat-wind" style="font-weight:bold;">${w_val}</span>
+                                <span class="emoji-icon">🌱</span> 
+                                <span id="stat-n-btn" style="font-weight:bold;">${n_val}</span>
                             </div>
                             <div>
-                                <span class="emoji-icon">☀️</span> 
-                                <span id="stat-lux" style="font-weight:bold;">${l_val}</span>
+                                <span class="emoji-icon">🌿</span> 
+                                <span id="stat-p-btn" style="font-weight:bold;">${p_val}</span>
                             </div>
                             <div>
-                                <span class="emoji-icon">🔊</span> 
-                                <span id="stat-sound" style="font-weight:bold;">${s_val}</span>
+                                <span class="emoji-icon">🌾</span> 
+                                <span id="stat-k-btn" style="font-weight:bold;">${k_val}</span>
                             </div>
                         </div>
                     `; // 1. 백틱과 세미콜론으로 문장 종결

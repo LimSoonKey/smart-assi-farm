@@ -2752,41 +2752,46 @@ const _0x4495e9=_0x200e;(function(_0x1d4bbd,_0x4925e8){const _0x3fef2e=_0x200e,_
         </div>
 
         <!-- 토양 센서 자동화 제어 통합 모달창 -->
-        <div id="smart-soil-modal" style="
-            transform: translate(1.5%, 5%); /* '수분 포화도 조절' 상자 좌우전후 위치 */
+<div id="smart-soil-modal" style="
             display: none; 
             position: fixed; 
             top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.7); 
             z-index: 2500; 
             justify-content: center; 
-            align-items: center; /* 1. [핵심] 세로 기준 화면 정중앙 정렬 */
-            overflow-y: auto;    /* 2. 작은 폰 화면 대응용 전체 스크롤 */
+            align-items: center; /* 화면 세로 정중앙 정렬 */
+            overflow-y: auto;    
             -webkit-overflow-scrolling: touch;
-            padding: 20px 0;">
+            padding: 15px 0;
+            box-sizing: border-box;">
 
             <div style="
                 background: #2a2a40; 
                 border: 2px solid #629b50; 
                 border-radius: 12px; 
-                padding: 20px; 
-                width: 90%; 
+                padding: 22px 20px; 
+                width: 92%; 
                 max-width: 460px; 
                 text-align: center; 
                 box-shadow: 0 4px 15px rgba(0,0,0,0.5);
                 color: #fff;
-                height: auto;
-                min-height: auto;   /* 스마트폰 화면 높이의 80%만큼 강제로 세로 길이를 확보합니다 */
-                margin: auto;"> 
                 
-                <h3 id="soil-modal-title" style="color: #d3d32f; margin-top: 0; margin-bottom: 15px; font-size: 1.4rem;">
+                /* 👇 외곽 상자를 아래로 길게 늘리고 내부 정렬을 최적화하는 수식 */
+                display: flex !important;
+                flex-direction: column !important;
+                min-height: 88vh !important; /* 화면 높이의 88% 크기만큼 외곽 상자를 위아래로 길게 확보 */
+                height: auto !important;
+                margin: auto !important;
+                box-sizing: border-box;"> 
+                
+                <h3 id="soil-modal-title" style="color: #d3d32f; margin-top: 0; margin-bottom: 15px; font-size: 1.4rem; flex-shrink: 0;">
                     토양 자동 제어 설정
                 </h3>
 
-                <div id="soil-modal-content" style="margin-bottom: 15px; text-align: left; width: 100%;"></div>
+                <div id="soil-modal-content" style="margin-bottom: 15px; text-align: left; width: 100%; flex-grow: 1 !important; height: auto !important;"></div>
 
                 <button onclick="saveAndCloseSmartSoilMenu()" style="
-                    width: 94%; 
+                    width: 96%; 
                     padding: 14px; 
                     background: #28a745; 
                     color: #fff; 
@@ -2795,7 +2800,9 @@ const _0x4495e9=_0x200e;(function(_0x1d4bbd,_0x4925e8){const _0x3fef2e=_0x200e,_
                     font-size: 1.2rem; 
                     cursor: pointer;
                     font-weight: bold;
-                    box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+                    flex-shrink: 0 !important;
+                    margin-top: auto !important; /* 위 카드 영역과 거리를 벌려 무조건 맨 아래로 내려 보냄 */">
                     💾 설정 값 저장
                 </button>
             </div>

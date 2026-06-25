@@ -2751,6 +2751,7 @@ const _0x31168b=_0x4abf;(function(_0x226a71,_0x2b6813){const _0x568460=_0x4abf,_
             </div>
         </div>
 
+        <!-- ==================================================-->
         <!-- 토양 센서 자동화 제어 통합 모달창 -->
         <div id="smart-soil-modal" style="
             display: none; 
@@ -2763,7 +2764,7 @@ const _0x31168b=_0x4abf;(function(_0x226a71,_0x2b6813){const _0x568460=_0x4abf,_
             z-index: 2500; 
             justify-content: center; 
             align-items: center; /* 화면 세로 정중앙 정렬 */
-            overflow-y: auto;    
+            overflow: hidden;    /* 💡 겉 박스 자체에 불필요한 전체 스크롤이 생기지 않도록 차단 */
             -webkit-overflow-scrolling: touch;
             padding: 5px 0;
             box-sizing: border-box;">
@@ -2772,8 +2773,8 @@ const _0x31168b=_0x4abf;(function(_0x226a71,_0x2b6813){const _0x568460=_0x4abf,_
                 background: #2a2a40; 
                 border: 2px solid #629b50; 
                 border-radius: 12px; 
-                padding: 22px 20px; 
-                width: 92%; 
+                padding: 12px 14px; /* 💡 위아래/좌우 내부 여백을 좁혀서 숨은 '검은 벽' 공간을 완전히 제거 */
+                width: 94%; 
                 max-width: 460px; 
                 text-align: center; 
                 box-shadow: 0 4px 15px rgba(0,0,0,0.5);
@@ -2801,12 +2802,14 @@ const _0x31168b=_0x4abf;(function(_0x226a71,_0x2b6813){const _0x568460=_0x4abf,_
                     text-align: left; 
                     width: 100%; 
                     flex-grow: 1 !important; 
-                    height: auto !important;">
+                    height: auto !important;
+                    overflow-y: visible !important; /* 💡 내부에서 답답하게 스크롤이 끊기지 않도록 완전 개방 */">
+                    
                 </div>
 
                 <button onclick="saveAndCloseSmartSoilMenu()" style="
                     width: 94%; 
-                    padding: 14px; 
+                    padding: 12px; /* 💡 버튼 높이도 살짝 슬림하게 조정하여 가용 면적 확보 */
                     align-self: center;
                     gap: 10px;
                     background: #28a745; 
@@ -2818,11 +2821,11 @@ const _0x31168b=_0x4abf;(function(_0x226a71,_0x2b6813){const _0x568460=_0x4abf,_
                     font-weight: bold;
                     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
                     flex-shrink: 0 !important;
-                    margin-top: auto !important; /* 위 카드 영역과 거리를 벌려 무조건 맨 아래로 내려 보냄 */">
+                    margin-top: 4px !important; /* 💡 대봉시 카드와 저장 버튼 사이의 쓸데없는 공백 최소화 */">
                     💾 설정 값 저장
                 </button>
             </div>
-        </div>        
+        </div>
 
 </body>
 

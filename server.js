@@ -1,72 +1,85 @@
-const admin = require('firebase-admin');
-const axios = require('axios');
+// 1. 필요한 모듈 불러오기 (npm install express aedes net cors mqtt)
 const express = require('express');
-const cors = require('cors'); 
+const Aedes = require('aedes');   // aedes 모듈 불러오기 (최신 버전 문법)
+const aedes = new Aedes();        // MQTT 우체국(브로커) 모듈 생성
+const net = require('net');       // MQTT용 네트워크 모듈
+const cors = require('cors');     // 웹 브라우저 보안 에러 방지
+const mqtt = require('mqtt');     // 서버 자신이 MQTT 브로커에 편지를 넣기 위한 클라이언트
+
 const app = express();
 
-app.use(cors()); 
-app.use(express.json());
+// --- [A] 웹 서버 설정 (HTTP) ---
+// 가비아 환경에서는 가비아가 지정해주는 포트를 우선 사용하도록 process.env.PORT를 추가합니다.
+const HTTP_PORT = process.env.PORT || 3000; 
 
-// ==========================================
-// [1] 파이어베이스 및 기존 주문 시스템 설정
-// ==========================================
-const serviceAccount = require("./firebase-admin-key.json");
+app.use(cors()); // CORS 에러 방지
+app.use(express.json()); // 웹에서 보내는 JSON 데이터 분석
+// 웹 파일들이 있는 폴더 지정 ('public' 폴더를 만들고 그 안에 control2.html을 넣어두세요)
+app.use(express.static('public')); 
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+// 웹페이지가 정상적으로 뜨는지 확인하는 기본 경로
+app.get('/', (req, res) => {
+    res.send('스마트어시팜 통합 서버가 정상 작동 중입니다!');
 });
 
-const db = admin.firestore();
+// 웹 브라우저(휴대폰)에서 제어 버튼을 눌렀을 때 처리하는 API
+app.post('/api/control', (req, res) => {
+    // control2.html에서 보낸 데이터 (예: { device: "pump_water", command: "ON" })
+    const { device, command } = req.body; 
 
-db.collection('orders').onSnapshot(snapshot => {
-    snapshot.docChanges().forEach(async (change) => {
-        if (change.type === 'added') {
-            const order = change.doc.data();
-            console.log("새로운 주문 발견:", order);
-            await sendTalkNotification(order);
-        }
+    console.log(`[웹에서 명령 수신] 장치: ${device}, 명령: ${command}`);
+
+    // 서버 자체가 자신의 우체국(브로커)에 연결하여 편지(명령)를 넣음
+    const localClient = mqtt.connect('mqtt://localhost:1883');
+    
+    localClient.on('connect', () => {
+        // 편지 봉투(Topic)와 내용(Message) 작성
+        const topic = `smartassifarm/farm1/control/${device}`;
+        const message = command; // "ON", "OFF" 등
+
+        // ESP32가 구독하고 있는 주소로 메시지 발송!
+        localClient.publish(topic, message, () => {
+            console.log(`[MQTT 발송 완료] ${topic} -> ${message}`);
+            localClient.end(); // 발송 후 연결 종료
+        });
     });
+
+    res.json({ success: true, message: "명령이 농장으로 전송되었습니다." });
 });
 
-async function sendTalkNotification(order) {
-    // 네이버 톡톡 API 호출 로직 위치
-}
+app.listen(HTTP_PORT, () => {
+    console.log(`🌐 웹 서버가 포트 ${HTTP_PORT}에서 대기 중입니다.`);
+});
 
-// ==========================================
-// [2] 유전리 농장 6개 구역 적외선 펜스 보안 시스템
-// ==========================================
-// 6개 구역의 실시간 보안 상태를 저장하는 저장소
-let yujeonriSecurity = {
-    zone1: { bot: false, top: false },
-    zone2: { bot: false, top: false },
-    zone3: { bot: false, top: false },
-    zone4: { bot: false, top: false },
-    zone5: { bot: false, top: false },
-    zone6: { bot: false, top: false }
-};
+// --- [B] 사물인터넷 우체국 설정 (MQTT 브로커) ---
+const MQTT_PORT = 1883; // MQTT 전용 표준 포트
+const mqttServer = net.createServer(aedes.handle);
 
-// 2-1. 6개의 ESP32-C6 보드들이 신호를 보내오는 주소 (POST)
-app.post('/api/security/update', (req, res) => {
-    const { zone, position, value } = req.body; // 예: "zone3", "top", true
-    
-    if (yujeonriSecurity[zone]) {
-        // 안전하게 true/false 변환하여 저장
-        yujeonriSecurity[zone][position] = (value === true || value === 'true');
-        
-        // 어떤 구역에 침입이 발생했거나 해제되었는지 로그 출력
-        console.log(`[경계선 신호] ${zone} - ${position}: ${yujeonriSecurity[zone][position] ? "🚨침입!!" : "✅정상"}`);
-        return res.status(200).json({ success: true, message: `${zone} 업데이트 완료` });
+mqttServer.listen(MQTT_PORT, () => {
+    console.log(`📮 MQTT 우체국이 포트 ${MQTT_PORT}에서 업무를 시작했습니다.`);
+});
+
+// 누군가(ESP32 등) 우체국에 연결했을 때 알림
+aedes.on('client', (client) => {
+    console.log(`[새로운 기기 접속] ID: ${client ? client.id : '알 수 없음'}`);
+});
+
+// 누군가 우체국을 떠났을 때 알림
+aedes.on('clientDisconnect', (client) => {
+    console.log(`[기기 연결 끊김] ID: ${client ? client.id : '알 수 없음'}`);
+});
+
+// 우체국을 통해 편지(메시지)가 오갈 때 내용 확인
+aedes.on('publish', (packet, client) => {
+    if (client) {
+        // 내부 통신용 메시지 필터링 (불필요한 로그 방지)
+        if (!packet.topic.startsWith('$SYS')) {
+            console.log(`[메시지 중계] 보낸이: ${client.id}, 주제: ${packet.topic}, 내용: ${packet.payload.toString()}`);
+            
+            // 만약 ESP32(농장)에서 온 센서 데이터라면? (예: 토양 습도)
+            if (packet.topic.includes('sensor')) {
+                // 여기에 나중에 데이터베이스(DB)에 저장하는 코드를 넣을 수 있습니다.
+            }
+        }
     }
-    
-    return res.status(400).json({ success: false, message: "잘못된 구역(zone) 정보입니다." });
 });
-
-// 2-2. 웹 화면(control2.html)이 1초마다 전체 상태를 읽어가는 주소 (GET)
-app.get('/api/security/status', (req, res) => {
-    res.status(200).json(yujeonriSecurity);
-});
-
-// ==========================================
-// [3] 서버 구동 포트 설정
-// ==========================================
-app.listen(3000, () => console.log('어시팜 클라우드 엔진 및 6채널 보안 모듈 가동 중... (Port 3000)'));

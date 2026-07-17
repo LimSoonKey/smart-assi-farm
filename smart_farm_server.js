@@ -61,25 +61,4 @@ mqttServer.listen(MQTT_PORT, () => {
 
 // 누군가(ESP32 등) 우체국에 연결했을 때 알림
 aedes.on('client', (client) => {
-    console.log(`[새로운 기기 접속] ID: ${client ? client.id : '알 수 없음'}`);
-});
-
-// 누군가 우체국을 떠났을 때 알림
-aedes.on('clientDisconnect', (client) => {
-    console.log(`[기기 연결 끊김] ID: ${client ? client.id : '알 수 없음'}`);
-});
-
-// 우체국을 통해 편지(메시지)가 오갈 때 내용 확인
-aedes.on('publish', (packet, client) => {
-    if (client) {
-        // 내부 통신용 메시지 필터링 (불필요한 로그 방지)
-        if (!packet.topic.startsWith('$SYS')) {
-            console.log(`[메시지 중계] 보낸이: ${client.id}, 주제: ${packet.topic}, 내용: ${packet.payload.toString()}`);
-            
-            // 만약 ESP32(농장)에서 온 센서 데이터라면? (예: 토양 습도)
-            if (packet.topic.includes('sensor')) {
-                // 여기에 나중에 데이터베이스(DB)에 저장하는 코드를 넣을 수 있습니다.
-            }
-        }
-    }
-});
+    console.log(`[새로운 기기 접속] ID: ${client ? client.id : '알 수 없음'

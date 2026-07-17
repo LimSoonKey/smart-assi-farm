@@ -1009,20 +1009,20 @@
                 <div style="display: flex; justify-content: space-around; color: #555;">
                     <div>
                         <span class="emoji-icon">💧</span>
-                        <span class="item-name">수분</span>
+                        <span class="item-name">습도</span>
                         <span id="stat-moisture" style="font-weight:bold; color:#1a73e8;">--%</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">🧪</span>
-                        <span class="item-name">영양</span>
+                        <span class="emoji-icon">⚡</span>
+                        <span class="item-name">EC</span>
                         <span id="stat-ec" style="font-weight:bold; color:#2e7d32;">--ms/cm</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">🌡️</span>
-                        <span class="item-name">온도</span>
-                        <span id="stat-temp" style="font-weight:bold; color:#966d46;">--°C</span>
+                        <span class="emoji-icon">⚗️</span>
+                        <span class="item-name">pH</span>
+                        <span id="stat-ph" style="font-weight:bold; color:#d32f2f;">--</span>
                     </div>
                 </div>
 
@@ -1038,21 +1038,21 @@
                     width: 100%;">
 
                     <div>
-                        <span class="emoji-icon">🎐</span>
-                        <span class="item-name">풍속</span>
-                        <span id="stat-wind" style="font-weight:bold; color:#626cba;">--m/s</span>
+                        <span class="emoji-icon">🌱</span>
+                        <span class="item-name">질소</span>
+                        <span id="stat-n" style="font-weight:bold; color:#4caf50;">--mg/kg</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">☀️</span>
-                        <span class="item-name">햇빛</span>
-                        <span id="stat-lux" style="font-weight:bold; color:#ee4628;">--lx</span>
+                        <span class="emoji-icon">🌿</span>
+                        <span class="item-name">인</span>
+                        <span id="stat-p" style="font-weight:bold; color:#8bc34a;">--mg/kg</span>
                     </div>
 
                     <div>
-                        <span class="emoji-icon">🔊</span>
-                        <span class="item-name">소음</span>
-                        <span id="stat-sound" style="font-weight:bold; color:#2f3630;">--dB</span>
+                        <span class="emoji-icon">🌾</span>
+                        <span class="item-name">칼륨</span>
+                        <span id="stat-k" style="font-weight:bold; color:#cddc39;">--mg/kg</span>
                     </div>
                 </div>
 
@@ -1874,17 +1874,17 @@
             document.getElementById('farm-title').classList.remove('unlocked-title');
         }
 
-        // [데이터] 센서 데이터 및 하단 버튼 동기화
-        function updateSensorDisplay(moisture, ec, temp, wind, lux, sound) {
-            document.getElementById('stat-moisture').innerText = moisture + "%"; // 수분 데이터 업데이트
-            document.getElementById('stat-ec').innerText = ec + "ms/cm";         // 영양 데이터 업데이트
-            document.getElementById('stat-temp').innerText = temp + "°C";        // 온도 데이터 업데이트
-            document.getElementById('stat-wind').innerText = wind + "m/s";       // 풍속 데이터 업데이트
-            document.getElementById('stat-lux').innerText = lux + "lx";          // 조도 데이터 업데이트
-            document.getElementById('stat-sound').innerText = sound + "dB";      // 소음 데이터 업데이트
+        // [데이터] 7in1 센서 데이터 및 하단 버튼 동기화 (습도, EC, pH, 질소, 인, 칼륨)
+        function updateSensorDisplay(moisture, ec, ph, n, p, k) {
+            document.getElementById('stat-moisture').innerText = moisture + "%";      // 습도
+            document.getElementById('stat-ec').innerText = ec + "ms/cm";              // 전기전도도(EC)
+            document.getElementById('stat-ph').innerText = ph;                        // pH (단위 없음)
+            document.getElementById('stat-n').innerText = n + "mg/kg";                // 질소
+            document.getElementById('stat-p').innerText = p + "mg/kg";                // 인
+            document.getElementById('stat-k').innerText = k + "mg/kg";                // 칼륨
 
-            // 전체 하단 버튼 업데이트 시 현재 받은 따끈따끈한 데이터를 직접 전달합니다.
-            updateAllBottomButtons(moisture, ec, temp, wind, lux, sound);
+            // 전체 하단 버튼 업데이트 시 현재 받은 데이터를 직접 전달합니다.
+            updateAllBottomButtons(moisture, ec, ph, n, p, k);
         }
 
         function updateBottomButton(name) {
@@ -1892,15 +1892,17 @@
             const targetLink = document.querySelector(`#${activeCardId} a`);
             if (targetLink) {
                 const moisture = document.getElementById('stat-moisture').innerText.replace('%', '');
+                const ec = document.getElementById('stat-ec').innerText.replace('ms/cm', '');
+                const ph = document.getElementById('stat-ph').innerText;
                 targetLink.innerHTML = `${name} <br>
                 <span class="sub-status" style="
                     font-size: 0.7rem; 
                     font-weight: normal; 
-                    color: #000;">수: ${moisture}% 양: ${ec}ms/cm 온: ${temp}°C</span>`;
+                    color: #000;">습도: ${moisture}% EC: ${ec} pH: ${ph}</span>`;
             }
         }
 
-        function updateAllBottomButtons(moisture, ec, temp, wind, lux, sound) {
+        function updateAllBottomButtons(moisture, ec, ph, n, p, k) {
             const farms = [
                 { id: 'card-A', path: 'control2.html', def: '유전리 농장' },
                 { id: 'card-B', path: 'control3.html', def: '백신리 농장' },
@@ -1917,19 +1919,20 @@
                 if (link) {
                     const name = localStorage.getItem(f.path) || f.def;
 
-                    let m_val = "--", ec_val = "--", t_val = "--", w_val = "--", l_val = "--", s_val = "--";
+                    let m_val = "--", ec_val = "--", ph_val = "--", n_val = "--", p_val = "--", k_val = "--";
 
                     if (f.path.includes(currentFile)) {
                         m_val = moisture;
                         ec_val = ec;
-                        t_val = temp;
-                        w_val = wind;
-                        l_val = lux;
-                        s_val = sound;
+                        ph_val = ph;
+                        n_val = n;
+                        p_val = p;
+                        k_val = k;
                     }
 
                     link.innerHTML = `
                         <div style="margin-bottom: 7px; padding-top: 10px; font-weight: bold;">${name}</div>
+                        
                         <div class="farm-stats-row" 
                             style="display: flex; 
                             justify-content: space-around; 
@@ -1944,28 +1947,28 @@
                             </div>
 
                             <div class="stat-item" style="display: flex; align-items: center; gap: 3px;">
-                                <span class="emoji-icon">🧪</span>
+                                <span class="emoji-icon">⚡</span>
                                 <span class="item-name" style="font-weight: bold; color: #2e7d32;">${ec_val}</span>
                             </div>
                             
                             <div class="stat-item" style="display: flex; align-items: center; gap: 3px;">
-                                <span class="emoji-icon">🌡️</span>
-                                <span class="item-name" style="font-weight: bold; color: #d32f2f;">${t_val}${t_val === "--" ? "" : "°C"}</span>
+                                <span class="emoji-icon">⚗️</span>
+                                <span class="item-name" style="font-weight: bold; color: #d32f2f;">${ph_val}</span>
                             </div>
                         </div>
 
-                        <div style="display: flex; justify-content: space-around; font-size: 0.85rem; color: #666; margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-around; font-size: 0.85rem; color: #666; margin-bottom: 12px; margin-top: 4px;">
                             <div>
-                                <span class="emoji-icon">🎐</span> 
-                                <span id="stat-wind" style="font-weight:bold;">${w_val}</span>
+                                <span class="emoji-icon">🌱</span> 
+                                <span id="stat-n-btn" style="font-weight:bold;">${n_val}</span>
                             </div>
                             <div>
-                                <span class="emoji-icon">☀️</span> 
-                                <span id="stat-lux" style="font-weight:bold;">${l_val}</span>
+                                <span class="emoji-icon">🌿</span> 
+                                <span id="stat-p-btn" style="font-weight:bold;">${p_val}</span>
                             </div>
                             <div>
-                                <span class="emoji-icon">🔊</span> 
-                                <span id="stat-sound" style="font-weight:bold;">${s_val}</span>
+                                <span class="emoji-icon">🌾</span> 
+                                <span id="stat-k-btn" style="font-weight:bold;">${k_val}</span>
                             </div>
                         </div>
                     `; // 1. 백틱과 세미콜론으로 문장 종결
@@ -2202,19 +2205,85 @@
             }
         }
 
+        // --- [전역 상태 변수 선언] ---
+        // 이 변수들은 함수 바깥에 선언하여 온도의 변화 기록과 비상 상태를 기억하게 합니다.
+        let tempHistory = [];       // 최근 10분간의 온도 데이터를 저장할 배열
+        let isHailEmergency = false; // 현재 우박 비상 상황인지 여부를 체크하는 깃발
+
         // [능동형 제어 엔진] 센서 값에 따라 자동으로 기기를 조작합니다.
         function autoControlEngine(data) {
-            // 1. 강풍 감지 시 천막 자동 닫기 (안전 우선)
-            if (data.windSpeed > 15) { // 15m/s 이상 강풍 시
-                const shieldInput = document.querySelector('#card-shield input');
-                if (shieldInput.checked) {
-                    shieldInput.checked = false;
-                    toggleDevice('shield', shieldInput, 2, IP_PRO_4PM);
-                    alert("⚠️ 강풍 감지! 천막을 자동으로 보호 모드로 전환합니다.");
-                }
+            const shieldInput = document.querySelector('#card-shield input');
+    
+            // =========================================================
+            // [A] 우박 감지를 위한 온도 데이터 수집 및 급강하 계산
+            // =========================================================
+            const currentTemp = data.temperature; // BME280에서 받아온 현재 온도 (예: 25.5)
+            const currentTime = Date.now();
+    
+            // 현재 온도와 시간을 배열에 저장
+            tempHistory.push({ temp: currentTemp, time: currentTime });
+
+            // 10분(600,000밀리초)이 지난 오래된 데이터는 배열에서 삭제하여 메모리 관리
+            tempHistory = tempHistory.filter(item => (currentTime - item.time) <= 600000);
+
+            // 10분 전 온도(배열의 첫 번째 값)와 현재 온도 비교
+            let tempDrop = 0;
+            if (tempHistory.length > 0) {
+                const oldestTemp = tempHistory[0].temp;
+                tempDrop = oldestTemp - currentTemp; // 양수면 온도가 떨어진 것 (예: 28도 -> 25도 = 3도)
             }
 
-            // 2. 2단 입체 보안 로직 (상/하단 동시 감지 시)
+            // =========================================================
+            // [B] 능동형 제어 로직 (우선순위 순서대로 실행)
+            // =========================================================
+
+            // 1순위: [안전 최우선] 초강풍 감지 시 천막 자동 수축(꺼짐)
+            // 우박이고 뭐고 바람이 너무 세서 천막이 다 찢어질 위험이 있는 경우 (예: 15m/s 초과)
+            if (data.windSpeed > 15) { 
+                if (shieldInput.checked) {
+                    shieldInput.checked = false; // 스위치 끄기(접음)
+                    toggleDevice('shield', shieldInput, 2, IP_PRO_4PM);
+                    alert("⚠️ 초강풍 감지! 구조물 붕괴 방지를 위해 천막을 강제로 접습니다.");
+                }
+                return; // 최우선 안전 조치이므로 아래의 다른 로직은 실행하지 않고 종료
+            }
+
+            // 2순위: 우박 전조 증상 감지 (천막 자동 펴짐)
+            // 조건: 최근 10분 내 온도가 3도 이상 급강하 AND 돌풍(10m/s 이상 15m/s 이하) 발생
+            if (tempDrop >= 3 && data.windSpeed >= 10 && data.windSpeed <= 15) {
+                if (!shieldInput.checked) {
+                    shieldInput.checked = true; // 스위치 켜기(전개)
+                    toggleDevice('shield', shieldInput, 2, IP_PRO_4PM);
+                    alert("🚨 우박 전조 증상(기온 급강하 및 돌풍) 감지! 천막을 자동으로 폅니다.");
+                }
+                isHailEmergency = true; // 우박 비상 상황임을 시스템에 각인
+                return; // 비상 상황이므로 아래의 일반 로직 무시
+            }
+
+            // 3순위: 우박 비상 상황 해제 (천막 자동 접힘)
+            // 조건: 우박 비상 상황이었는데, 바람이 5m/s 이하로 잦아들고 온도 강하가 멈췄을 때
+            if (isHailEmergency && data.windSpeed < 5 && tempDrop < 1) {
+                if (shieldInput.checked) {
+                    shieldInput.checked = false; // 스위치 끄기(접음)
+                    toggleDevice('shield', shieldInput, 2, IP_PRO_4PM);
+                    console.log("✅ 기상 안정화: 우박 위험이 해제되어 천막을 원위치로 접습니다.");
+                }
+                isHailEmergency = false; // 비상 상황 해제
+            }
+
+            // 4순위: 물리적 조절기(FOX-1004) 기반 조도/온도 연동 일반 제어
+            // 우박 비상 상황이 아닐 때만 평소처럼 작동합니다.
+            if (!isHailEmergency) {
+                if (data.foxLightActive === true && data.foxTempActive === true) {
+                    if (!shieldInput.checked) {
+                        shieldInput.checked = true;
+                        toggleDevice('shield', shieldInput, 2, IP_PRO_4PM);
+                        console.log("물리 조절기 조건 충족: 햇빛 차단을 위해 천막(차광막) 전개");
+                    }
+                } 
+            }
+
+            // 5순위: 2단 입체 보안 로직 (상/하단 동시 감지 시)
             const topActive = data.pirTop.some(s => s === 1);
             const botActive = data.pirBot.some(s => s === 1);
 

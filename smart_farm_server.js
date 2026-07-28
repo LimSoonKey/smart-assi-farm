@@ -1,6 +1,6 @@
 // 1. 필요한 모듈 불러오기 (npm install express aedes net cors mqtt)
 const express = require('express');
-const Aedes = require('aedes');   // aedes 모듈 불러오기 (최신 버전 문법)
+const Aedes = require('aedes');   // aedes 모듈 불러오기
 const aedes = new Aedes();        // MQTT 우체국(브로커) 모듈 생성
 const net = require('net');       // MQTT용 네트워크 모듈
 const cors = require('cors');     // 웹 브라우저 보안 에러 방지
@@ -9,12 +9,10 @@ const mqtt = require('mqtt');     // 서버 자신이 MQTT 브로커에 편지�
 const app = express();
 
 // --- [A] 웹 서버 설정 (HTTP) ---
-// 가비아 환경에서는 가비아가 지정해주는 포트를 우선 사용하도록 process.env.PORT를 추가합니다.
 const HTTP_PORT = process.env.PORT || 3000; 
 
 app.use(cors()); // CORS 에러 방지
 app.use(express.json()); // 웹에서 보내는 JSON 데이터 분석
-// 웹 파일들이 있는 폴더 지정 ('public' 폴더를 만들고 그 안에 control2.html을 넣어두세요)
 app.use(express.static('public')); 
 
 // 웹페이지가 정상적으로 뜨는지 확인하는 기본 경로
@@ -24,7 +22,6 @@ app.get('/', (req, res) => {
 
 // 웹 브라우저(휴대폰)에서 제어 버튼을 눌렀을 때 처리하는 API
 app.post('/api/control', (req, res) => {
-    // control2.html에서 보낸 데이터 (예: { device: "pump_water", command: "ON" })
     const { device, command } = req.body; 
 
     console.log(`[웹에서 명령 수신] 장치: ${device}, 명령: ${command}`);
@@ -61,4 +58,5 @@ mqttServer.listen(MQTT_PORT, () => {
 
 // 누군가(ESP32 등) 우체국에 연결했을 때 알림
 aedes.on('client', (client) => {
-    console.log(`[새로운 기기 접속] ID: ${client ? client.id : '알 수 없음'
+    console.log(`[새로운 기기 접속] ID: ${client ? client.id : '알 수 없음'}`);
+});

@@ -1,12 +1,11 @@
 {
-  "dependencies": {
-    "aedes": "^0.51.0",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "mqtt": "^5.15.1",
-    "net": "^1.0.2"
-  },
+  "name": "smart-assi-farm-server",
+  "version": "1.0.0",
+  "main": "smart_farm_server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node smart_farm_server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }

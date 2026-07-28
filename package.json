@@ -5,7 +5,11 @@
   "scripts": {
     "start": "node smart_farm_server.js"
   },
+
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "aedes": "^0.48.0",
+    "mqtt": "^4.3.7",
+    "cors": "^2.8.5"
   }
 }

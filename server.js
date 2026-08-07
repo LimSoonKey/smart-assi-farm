@@ -8,7 +8,7 @@ const mqtt = require('mqtt');     // 서버 자신이 MQTT 브로커에 편지�
 const app = express();
 
 // --- [A] 웹 서버 설정 (HTTP) ---
-const HTTP_PORT = 3000; // 웹페이지 접속 포트 (가비아 환경에 맞게 변경)
+const HTTP_PORT = process.env.PORT || 3000; // 웹페이지 접속 포트 (가비아 환경에 맞게 변경)
 
 app.use(cors()); // CORS 에러 방지
 app.use(express.json()); // 웹에서 보내는 JSON 데이터 분석
@@ -45,7 +45,7 @@ app.listen(HTTP_PORT, () => {
     console.log(`🌐 웹 서버가 포트 ${HTTP_PORT}에서 대기 중입니다.`);
 });
 
-
+/*
 // --- [B] 사물인터넷 우체국 설정 (MQTT 브로커) ---
 const MQTT_PORT = 1883; // MQTT 전용 표준 포트
 const mqttServer = net.createServer(aedes.handle);
@@ -53,6 +53,7 @@ const mqttServer = net.createServer(aedes.handle);
 mqttServer.listen(MQTT_PORT, () => {
     console.log(`📮 MQTT 우체국이 포트 ${MQTT_PORT}에서 업무를 시작했습니다.`);
 });
+
 
 // 누군가(ESP32 등) 우체국에 연결했을 때 알림
 aedes.on('client', (client) => {
@@ -79,3 +80,4 @@ aedes.on('publish', (packet, client) => {
         }
     }
 });
+*/

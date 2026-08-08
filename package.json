@@ -1,9 +1,10 @@
 {
   "name": "smart-assi-farm-server",
   "version": "1.0.0",
-  "main": "smart_farm_server.js",
+  "main": "server.js",
+
   "scripts": {
-    "start": "node smart_farm_server.js"
+    "start": "node server.js"
   },
 
   "dependencies": {
